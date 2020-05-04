@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { LangContext } from "./AppContext";
-import { ItemSearch, CharacterDetail } from "./components";
+import { CharacterDetail, ItemSearch } from "./components";
 
 import "./App.css";
 
 function App() {
   const [lang, setLang] = useState("fr");
-  const charactersIdTable = [734000, 11271710, 4315237];
+  //const lang = "fr";
+  const charactersIdTable = [734000, 11271710, 16399835, 4315237];
 
   return (
     <div className="App">
@@ -19,11 +20,11 @@ function App() {
         <option value="de">Allemand</option>
       </select>
       <LangContext.Provider value={lang}>
+        {charactersIdTable.map((id) => {
+          return <CharacterDetail key={id} chrId={id} />;
+        })}
         <ItemSearch />
       </LangContext.Provider>
-      {charactersIdTable.map((id) => {
-        return <CharacterDetail key={id} chrId={id} />;
-      })}
     </div>
   );
 }

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Loading from "../Loading";
+import { Character } from "../../Models";
 import axios from "axios";
 
 import "./CharacterDetail.css";
@@ -9,7 +11,7 @@ const CharacterDetail = ({ chrId }) => {
   useEffect(() => {
     const getCharacter = async () => {
       const res = await axios.get(`https://xivapi.com/character/${chrId}`);
-      setCharacter(res.data.Character);
+      setCharacter(new Character(res.data.Character));
     };
 
     getCharacter();
@@ -17,7 +19,7 @@ const CharacterDetail = ({ chrId }) => {
 
   const containerHandleClick = (e) => {
     const characterContainers = document.querySelectorAll(
-      ".character_container"
+      ".character_main_container"
     );
     characterContainers.forEach((container) => {
       container.classList.remove("active");
@@ -25,24 +27,25 @@ const CharacterDetail = ({ chrId }) => {
     e.currentTarget.classList.add("active");
   };
 
-  const { ID, Name, Avatar } = character;
+  const { id, name, avatar } = character;
   return (
     <>
-      <div className="character_container" onClick={containerHandleClick}>
-        {character.loading ? (
-          <p>Chargement ...</p>
-        ) : (
-          <>
-            <aside>
-              <img src={Avatar} alt={Name} />
-            </aside>
-            <aside>
-              <h3>{Name}</h3>
-              <p>ID = {ID}</p>
-            </aside>
-          </>
-        )}
-      </div>
+      {character.loading ? (
+        <Loading />
+      ) : (
+        <div
+          className="character_main_container"
+          onClick={containerHandleClick}
+        >
+          <aside>
+            <img src={avatar} alt={name} />
+          </aside>
+          <aside className="character_details_container">
+            <h3>{name}</h3>
+            <p>id = {id}</p>
+          </aside>
+        </div>
+      )}
     </>
   );
 };

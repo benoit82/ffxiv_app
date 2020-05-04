@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
-import { LangContext } from "../AppContext";
+import { LangContext } from "../../AppContext";
 import axios from "axios";
 
 import ItemDetail from "./ItemDetail";
+import { Item } from "../../Models";
 
 const ItemSearch = () => {
   const [item, setItem] = useState({});
@@ -12,7 +13,7 @@ const ItemSearch = () => {
   useEffect(() => {
     const getItem = async () => {
       const res = await axios.get(`https://xivapi.com/item/${id}`);
-      setItem(res.data);
+      setItem(new Item(res.data, lang));
       document.title = res.data[`Name_${lang}`];
     };
 
