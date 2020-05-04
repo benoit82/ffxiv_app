@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { LangContext } from "./AppContext";
-import ItemSearch from "./components/ItemSearch";
+import { ItemSearch, CharacterDetail } from "./components";
 
 import "./App.css";
 
 function App() {
   const [lang, setLang] = useState("fr");
+  const charactersIdTable = [734000, 11271710, 4315237];
 
   return (
     <div className="App">
@@ -20,6 +21,9 @@ function App() {
       <LangContext.Provider value={lang}>
         <ItemSearch />
       </LangContext.Provider>
+      {charactersIdTable.map((id) => {
+        return <CharacterDetail key={id} chrId={id} />;
+      })}
     </div>
   );
 }
