@@ -1,24 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { LangContext } from "./AppContext";
+import ItemSearch from "./components/ItemSearch";
+
+import "./App.css";
 
 function App() {
+  const [lang, setLang] = useState("fr");
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <select name="lang" id="lang" onChange={(e) => setLang(e.target.value)}>
+        <option value="fr" defaultValue>
+          français
+        </option>
+        <option value="en">anglais</option>
+        <option value="ja">Japonais</option>
+        <option value="de">Allemand</option>
+      </select>
+      <LangContext.Provider value={lang}>
+        <ItemSearch />
+      </LangContext.Provider>
     </div>
   );
 }
