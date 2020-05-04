@@ -1,6 +1,6 @@
-import ItemDetail from "./Item/ItemDetail";
-import ItemSearch from "./Item/ItemSearch";
-import CharacterDetail from "./Character/CharacterDetail";
+import ItemDetail from "./item/ItemDetail";
+import ItemSearch from "./item/ItemSearch";
+import CharacterDetail from "./character/CharacterDetail";
 import Loading from "./Loading";
 
 export { ItemDetail, ItemSearch, CharacterDetail, Loading };

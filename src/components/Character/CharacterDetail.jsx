@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Loading from "../Loading";
-import { Character } from "../../Models";
+import { Character } from "../../models";
 import axios from "axios";
 
 import "./CharacterDetail.css";

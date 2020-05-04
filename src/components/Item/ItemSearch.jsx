@@ -3,7 +3,7 @@ import { LangContext } from "../../AppContext";
 import axios from "axios";
 
 import ItemDetail from "./ItemDetail";
-import { Item } from "../../Models";
+import { Item } from "../../models";
 
 const ItemSearch = () => {
   const [item, setItem] = useState({});
