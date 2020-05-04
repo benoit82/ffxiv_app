@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { LangContext } from "../../AppContext";
 import "./ItemDetail.css";
-import { Item } from "../../Models";
 
 const ItemDetail = ({ item }) => {
   const lang = useContext(LangContext);
