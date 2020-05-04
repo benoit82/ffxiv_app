@@ -1,5 +1,6 @@
-import ItemDetail from "./ItemDetail";
-import ItemSearch from "./ItemSearch";
-import CharacterDetail from "./CharacterDetail";
+import ItemDetail from "./Item/ItemDetail";
+import ItemSearch from "./Item/ItemSearch";
+import CharacterDetail from "./Character/CharacterDetail";
+import Loading from "./Loading";
 
-export { ItemDetail, ItemSearch, CharacterDetail };
+export { ItemDetail, ItemSearch, CharacterDetail, Loading };
