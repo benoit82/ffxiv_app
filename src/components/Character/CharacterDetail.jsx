@@ -9,12 +9,10 @@ const CharacterDetail = ({ chrId }) => {
   const [character, setCharacter] = useState({ loading: true });
 
   useEffect(() => {
-    const getCharacter = async () => {
+    (async () => {
       const res = await axios.get(`https://xivapi.com/character/${chrId}`);
       setCharacter(new Character(res.data.Character));
-    };
-
-    getCharacter();
+    })();
   }, [chrId]);
 
   const containerHandleClick = (e) => {
