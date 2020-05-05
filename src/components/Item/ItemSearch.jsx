@@ -11,13 +11,10 @@ const ItemSearch = () => {
   const lang = useContext(LangContext);
 
   useEffect(() => {
-    const getItem = async () => {
+    (async () => {
       const res = await axios.get(`https://xivapi.com/item/${id}`);
       setItem(new Item(res.data, lang));
-      document.title = res.data[`Name_${lang}`];
-    };
-
-    getItem();
+    })();
   }, [id, lang]);
 
   return (
