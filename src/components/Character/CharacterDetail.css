@@ -4,19 +4,17 @@
 
 .character_main_container {
   border-radius: 10px;
-  width: 350px;
+  width: calc(360px - 30px - 20px);
   margin: 30px auto 20px;
   padding: 10px;
   display: flex;
   align-content: center;
   justify-content: space-between;
-  transition: transform 750ms;
 }
 
 .active,
 .character_main_container:hover {
   background-color: #cccccc;
-  transform: scale(1.15);
 }
 
 .active {

@@ -1,0 +1,32 @@
+.form_container {
+  font-size: 1rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  background-color: rgb(238, 238, 238);
+  border-radius: 3px;
+  padding: 5px;
+}
+.form_grp_label {
+  margin-right: 5px;
+}
+
+.form_grp_text_field,
+.form_grp_select_field {
+  border: 0;
+  border-radius: 3px;
+  width: 100px;
+  margin-right: 5px;
+}
+
+.form_grp_select_field {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+@media only screen and (min-width: 800px) {
+  .form_container {
+    width: 500px;
+  }
+}
