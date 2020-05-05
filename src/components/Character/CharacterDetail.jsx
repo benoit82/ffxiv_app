@@ -10,7 +10,9 @@ const CharacterDetail = ({ chrId }) => {
 
   useEffect(() => {
     (async () => {
-      const res = await axios.get(`https://xivapi.com/character/${chrId}`);
+      const res = await axios.get(
+        `https://xivapi.com/character/${chrId}?data=CJ`
+      );
       setCharacter(new Character(res.data.Character));
     })();
   }, [chrId]);

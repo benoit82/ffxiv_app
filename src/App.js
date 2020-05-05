@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { LangContext } from "./AppContext";
-import { CharacterDetail, ItemSearch } from "./components";
+import { CharacterDetail, ItemSearch, CharacterSearch } from "./components";
 
 import "./App.css";
 
@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div className="App">
-      <select name="lang" id="lang" onChange={(e) => setLang(e.target.value)}>
+      {/* <select name="lang" id="lang" onChange={(e) => setLang(e.target.value)}>
         <option value="fr" defaultValue>
           français
         </option>
@@ -24,7 +24,8 @@ function App() {
           return <CharacterDetail key={id} chrId={id} />;
         })}
         <ItemSearch />
-      </LangContext.Provider>
+      </LangContext.Provider> */}
+      <CharacterSearch />
     </div>
   );
 }
