@@ -1,11 +1,3 @@
-.desc_container img {
-  transition: transform ease 1200ms;
-}
-
-.desc_container img:hover {
-  transform: scale(1.3) translateY(10px);
-}
-
 .desc_container {
   margin-top: 20px;
 }
