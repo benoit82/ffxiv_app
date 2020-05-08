@@ -1,10 +1,5 @@
-import React, { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import { LangContext } from "./AppContext";
 import { Navbar, ItemSearch, CharacterSearch } from "./components";
 
