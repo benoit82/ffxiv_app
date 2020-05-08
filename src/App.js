@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
+} from "react-router-dom";
 import { LangContext } from "./AppContext";
 import { Navbar, ItemSearch, CharacterSearch } from "./components";
 
@@ -11,11 +16,13 @@ function App() {
       <Router>
         <Navbar />
         <LangContext.Provider>
-          <Route exact path="/">
-            <Redirect to="/itemSearch" />
-          </Route>
-          <Route path="/itemSearch" component={ItemSearch} />
-          <Route path="/characterSearch" component={CharacterSearch} />
+          <Switch>
+            <Route exact path="/">
+              <Redirect to="/itemSearch" />
+            </Route>
+            <Route path="/itemSearch" component={ItemSearch} />
+            <Route path="/characterSearch" component={CharacterSearch} />
+          </Switch>
         </LangContext.Provider>
       </Router>
     </div>
