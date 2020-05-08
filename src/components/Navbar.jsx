@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 import "./Navbar.scss";
 
@@ -8,13 +9,10 @@ const Navbar = () => {
       <input type="checkbox" className="burger" defaultChecked />
       <ul className="grp_list">
         <li className="list_item">
-          <a href="/">lien 1</a>
+          <NavLink to="/itemSearch">Items</NavLink>
         </li>
         <li className="list_item">
-          <a href="/">lien 2</a>
-        </li>
-        <li className="list_item">
-          <a href="/">lien 3</a>
+          <NavLink to="/characterSearch">Characters</NavLink>
         </li>
       </ul>
     </nav>

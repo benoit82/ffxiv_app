@@ -8,7 +8,7 @@ import { Item } from "../../models";
 const ItemSearch = () => {
   const [item, setItem] = useState({});
   const [id, setId] = useState(29509);
-  const lang = useContext(LangContext);
+  const [lang, setLang] = useState(useContext(LangContext));
 
   useEffect(() => {
     (async () => {
@@ -17,8 +17,20 @@ const ItemSearch = () => {
     })();
   }, [id, lang]);
 
+  const langSelector = (
+    <select name="lang" id="lang" onChange={(e) => setLang(e.target.value)}>
+      <option value="fr" defaultValue>
+        français
+      </option>
+      <option value="en">anglais</option>
+      <option value="ja">Japonais</option>
+      <option value="de">Allemand</option>
+    </select>
+  );
+
   return (
     <>
+      {langSelector}
       <input
         type="number"
         name="id"
