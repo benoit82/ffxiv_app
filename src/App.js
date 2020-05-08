@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { LangContext } from "./AppContext";
-import { CharacterDetail, ItemSearch, CharacterSearch } from "./components";
+import {
+  Navbar,
+  CharacterDetail,
+  ItemSearch,
+  CharacterSearch,
+} from "./components";
 
 import "./App.css";
 
 function App() {
   const [lang, setLang] = useState("fr");
-  //const lang = "fr";
-  const charactersIdTable = [734000, 11271710, 16399835, 4315237];
 
   return (
     <div className="App">
@@ -25,6 +28,7 @@ function App() {
         })}
         <ItemSearch />
       </LangContext.Provider> */}
+      <Navbar />
       <CharacterSearch />
     </div>
   );

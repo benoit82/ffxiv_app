@@ -8,13 +8,13 @@ const Navbar = () => {
       <input type="checkbox" className="burger" defaultChecked />
       <ul className="grp_list">
         <li className="list_item">
-          <a href="#">lien 1</a>
+          <a href="/">lien 1</a>
         </li>
         <li className="list_item">
-          <a href="#">lien 2</a>
+          <a href="/">lien 2</a>
         </li>
         <li className="list_item">
-          <a href="#">lien 3</a>
+          <a href="/">lien 3</a>
         </li>
       </ul>
     </nav>
