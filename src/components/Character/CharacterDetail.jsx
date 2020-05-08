@@ -30,9 +30,8 @@ const CharacterDetail = ({ chrId }) => {
   const { id, name, avatar } = character;
   return (
     <>
-      {character.loading ? (
-        <Loading />
-      ) : (
+      {character.loading && <Loading />}
+      {!character.loading && (
         <div
           className="character_main_container"
           onClick={containerHandleClick}
