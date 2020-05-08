@@ -5,6 +5,7 @@ import CharacterSearch from "./character/CharacterSearch";
 import Loading from "./Loading";
 import Navbar from "./Navbar";
 import Signup from "./signup/Signup";
+import Login from "./login/Login";
 
 export {
   ItemDetail,
@@ -14,4 +15,5 @@ export {
   Loading,
   Navbar,
   Signup,
+  Login,
 };

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useContext } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 
 const Signup = () => {
@@ -8,6 +9,7 @@ const Signup = () => {
     const [error, setError] = useState({})
     const formRef = useRef(null)
     const { pseudo, email, password, confirmPassword } = loginData;
+    const history = useHistory();
 
     const handleChange = (event) => {
         setLoginData({ ...loginData, [event.target.id]: event.target.value })
@@ -26,9 +28,10 @@ const Signup = () => {
         const { email, password } = loginData;
         try {
             setError({})
-            const response = await firebase.signUpUser(email, password);
+            const response = await firebase.signUpUser(email.trim(), password.trim());
             setLoginData({ ...data });
             console.log(response);
+            history.push("/");
         } catch (error) {
             setError({ ...error, message: error.message });
         }
@@ -63,6 +66,9 @@ const Signup = () => {
                     <button onClick={handleReset}>Effacer</button>
                 </div>
             </form>
+            <div>
+                <Link to="/login">Déjà inscrit ? retourner à la page de connection</Link>
+            </div>
         </>
     )
 }

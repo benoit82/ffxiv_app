@@ -6,7 +6,13 @@ import {
   Switch,
 } from "react-router-dom";
 import { LangContext } from "./AppContext";
-import { Navbar, ItemSearch, CharacterSearch, Signup } from "./components";
+import {
+  Navbar,
+  ItemSearch,
+  CharacterSearch,
+  Signup,
+  Login,
+} from "./components";
 
 import "./App.css";
 
@@ -21,6 +27,7 @@ function App() {
               <Redirect to="/itemSearch" />
             </Route>
             <Route path="/signup" component={Signup} />
+            <Route path="/login" component={Login} />
             <Route path="/itemSearch" component={ItemSearch} />
             <Route path="/characterSearch" component={CharacterSearch} />
           </Switch>
