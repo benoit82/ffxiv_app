@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Form from 'react-bootstrap/Form';
@@ -15,7 +15,7 @@ const SignupForm = () => {
     const signupToFirebase = async (values) => {
         try {
             setfirebaseError({})
-            await firebase.signUpUser(values.email.trim(), values.email.trim());
+            await firebase.signUpUser(values.email.trim(), values.password.trim());
             history.push("/");
         } catch (error) {
             setfirebaseError({ ...error, message: error.message });
@@ -52,7 +52,6 @@ const SignupForm = () => {
 
     return (
         <>
-            <h1>Inscription</h1>
             {firebaseErrorMsg}
             <Formik
                 validationSchema={signupSchema}

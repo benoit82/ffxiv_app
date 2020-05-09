@@ -11,7 +11,7 @@ import {
   ItemSearch,
   CharacterSearch,
   SignupPage,
-  Login,
+  LoginPage,
 } from "./components";
 
 import "./App.css";
@@ -27,7 +27,7 @@ function App() {
               <Redirect to="/itemSearch" />
             </Route>
             <Route path="/signup" component={SignupPage} />
-            <Route path="/login" component={Login} />
+            <Route path="/login" component={LoginPage} />
             <Route path="/itemSearch" component={ItemSearch} />
             <Route path="/characterSearch" component={CharacterSearch} />
           </Switch>

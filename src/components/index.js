@@ -5,7 +5,7 @@ import CharacterSearch from "./character/CharacterSearch";
 import Loading from "./Loading";
 import Menu from "./Menu";
 import SignupPage from "./signup/SignupPage";
-import Login from "./login/Login";
+import LoginPage from "./login/LoginPage";
 
 export {
   ItemDetail,
@@ -15,5 +15,5 @@ export {
   Loading,
   Menu,
   SignupPage,
-  Login,
+  LoginPage,
 };
