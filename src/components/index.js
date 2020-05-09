@@ -7,6 +7,7 @@ import Menu from "./Menu";
 import SignupPage from "./signup/SignupPage";
 import LoginPage from "./login/LoginPage";
 import Disconnect from "./disconnect/Disconnect";
+import Welcome from "./welcome";
 
 export {
   ItemDetail,
@@ -18,4 +19,5 @@ export {
   SignupPage,
   LoginPage,
   Disconnect,
+  Welcome,
 };

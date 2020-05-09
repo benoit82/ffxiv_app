@@ -145,7 +145,7 @@ const SignupForm = () => {
                     )}
             </Formik>
 
-            <Alert variant='warning' className="mt-3">Déjà inscrit ? Aller à la page de <Link to="/login">connexion</Link> !</Alert>
+            <Alert variant="info" className="mt-3">Déjà inscrit ? Aller à la page de <Link to="/login">connexion</Link> !</Alert>
         </>
     )
 }

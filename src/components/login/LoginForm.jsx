@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Alert from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import { Formik } from 'formik';
 import * as Yup from 'yup'
 
@@ -96,7 +96,7 @@ const LoginForm = () => {
                         </Form>
                     )}
             </Formik>
-            <Alert variant='warning' className="mt-3">Nouvel utilisateur ? Aller à la page d'<Link to="/signup">inscription</Link> !</Alert>
+            <Alert variant="info" className="mt-3">Nouvel utilisateur ? Aller à la page d'<Link to="/signup">inscription</Link> !</Alert>
         </>
     )
 }

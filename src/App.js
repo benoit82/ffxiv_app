@@ -8,6 +8,7 @@ import {
 import { LangContext } from "./AppContext";
 import {
   Menu,
+  Welcome,
   ItemSearch,
   CharacterSearch,
   SignupPage,
@@ -22,15 +23,17 @@ function App() {
       <Router>
         <Menu />
         <LangContext.Provider>
-          <Switch>
-            <Route exact path="/">
-              <Redirect to="/itemSearch" />
-            </Route>
-            <Route path="/signup" component={SignupPage} />
-            <Route path="/login" component={LoginPage} />
-            <Route path="/itemSearch" component={ItemSearch} />
-            <Route path="/characterSearch" component={CharacterSearch} />
-          </Switch>
+          <div className="container">
+            <div className="row mt-5 d-flex justify-content-center align-items-center">
+              <Switch>
+                <Route exact path="/" component={Welcome} />
+                <Route path="/signup" component={SignupPage} />
+                <Route path="/login" component={LoginPage} />
+                <Route path="/itemSearch" component={ItemSearch} />
+                <Route path="/characterSearch" component={CharacterSearch} />
+              </Switch>
+            </div>
+          </div>
         </LangContext.Provider>
       </Router>
     </div>
