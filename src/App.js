@@ -7,10 +7,10 @@ import {
 } from "react-router-dom";
 import { LangContext } from "./AppContext";
 import {
-  Navbar,
+  Menu,
   ItemSearch,
   CharacterSearch,
-  Signup,
+  SignupForm,
   Login,
 } from "./components";
 
@@ -18,15 +18,15 @@ import "./App.css";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App container-fluid">
       <Router>
-        <Navbar />
+        <Menu />
         <LangContext.Provider>
           <Switch>
             <Route exact path="/">
               <Redirect to="/itemSearch" />
             </Route>
-            <Route path="/signup" component={Signup} />
+            <Route path="/signup" component={SignupForm} />
             <Route path="/login" component={Login} />
             <Route path="/itemSearch" component={ItemSearch} />
             <Route path="/characterSearch" component={CharacterSearch} />

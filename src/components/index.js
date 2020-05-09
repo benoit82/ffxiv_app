@@ -3,8 +3,8 @@ import ItemSearch from "./item/ItemSearch";
 import CharacterDetail from "./character/CharacterDetail";
 import CharacterSearch from "./character/CharacterSearch";
 import Loading from "./Loading";
-import Navbar from "./Navbar";
-import Signup from "./signup/Signup";
+import Menu from "./Menu";
+import SignupForm from "./signup/SignupForm";
 import Login from "./login/Login";
 
 export {
@@ -13,7 +13,7 @@ export {
   CharacterDetail,
   CharacterSearch,
   Loading,
-  Navbar,
-  Signup,
+  Menu,
+  SignupForm,
   Login,
 };

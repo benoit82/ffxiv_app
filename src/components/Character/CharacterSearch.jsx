@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import CharacterDetail from "./CharacterDetail";
 import axios from "axios";
 import Loading from "../Loading";
+import Form from 'react-bootstrap/Form';
+import Button from "react-bootstrap/Button";
 
 import "./CharacterSearch.css";
 
@@ -34,13 +36,40 @@ const CharacterSearch = () => {
 
   const fetchCharacters = (e) => {
     e.preventDefault();
+
+    /*
     const chrName = document.querySelector("#chr_name").value;
     const server = document.querySelector("#select_server").value;
     requestCharactersList(chrName, server);
+    */
   };
 
   return (
     <>
+      <Form onSubmit={fetchCharacters}>
+        <Form.Group controlId="characterName">
+          <Form.Label>Nom du personnage</Form.Label>
+          <Form.Control type="text" placeholder="Nom du personnage" />
+        </Form.Group>
+
+        <Form.Group controlId="selectServer">
+          <Form.Label>Server</Form.Label>
+          <Form.Control as="select" custom onChange={(e) => { console.log(e.target.value) }}>
+            {serverList.length > 0 &&
+              serverList.map((server) => {
+                return (
+                  <option key={server}>
+                    {server}
+                  </option>
+                );
+              })}
+          </Form.Control>
+        </Form.Group>
+
+        <Button variant="primary" type="submit">
+          Rechercher
+  </Button>
+      </Form>
       <div className="form_container">
         <form onSubmit={fetchCharacters}>
           <div className="form_grp">

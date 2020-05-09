@@ -3,6 +3,10 @@ import Loading from "../Loading";
 import { Character } from "../../models";
 import axios from "axios";
 
+import Card from 'react-bootstrap/Card';
+import Image from 'react-bootstrap/Image';
+
+
 import "./CharacterDetail.css";
 
 const CharacterDetail = ({ chrId }) => {
@@ -31,6 +35,17 @@ const CharacterDetail = ({ chrId }) => {
   return (
     <>
       {character.loading && <Loading />}
+      <Card style={{ width: '18rem' }}>
+  <Card.Body>
+    <Card.Title>{name}</Card.Title>
+    <div className="imgCard">
+    <Image variant="bottom" src={avatar} alt={name} roundedCircle/>
+    </div>    
+    <Card.Text>
+    id = {id}
+    </Card.Text>
+  </Card.Body>
+</Card>
       {!character.loading && (
         <div
           className="character_main_container"

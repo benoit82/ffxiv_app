@@ -1,16 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
 .App {
-  font-family: "Nunito", sans-serif;
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  min-width: 360px;
-  margin: 0 auto;
-}
-
-@media only screen and (min-width: 800px) {
-  .App {
-    width: 800px;
-  }
+  font-family: "Nunito", sans-serif !important;
 }
