@@ -10,7 +10,7 @@ import {
   Menu,
   ItemSearch,
   CharacterSearch,
-  SignupForm,
+  SignupPage,
   Login,
 } from "./components";
 
@@ -26,7 +26,7 @@ function App() {
             <Route exact path="/">
               <Redirect to="/itemSearch" />
             </Route>
-            <Route path="/signup" component={SignupForm} />
+            <Route path="/signup" component={SignupPage} />
             <Route path="/login" component={Login} />
             <Route path="/itemSearch" component={ItemSearch} />
             <Route path="/characterSearch" component={CharacterSearch} />

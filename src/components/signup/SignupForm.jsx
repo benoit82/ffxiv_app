@@ -22,7 +22,6 @@ const SignupForm = () => {
         }
     }
     // gestion du formulaire avec Formik
-    const alreadySignIn = <Link to="/login">Déjà inscrit ? retourner à la page de connexion</Link>
     // gestion des erreurs
     const firebaseErrorMsg = firebaseError.message !== '' && <span>{firebaseError.message}</span>;
 
@@ -141,7 +140,7 @@ const SignupForm = () => {
                     )}
             </Formik>
 
-            {alreadySignIn}
+            <Alert variant='warning' className="mt-3">Déjà inscrit ? Aller à la page de <Link to="/login">connexion</Link> !</Alert>
         </>
     )
 }

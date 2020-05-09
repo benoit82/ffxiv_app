@@ -4,7 +4,7 @@ import CharacterDetail from "./character/CharacterDetail";
 import CharacterSearch from "./character/CharacterSearch";
 import Loading from "./Loading";
 import Menu from "./Menu";
-import SignupForm from "./signup/SignupForm";
+import SignupPage from "./signup/SignupPage";
 import Login from "./login/Login";
 
 export {
@@ -14,6 +14,6 @@ export {
   CharacterSearch,
   Loading,
   Menu,
-  SignupForm,
+  SignupPage,
   Login,
 };
