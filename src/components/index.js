@@ -6,6 +6,7 @@ import Loading from "./Loading";
 import Menu from "./Menu";
 import SignupPage from "./signup/SignupPage";
 import LoginPage from "./login/LoginPage";
+import Disconnect from "./disconnect/Disconnect";
 
 export {
   ItemDetail,
@@ -16,4 +17,5 @@ export {
   Menu,
   SignupPage,
   LoginPage,
+  Disconnect,
 };

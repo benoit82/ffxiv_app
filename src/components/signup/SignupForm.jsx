@@ -3,26 +3,31 @@ import { Link, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Alert from 'react-bootstrap/Alert'
+import Alert from 'react-bootstrap/Alert';
+import Loading from '../Loading';
 import { Formik } from 'formik';
 import * as Yup from 'yup'
 
 const SignupForm = () => {
     const firebase = useContext(FirebaseContext);
     const [firebaseError, setfirebaseError] = useState({});
+    const [confirmation, setConfirmation] = useState("");
     const history = useHistory();
 
     const signupToFirebase = async (values) => {
         try {
             setfirebaseError({})
             await firebase.signUpUser(values.email.trim(), values.password.trim());
-            history.push("/");
+            setConfirmation("Enregistrement réussi. Redirection vers la page d'acceuil...");
+            setTimeout(() => {
+                history.push("/");
+            }, 2000);
         } catch (error) {
             setfirebaseError({ ...error, message: error.message });
         }
     }
     // gestion du formulaire avec Formik
-    // gestion des erreurs
+    // gestion des retours Firebase
     const firebaseErrorMsg = firebaseError.message !== '' && <span>{firebaseError.message}</span>;
 
     // schema de validation
@@ -53,6 +58,7 @@ const SignupForm = () => {
     return (
         <>
             {firebaseErrorMsg}
+            {confirmation && < Loading />}
             <Formik
                 validationSchema={signupSchema}
                 onSubmit={values => signupToFirebase(values)}

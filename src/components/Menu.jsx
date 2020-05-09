@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from "react-bootstrap/Nav"
+import { Disconnect } from "./index";
 
 
 const Menu = () => {
@@ -15,6 +16,7 @@ const Menu = () => {
           <NavLink className="nav-link" to="/characterSearch">Personnage</NavLink>
         </Nav>
         <Nav>
+          <Disconnect />
           <NavLink className="nav-link" to="/login">Se connecter</NavLink>
           <NavLink className="nav-link" to="/signup">Inscription</NavLink>
         </Nav>
