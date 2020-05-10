@@ -138,7 +138,7 @@ const SignupForm = () => {
                                 </Form.Control.Feedback>
                             </Form.Group>
                             <SendBtn />{' '}
-                            <ResetBtn />
+                            <ResetBtn handleReset={handleReset} />
                         </Form>
                     )}
             </Formik>
