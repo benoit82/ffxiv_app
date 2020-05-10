@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from "react-bootstrap/Nav"
 import { Disconnect } from "./index";
@@ -7,8 +7,8 @@ import { Disconnect } from "./index";
 
 const Menu = () => {
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className="container-fluid">
-      <Navbar.Brand href="/">FFXIV-Roster Manager</Navbar.Brand>
+    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" >
+      <Link className="navbar-brand" to="/">FFXIV-Roster Manager</Link>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
@@ -16,9 +16,13 @@ const Menu = () => {
           <NavLink className="nav-link" to="/characterSearch">Personnage</NavLink>
         </Nav>
         <Nav>
+          {/* si l'utilisateur est raid leader ou admin */}
+          <NavLink className="nav-link" to="/admin"><i class="fas fa-meteor"></i>Admin</NavLink>
+          {/* si l'utilisateur n'est pas connecté */}
+          <NavLink className="nav-link login" to="/login"><i class="fas fa-sign-in-alt"></i>Login</NavLink>
+          <NavLink className="nav-link" to="/signup"><i class="fas fa-user-plus"></i>Inscription</NavLink>
+          {/* si l'utilisateur est connecté */}
           <Disconnect />
-          <NavLink className="nav-link" to="/login">Se connecter</NavLink>
-          <NavLink className="nav-link" to="/signup">Inscription</NavLink>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

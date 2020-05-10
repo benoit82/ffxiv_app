@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import { SendBtn, ResetBtn } from "../formElements";
 import Alert from 'react-bootstrap/Alert';
 import Loading from '../Loading';
 import { Formik } from 'formik';
@@ -137,10 +137,8 @@ const SignupForm = () => {
                                     {errors.confirmPassword}
                                 </Form.Control.Feedback>
                             </Form.Group>
-                            <Button variant="primary" type="submit">
-                                Envoyer
-                            </Button>{' '}
-                            <Button variant="secondary" type="reset" onClick={handleReset}>Réinitialiser</Button>
+                            <SendBtn />{' '}
+                            <ResetBtn />
                         </Form>
                     )}
             </Formik>

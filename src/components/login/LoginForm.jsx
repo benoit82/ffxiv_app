@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import { SendBtn } from "../formElements"
 import Alert from 'react-bootstrap/Alert';
 import { Formik } from 'formik';
 import * as Yup from 'yup'
@@ -90,9 +90,7 @@ const LoginForm = () => {
                             </Form.Group>
 
 
-                            <Button variant="primary" type="submit">
-                                Envoyer
-                            </Button>
+                            <SendBtn />
                         </Form>
                     )}
             </Formik>

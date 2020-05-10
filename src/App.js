@@ -13,6 +13,7 @@ import {
   CharacterSearch,
   SignupPage,
   LoginPage,
+  Admin,
 } from "./components";
 
 import "./App.css";
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/login" component={LoginPage} />
                 <Route path="/itemSearch" component={ItemSearch} />
                 <Route path="/characterSearch" component={CharacterSearch} />
+                <Route path="/admin" component={Admin} />
               </Switch>
             </div>
           </div>

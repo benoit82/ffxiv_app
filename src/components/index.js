@@ -8,6 +8,7 @@ import SignupPage from "./signup/SignupPage";
 import LoginPage from "./login/LoginPage";
 import Disconnect from "./disconnect/Disconnect";
 import Welcome from "./welcome";
+import Admin from "./admin";
 
 export {
   ItemDetail,
@@ -20,4 +21,5 @@ export {
   LoginPage,
   Disconnect,
   Welcome,
+  Admin,
 };

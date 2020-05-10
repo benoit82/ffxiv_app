@@ -8,9 +8,14 @@
       rgba(219, 214, 223, 0.596) 0%,
       rgba(81, 90, 218, 0.253) 100%
     ),
-    url("./img/bg-1080.jpeg");
+    url("./img/bg-desktop.jpg");
 
   background-size: cover;
+  background-position: center;
+}
+
+.fas {
+  margin-right: 0.3rem;
 }
 
 @media screen and (max-width: 960px) {
@@ -20,6 +25,8 @@
         rgba(219, 214, 223, 0.596) 0%,
         rgba(81, 90, 218, 0.253) 100%
       ),
-      url("./img/bg-800.jpeg");
+      url("./img/bg-phone.jpg");
+    background-size: cover;
+    background-position: center;
   }
 }
