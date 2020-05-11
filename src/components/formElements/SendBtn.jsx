@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 const SendBtn = () => {
     return (
         <Button variant="primary" type="submit">
-            <i class="fas fa-paper-plane"></i>Envoyer
+            <i className="fas fa-paper-plane"></i>Envoyer
         </Button>
     )
 }

@@ -17,10 +17,10 @@ const Menu = () => {
         </Nav>
         <Nav>
           {/* si l'utilisateur est raid leader ou admin */}
-          <NavLink className="nav-link" to="/admin"><i class="fas fa-meteor"></i>Admin</NavLink>
+          <NavLink className="nav-link" to="/admin"><i className="fas fa-meteor"></i>Admin</NavLink>
           {/* si l'utilisateur n'est pas connecté */}
-          <NavLink className="nav-link login" to="/login"><i class="fas fa-sign-in-alt"></i>Login</NavLink>
-          <NavLink className="nav-link" to="/signup"><i class="fas fa-user-plus"></i>Inscription</NavLink>
+          <NavLink className="nav-link login" to="/login"><i className="fas fa-sign-in-alt"></i>Login</NavLink>
+          <NavLink className="nav-link" to="/signup"><i className="fas fa-user-plus"></i>Inscription</NavLink>
           {/* si l'utilisateur est connecté */}
           <Disconnect />
         </Nav>

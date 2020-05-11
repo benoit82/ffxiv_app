@@ -14,7 +14,7 @@ const Disconnect = () => {
     }
 
     return (
-        <Link className="nav-link" onClick={handleClick} to="/"><i class="fas fa-sign-out-alt"></i>Logout</Link>
+        <Link className="nav-link" onClick={handleClick} to="/"><i className="fas fa-sign-out-alt"></i>Logout</Link>
     )
 }
 
