@@ -12,6 +12,8 @@ const Disconnect = () => {
     const handleClick = async (e) => {
         e.preventDefault();
         await firebase.signOutUser();
+        sessionStorage.removeItem("user");
+        localStorage.removeItem("user");
         Auth.setAuth(false);
         history.push("/");
     }

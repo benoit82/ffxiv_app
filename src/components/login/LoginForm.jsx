@@ -7,11 +7,11 @@ import { SendBtn } from "../formElements"
 import Alert from 'react-bootstrap/Alert'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import FormCheck from 'react-bootstrap/FormCheck'
 
 const LoginForm = () => {
     const Auth = useContext(AuthApi);
     const firebase = useContext(FirebaseContext);
-    const [user, setUser] = useState({});
     const [firebaseError, setfirebaseError] = useState({});
     const history = useHistory();
 
@@ -19,7 +19,11 @@ const LoginForm = () => {
         try {
             setfirebaseError({})
             const response = await firebase.signInUser(values.email.trim(), values.password.trim());
-            setUser(response);
+            console.log('response :>> ', response);
+            sessionStorage.setItem("user", JSON.stringify(response.user))
+            if (values.remindMe) {
+                localStorage.setItem("user", JSON.stringify(response.user))
+            }
             Auth.setAuth(true);
             history.push("/");
         } catch (error) {
@@ -40,6 +44,8 @@ const LoginForm = () => {
         password: Yup.string()
             .required("champs obligatoire")
         ,
+        remindMe: Yup.boolean()
+            .notRequired()
     });
 
 
@@ -91,6 +97,18 @@ const LoginForm = () => {
                                     {errors.password}
                                 </Form.Control.Feedback>
                             </Form.Group>
+
+                            {/* checkbox à faire pour un remindMe */}
+                            <Form.Group controlId="remindMe">
+                                <FormCheck
+                                    type="checkbox"
+                                    value={values.remindMe}
+                                    onChange={handleChange}
+                                    isValid={touched.remindMe}
+                                    label="Se souvenir de moi"
+                                    custom />
+                            </Form.Group>
+
 
 
                             <SendBtn />
