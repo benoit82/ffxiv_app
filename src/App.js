@@ -1,37 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { AuthApi } from "./AppContext";
+import { UserApi } from "./AppContext";
 import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "./Routes";
+import Container from "react-bootstrap/Container";
 import { Menu } from "./components";
 
 import "./App.css";
 
 function App() {
-  const [auth, setAuth] = useState(false);
+  const [user, setUser] = useState({
+    userId: "",
+    isLoggedIn: false,
+  });
 
   const checkStorage = () => {
-    const userId = localStorage.getItem("user");
+    const userId = JSON.parse(localStorage.getItem("user")).uid;
     if (userId) {
-      sessionStorage.setItem("user", localStorage.getItem("user"));
-      setAuth(true);
+      //!TODO : se connecter à la DB et chercher si le user est admin / raidleader puis mettre à jour le User
+      setUser({ ...user, userId, isLoggedIn: true, isAdmin: true }); //! mettre à jour l'info : isAdmin selon la data récupéré
     }
   };
 
   useEffect(() => {
     checkStorage();
-  }, [auth]);
+  }, []);
 
   return (
-    <div className="App container-fluid">
+    <Container fluid className="App">
       <Router>
-        <AuthApi.Provider value={{ auth, setAuth }}>
-          <Menu auth={auth} />
-          <div className="row mt-5 d-flex justify-content-center align-items-center">
+        <UserApi.Provider value={{ user, setUser }}>
+          <Menu user={user} />
+          <div className="row mt-3 d-flex justify-content-center align-items-center bg-dark">
             <Routes />
           </div>
-        </AuthApi.Provider>
+        </UserApi.Provider>
       </Router>
-    </div>
+    </Container>
   );
 }
 

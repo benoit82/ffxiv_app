@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Route, Switch } from "react-router-dom";
-import { AuthApi } from "./AppContext";
+import { UserApi } from "./AppContext";
 import {
   Welcome,
   ItemSearch,
@@ -8,11 +8,15 @@ import {
   SignupPage,
   LoginPage,
   Admin,
+  UserOptionPage,
 } from "./components";
 import ProtectedRoute from "./utils/ProtectedRoute";
 
 const Routes = () => {
-  const Auth = useContext(AuthApi);
+  const User = useContext(UserApi);
+
+  const { user } = User;
+
   return (
     <Switch>
       <Route exact path="/" component={Welcome} />
@@ -20,7 +24,16 @@ const Routes = () => {
       <Route path="/login" component={LoginPage} />
       <Route path="/itemSearch" component={ItemSearch} />
       <Route path="/characterSearch" component={CharacterSearch} />
-      <ProtectedRoute path="/admin" auth={Auth.auth} component={Admin} />
+      <ProtectedRoute
+        path="/admin"
+        allowedUser={user.isAdmin}
+        component={Admin}
+      />
+      <ProtectedRoute
+        path="/user"
+        allowedUser={user.isLoggedIn}
+        component={UserOptionPage}
+      />
     </Switch>
   );
 };

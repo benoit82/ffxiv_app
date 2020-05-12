@@ -1,3 +1,3 @@
 import React from "react";
 
-export const AuthApi = React.createContext();
+export const UserApi = React.createContext();

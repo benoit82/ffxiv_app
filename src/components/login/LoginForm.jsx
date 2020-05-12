@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
-import { AuthApi } from "../../AppContext"
+import { UserApi } from "../../AppContext"
 import Form from 'react-bootstrap/Form'
 import { SendBtn } from "../formElements"
 import Alert from 'react-bootstrap/Alert'
@@ -10,7 +10,7 @@ import * as Yup from 'yup'
 import FormCheck from 'react-bootstrap/FormCheck'
 
 const LoginForm = () => {
-    const Auth = useContext(AuthApi);
+    const User = useContext(UserApi);
     const firebase = useContext(FirebaseContext);
     const [firebaseError, setfirebaseError] = useState({});
     const history = useHistory();
@@ -24,7 +24,7 @@ const LoginForm = () => {
             if (values.remindMe) {
                 localStorage.setItem("user", JSON.stringify(response.user))
             }
-            Auth.setAuth(true);
+            User.setUser({ ...User.user, userId: response.user.uid, isLoggedIn: true, isAdmin: true, isRaidLeader: true });
             history.push("/");
         } catch (error) {
             setfirebaseError({ ...error, message: error.message });

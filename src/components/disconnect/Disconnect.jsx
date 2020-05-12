@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import { Link, useHistory } from "react-router-dom";
 import FirebaseContext from '../firebase/context';
-import { AuthApi } from '../../AppContext';
+import { UserApi } from '../../AppContext';
 
 const Disconnect = () => {
 
     const firebase = useContext(FirebaseContext);
-    const Auth = useContext(AuthApi);
+    const User = useContext(UserApi);
     const history = useHistory();
 
     const handleClick = async (e) => {
@@ -14,7 +14,7 @@ const Disconnect = () => {
         await firebase.signOutUser();
         sessionStorage.removeItem("user");
         localStorage.removeItem("user");
-        Auth.setAuth(false);
+        User.setUser({ ...User.user, isLoggedIn: false, isAdmin: false, isRaidLeader: false });
         history.push("/");
     }
 
