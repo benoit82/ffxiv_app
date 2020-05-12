@@ -1,13 +1,15 @@
 import React, { useState, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
-import Form from 'react-bootstrap/Form';
+import { AuthApi } from "../../AppContext"
+import Form from 'react-bootstrap/Form'
 import { SendBtn } from "../formElements"
-import Alert from 'react-bootstrap/Alert';
-import { Formik } from 'formik';
+import Alert from 'react-bootstrap/Alert'
+import { Formik } from 'formik'
 import * as Yup from 'yup'
 
 const LoginForm = () => {
+    const Auth = useContext(AuthApi);
     const firebase = useContext(FirebaseContext);
     const [user, setUser] = useState({});
     const [firebaseError, setfirebaseError] = useState({});
@@ -18,6 +20,7 @@ const LoginForm = () => {
             setfirebaseError({})
             const response = await firebase.signInUser(values.email.trim(), values.password.trim());
             setUser(response);
+            Auth.setAuth(true);
             history.push("/");
         } catch (error) {
             setfirebaseError({ ...error, message: error.message });

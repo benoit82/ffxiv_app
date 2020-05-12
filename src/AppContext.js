@@ -1,3 +1,3 @@
 import React from "react";
 
-export const LangContext = React.createContext("fr");
+export const AuthApi = React.createContext();

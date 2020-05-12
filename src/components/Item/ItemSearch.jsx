@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import { LangContext } from "../../AppContext";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import ItemDetail from "./ItemDetail";
@@ -8,7 +7,7 @@ import { Item } from "../../models";
 const ItemSearch = () => {
   const [item, setItem] = useState({});
   const [id, setId] = useState(29509);
-  const [lang, setLang] = useState(useContext(LangContext));
+  const [lang, setLang] = useState("fr");
 
   useEffect(() => {
     (async () => {

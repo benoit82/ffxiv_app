@@ -1,9 +1,8 @@
-import React, { useEffect, useContext } from "react";
-import { LangContext } from "../../AppContext";
+import React, { useEffect } from "react";
 import "./ItemDetail.css";
 
 const ItemDetail = ({ item }) => {
-  const lang = useContext(LangContext);
+  const lang = "fr";
 
   useEffect(() => {
     document.getElementById("desc").innerHTML = item.description;
