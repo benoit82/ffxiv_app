@@ -9,6 +9,7 @@ import LoginPage from "./login/LoginPage";
 import Disconnect from "./disconnect/Disconnect";
 import Welcome from "./welcome";
 import Admin from "./admin";
+import UserOptionPage from "./user";
 
 export {
   ItemDetail,
@@ -22,4 +23,5 @@ export {
   Disconnect,
   Welcome,
   Admin,
+  UserOptionPage,
 };
