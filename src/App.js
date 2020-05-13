@@ -14,8 +14,8 @@ function App() {
   });
 
   const checkStorage = () => {
-    const userId = JSON.parse(localStorage.getItem("user")).uid;
-    if (userId) {
+    if (localStorage.getItem("user") !== null) {
+      const userId = JSON.parse(localStorage.getItem("user")).uid;
       //!TODO : se connecter à la DB et chercher si le user est admin / raidleader puis mettre à jour le User
       setUser({ ...user, userId, isLoggedIn: true, isAdmin: true }); //! mettre à jour l'info : isAdmin selon la data récupéré
     }

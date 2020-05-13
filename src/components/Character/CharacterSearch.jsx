@@ -3,7 +3,9 @@ import CharacterDetail from "./CharacterDetail";
 import axios from "axios";
 import Loading from "../Loading";
 import Form from 'react-bootstrap/Form';
-import Button from "react-bootstrap/Button";
+import Container from 'react-bootstrap/Container'
+import SearchBtn from "../formElements/SearchBtn";
+import XIVAPI from 'xivapi-js';
 
 import "./CharacterSearch.css";
 
@@ -11,13 +13,27 @@ const CharacterSearch = () => {
   const [loading, setLoading] = useState(false);
   const [serverList, setServerList] = useState([]);
   const [charactersId, setCharactersId] = useState([]);
+  const xiv = new XIVAPI({
+    language: 'fr',
+    snake_case: true
+  });
 
   useEffect(() => {
+    // retrieve server list by datacenter  [dc, [...servers]], [dc, [...servers]],...
     (async () => {
-      const response = await axios.get("https://xivapi.com/servers");
-      setServerList(response.data);
+      const datacenters = await xiv.data.datacenters();
+      setServerList(Object.entries(datacenters));
     })();
   }, []);
+
+  const serverListRender = () => {
+    console.log(serverList)
+    // for (const [datacenter, servers] in Object.entries(serverList)) {
+    // return <optgroup label={[datacenter]}>
+    //   {servers.map(server => <option key={server}>{server}</option>)}
+    // </optgroup>
+    // }
+  }
 
   const requestCharactersList = async (chrName, server) => {
     let resCumul = [];
@@ -44,8 +60,18 @@ const CharacterSearch = () => {
     */
   };
 
+  const servers = serverList.map((datacenter, index) => {
+    return (
+      <optgroup key={index} label={datacenter[0]}>
+        {datacenter[1].map(server => {
+          return <option key={server}>{server}</option>
+        })}
+      </optgroup>
+    )
+  })
+
   return (
-    <>
+    <Container>
       <Form onSubmit={fetchCharacters}>
         <Form.Group controlId="characterName">
           <Form.Label>Nom du personnage</Form.Label>
@@ -55,63 +81,17 @@ const CharacterSearch = () => {
         <Form.Group controlId="selectServer">
           <Form.Label>Server</Form.Label>
           <Form.Control as="select" custom onChange={(e) => { console.log(e.target.value) }}>
-            {serverList.length > 0 &&
-              serverList.map((server) => {
-                return (
-                  <option key={server}>
-                    {server}
-                  </option>
-                );
-              })}
+            {servers}
           </Form.Control>
         </Form.Group>
 
-        <Button variant="primary" type="submit">
-          Rechercher
-  </Button>
+        <SearchBtn />
       </Form>
-      <div className="form_container">
-        <form onSubmit={fetchCharacters}>
-          <div className="form_grp">
-            <label htmlFor="chr_name" className="form_grp_label">
-              Nom du personnage
-            </label>
-            <input
-              type="text"
-              className="form_grp_text_field"
-              id="chr_name"
-              name="chr_name"
-            />
-          </div>
-          <div className="form_grp">
-            <label htmlFor="server" className="form_grp_label">
-              Serveur
-            </label>
-            <select
-              name="select_server"
-              id="select_server"
-              className="form_grp_select_field"
-            >
-              {serverList.length > 0 &&
-                serverList.map((server, index) => {
-                  return (
-                    <option key={index} value={`${server}`}>
-                      {server}
-                    </option>
-                  );
-                })}
-            </select>
-          </div>
-          <div className="form_grp">
-            <button type="submit">rechercher</button>
-          </div>
-        </form>
-      </div>
       {loading && <Loading />}
       {charactersId.map((id) => {
         return <CharacterDetail key={id} chrId={id} />;
       })}
-    </>
+    </Container>
   );
 };
 
