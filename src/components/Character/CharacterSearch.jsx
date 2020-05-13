@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
-import CharacterDetail from "./CharacterDetail";
-import axios from "axios";
-import Loading from "../Loading";
-import Form from 'react-bootstrap/Form';
+import React, { useState, useEffect } from "react"
+import CharacterDetail from "./CharacterDetail"
+import Loading from "../Loading"
+import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container'
-import SearchBtn from "../formElements/SearchBtn";
-import XIVAPI from 'xivapi-js';
+import SearchBtn from "../formElements/SearchBtn"
+import XIVAPI from 'xivapi-js'
+import { Formik } from 'formik'
+import * as Yup from 'yup'
 
-import "./CharacterSearch.css";
+import "./CharacterSearch.css"
 
 const CharacterSearch = () => {
   const [loading, setLoading] = useState(false);
   const [serverList, setServerList] = useState([]);
-  const [charactersId, setCharactersId] = useState([]);
+  const [characters, setCharacters] = useState([]);
   const xiv = new XIVAPI({
     language: 'fr',
     snake_case: true
@@ -26,38 +27,17 @@ const CharacterSearch = () => {
     })();
   }, []);
 
-  const serverListRender = () => {
-    console.log(serverList)
-    // for (const [datacenter, servers] in Object.entries(serverList)) {
-    // return <optgroup label={[datacenter]}>
-    //   {servers.map(server => <option key={server}>{server}</option>)}
-    // </optgroup>
-    // }
-  }
-
-  const requestCharactersList = async (chrName, server) => {
+  const fetchCharacters = async (values) => {
     let resCumul = [];
     setLoading(true);
-    setCharactersId([]);
-    const res = await axios.get(
-      `https://xivapi.com/character/search?name=${chrName}&server=${server}`
-    );
-    res.data.Results.forEach((res) => {
-      resCumul = [...resCumul, res.ID];
-      console.log("res", resCumul);
+    setCharacters([]);
+    const res = await xiv.character.search(values.characterName, { server: values.selectServer });
+    console.log(res.results[0])
+    res.results.forEach((res) => {
+      resCumul = [...resCumul, res];
     });
-    setCharactersId(resCumul);
+    setCharacters(resCumul);
     setLoading(false);
-  };
-
-  const fetchCharacters = (e) => {
-    e.preventDefault();
-
-    /*
-    const chrName = document.querySelector("#chr_name").value;
-    const server = document.querySelector("#select_server").value;
-    requestCharactersList(chrName, server);
-    */
   };
 
   const servers = serverList.map((datacenter, index) => {
@@ -70,26 +50,66 @@ const CharacterSearch = () => {
     )
   })
 
+  const ChrSearchSchema = Yup.object().shape({
+    characterName: Yup.string()
+      .required("champs obligatoire")
+    ,
+    selectServer: Yup.string()
+      .required("champs obligatoire")
+    ,
+  });
+
   return (
     <Container>
-      <Form onSubmit={fetchCharacters}>
-        <Form.Group controlId="characterName">
-          <Form.Label>Nom du personnage</Form.Label>
-          <Form.Control type="text" placeholder="Nom du personnage" />
-        </Form.Group>
+      <Formik
+        validationSchema={ChrSearchSchema}
+        onSubmit={values => fetchCharacters(values)}
+        initialValues={{
+          characterName: '',
+          selectServer: '',
+        }}
+      >
+        {
+          ({ handleSubmit,
+            handleChange,
+            values,
+            touched,
+            errors, }) => (
+              <Form onSubmit={handleSubmit}>
+                <Form.Group controlId="characterName">
+                  <Form.Label>Nom du personnage</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Nom du personnage"
+                    value={values.characterName}
+                    onChange={handleChange}
+                    isValid={touched.characterName && !errors.characterName}
+                    isInvalid={!!errors.characterName}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {errors.characterName}
+                  </Form.Control.Feedback>
+                </Form.Group>
 
-        <Form.Group controlId="selectServer">
-          <Form.Label>Server</Form.Label>
-          <Form.Control as="select" custom onChange={(e) => { console.log(e.target.value) }}>
-            {servers}
-          </Form.Control>
-        </Form.Group>
-
-        <SearchBtn />
-      </Form>
+                <Form.Group controlId="selectServer">
+                  <Form.Label>Server</Form.Label>
+                  <Form.Control
+                    as="select"
+                    custom
+                    onChange={handleChange}
+                    value={values.selectServer}
+                  >
+                    {servers}
+                  </Form.Control>
+                </Form.Group>
+                <SearchBtn />
+              </Form>
+            )
+        }
+      </Formik>
       {loading && <Loading />}
-      {charactersId.map((id) => {
-        return <CharacterDetail key={id} chrId={id} />;
+      {characters.map((character) => {
+        return <CharacterDetail key={character.id} chr={character} />;
       })}
     </Container>
   );
