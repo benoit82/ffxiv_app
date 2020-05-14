@@ -25,6 +25,17 @@
   -moz-appearance: none;
 }
 
+.box_character_list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  overflow: hidden;
+  max-height: 570px;
+}
+
 @media only screen and (min-width: 800px) {
   .form_container {
     width: 500px;

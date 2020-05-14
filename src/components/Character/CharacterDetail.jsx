@@ -22,7 +22,7 @@ const CharacterDetail = ({ chr }) => {
         <img src={avatar} alt={name} />
       </aside>
       <aside className="character_details_container">
-        <h3>{name}</h3>
+        <h4>{name}</h4>
         <p>id = {id}</p>
       </aside>
     </div>

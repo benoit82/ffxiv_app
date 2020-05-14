@@ -32,7 +32,6 @@ const CharacterSearch = () => {
     setLoading(true);
     setCharacters([]);
     const res = await xiv.character.search(values.characterName, { server: values.selectServer });
-    console.log(res.results[0])
     res.results.forEach((res) => {
       resCumul = [...resCumul, res];
     });
@@ -52,6 +51,7 @@ const CharacterSearch = () => {
 
   const ChrSearchSchema = Yup.object().shape({
     characterName: Yup.string()
+      .min(3, "Veuillez indiquer au moins 3 lettres")
       .required("champs obligatoire")
     ,
     selectServer: Yup.string()
@@ -108,9 +108,22 @@ const CharacterSearch = () => {
         }
       </Formik>
       {loading && <Loading />}
-      {characters.map((character) => {
-        return <CharacterDetail key={character.id} chr={character} />;
-      })}
+      <Form.Group controlId="selectChr">
+        <Form.Label>Personnage</Form.Label>
+        <Form.Control
+          as="select"
+          custom
+        >
+          {characters.map((character) => {
+            return <option value={character.id} key={character.id} style={{ backgroundImage: `url(${character.avatar})` }}>{character.name} - {character.server}</option>
+          })}
+        </Form.Control>
+      </Form.Group>
+      <div className="box_character_list">
+        {characters.map((character) => {
+          return <CharacterDetail key={character.id} chr={character} />;
+        })}
+      </div>
     </Container>
   );
 };
