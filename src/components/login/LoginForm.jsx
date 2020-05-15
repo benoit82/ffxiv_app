@@ -1,10 +1,9 @@
 import React, { useState, useContext } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import { UserApi } from "../../AppContext"
 import Form from 'react-bootstrap/Form'
 import { SendBtn } from "../formElements"
-import Alert from 'react-bootstrap/Alert'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import FormCheck from 'react-bootstrap/FormCheck'
@@ -19,8 +18,6 @@ const LoginForm = () => {
         try {
             setfirebaseError({})
             const response = await firebase.signInUser(values.email.trim(), values.password.trim());
-            console.log('response :>> ', response);
-            sessionStorage.setItem("user", JSON.stringify(response.user))
             if (values.remindMe) {
                 localStorage.setItem("user", JSON.stringify(response.user))
             }
@@ -115,7 +112,6 @@ const LoginForm = () => {
                         </Form>
                     )}
             </Formik>
-            <Alert variant="info" className="mt-3">Nouvel utilisateur ? Aller à la page d'<Link to="/signup">inscription</Link> !</Alert>
         </>
     )
 }

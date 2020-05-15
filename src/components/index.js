@@ -10,6 +10,7 @@ import Disconnect from "./disconnect/Disconnect";
 import Welcome from "./welcome";
 import Admin from "./admin";
 import UserOptionPage from "./user";
+import ForgottenPasswordPage from "./forgottenpassword";
 
 export {
   ItemDetail,
@@ -20,6 +21,7 @@ export {
   Menu,
   SignupPage,
   LoginPage,
+  ForgottenPasswordPage,
   Disconnect,
   Welcome,
   Admin,

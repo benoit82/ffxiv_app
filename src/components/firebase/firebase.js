@@ -37,7 +37,8 @@ class Firebase {
    * Reset password
    * @param {string} email
    */
-  passwordReset = (email) => this.auth.sendPasswordResetEmail(email);
+  passwordReset = async (email) =>
+    await this.auth.sendPasswordResetEmail(email);
 
   /**
    * Get a document by reference

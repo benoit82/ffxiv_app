@@ -7,6 +7,7 @@ import {
   CharacterSearch,
   SignupPage,
   LoginPage,
+  ForgottenPasswordPage,
   Admin,
   UserOptionPage,
 } from "./components";
@@ -22,6 +23,7 @@ const Routes = () => {
       <Route exact path="/" component={Welcome} />
       <Route path="/signup" component={SignupPage} />
       <Route path="/login" component={LoginPage} />
+      <Route path="/resetpassword" component={ForgottenPasswordPage} />
       <Route path="/itemSearch" component={ItemSearch} />
       <Route path="/characterSearch" component={CharacterSearch} />
       <ProtectedRoute
