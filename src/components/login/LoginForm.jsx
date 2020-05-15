@@ -7,16 +7,17 @@ import { SendBtn } from "../formElements"
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import FormCheck from 'react-bootstrap/FormCheck'
+import Alert from 'react-bootstrap/Alert'
 
 const LoginForm = () => {
     const User = useContext(UserApi);
     const firebase = useContext(FirebaseContext);
-    const [firebaseError, setfirebaseError] = useState({});
+    const [errorMsg, setErrorMsg] = useState(null);
     const history = useHistory();
 
     const loginWithFirebase = async (values) => {
+        setErrorMsg(null)
         try {
-            setfirebaseError({})
             const response = await firebase.signInUser(values.email.trim(), values.password.trim());
             if (values.remindMe) {
                 localStorage.setItem("user", JSON.stringify(response.user))
@@ -24,21 +25,18 @@ const LoginForm = () => {
             User.setUser({ ...User.user, userId: response.user.uid, isLoggedIn: true, isAdmin: true, isRaidLeader: true });
             history.push("/");
         } catch (error) {
-            setfirebaseError({ ...error, message: error.message });
+            setErrorMsg(<Alert variant="danger" className="mt-3">Erreur : <br /><strong>{error.message}</strong></Alert>);
         }
     }
-
-    // gestion du formulaire avec Formik
-    // gestion des erreurs
-    const firebaseErrorMsg = firebaseError.message !== '' && <span>{firebaseError.message}</span>;
 
     // schema de validation
     const LoginSchema = Yup.object().shape({
         email: Yup.string()
-            .email("email invalide.")
+            .email("email invalide")
             .required("champs obligatoire")
         ,
         password: Yup.string()
+            .min(6, "Entrez 6 caratères minimum")
             .required("champs obligatoire")
         ,
         remindMe: Yup.boolean()
@@ -48,7 +46,7 @@ const LoginForm = () => {
 
     return (
         <>
-            {firebaseErrorMsg}
+            {errorMsg}
             <Formik
                 validationSchema={LoginSchema}
                 onSubmit={values => loginWithFirebase(values)}

@@ -10,26 +10,19 @@ import * as Yup from 'yup'
 
 const SignupForm = () => {
     const firebase = useContext(FirebaseContext);
-    const [firebaseError, setfirebaseError] = useState({});
-    const [confirmation, setConfirmation] = useState("");
+    const [errorMsg, setErrorMsg] = useState(null);
     const history = useHistory();
 
     const signupToFirebase = async (values) => {
+        setErrorMsg(null)
         try {
-            setfirebaseError({})
             await firebase.signUpUser(values.email.trim(), values.password.trim());
-            setConfirmation("Enregistrement réussi. Redirection vers la page d'acceuil...");
-            setTimeout(() => {
-                history.push("/");
-            }, 2000);
+            history.push("/");
         } catch (error) {
-            setfirebaseError({ ...error, message: error.message });
+            setErrorMsg(<Alert variant="danger" className="mt-3">Erreur : <br /><strong>{error.message}</strong></Alert>);
         }
     }
     // gestion du formulaire avec Formik
-    // gestion des retours Firebase
-    const firebaseErrorMsg = firebaseError.message !== '' && <span>{firebaseError.message}</span>;
-
     // schema de validation
     const minPseudoCaractere = 3;
     const maxPseudoCaractere = 15;
@@ -57,8 +50,7 @@ const SignupForm = () => {
 
     return (
         <>
-            {firebaseErrorMsg}
-            {confirmation && < Loading />}
+            {errorMsg}
             <Formik
                 validationSchema={signupSchema}
                 onSubmit={values => signupToFirebase(values)}
