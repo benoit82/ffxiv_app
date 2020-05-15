@@ -26,7 +26,7 @@ const CharacterSearch = () => {
     // retrieve server list by datacenter  [dc, [...servers]], [dc, [...servers]],...
     (async () => {
       const datacenters = await xiv.data.datacenters();
-      setServerList(Object.entries(datacenters));
+      setServerList([["Choisir un serveur", ["Tous"]], ...Object.entries(datacenters)]);
     })();
   }, []);
 
@@ -62,10 +62,9 @@ const CharacterSearch = () => {
       .min(3, "Veuillez indiquer au moins 3 lettres")
       .required("champs obligatoire")
     ,
-    selectServer: Yup.string()
-      .required("champs obligatoire")
-    ,
+    selectServer: Yup.string(),
   });
+
 
   return (
     <Container>
@@ -118,7 +117,7 @@ const CharacterSearch = () => {
       {loading && <Loading />}
       {
         characterSelected &&
-        <>
+        <div className="mt-3">
           <Row>
             <Col>
               <Form.Group controlId="selectChr">
@@ -138,11 +137,13 @@ const CharacterSearch = () => {
               */}
               <AddBtn label="ce personnage" handleClick={() => console.log("character :", characterSelected)} />
             </Col>
+          </Row>
+          <Row>
             <Col className="box_character">
               <CharacterDetail key={characterSelected.id} chr={characterSelected} />
             </Col>
           </Row>
-        </>
+        </div>
       }
     </Container>
   );
