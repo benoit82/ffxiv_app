@@ -19,10 +19,9 @@ const LoginForm = () => {
         setErrorMsg(null)
         try {
             const response = await firebase.signInUser(values.email.trim(), values.password.trim());
-            if (values.remindMe) {
-                localStorage.setItem("user", JSON.stringify(response.user))
-            }
-            User.setUser({ ...User.user, userId: response.user.uid, isLoggedIn: true, isAdmin: true, isRaidLeader: true });
+            User.setUser(response);
+            console.log(response);
+            values.remindMe ? localStorage.setItem("user", JSON.stringify(response)) : localStorage.removeItem("user");
             history.push("/");
         } catch (error) {
             setErrorMsg(<Alert variant="danger" className="mt-3">Erreur : <br /><strong>{error.message}</strong></Alert>);

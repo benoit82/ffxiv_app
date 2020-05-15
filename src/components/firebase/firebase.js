@@ -2,6 +2,7 @@ import app from "firebase/app";
 import config from "./firebase-config";
 import "firebase/auth";
 import "firebase/firestore";
+import { User } from "../../models";
 
 class Firebase {
   constructor() {
@@ -24,8 +25,13 @@ class Firebase {
    * @param {string} email
    * @param {string} password
    */
-  signInUser = (email, password) => {
-    return this.auth.signInWithEmailAndPassword(email, password);
+  signInUser = async (email, password) => {
+    const authUser = await this.auth.signInWithEmailAndPassword(
+      email,
+      password
+    );
+    // fetch userDetail to be return
+    return this.getUser(authUser.user.uid);
   };
 
   /**
@@ -41,12 +47,18 @@ class Firebase {
     await this.auth.sendPasswordResetEmail(email);
 
   /**
-   * Get a document by reference
-   * @param {string} collection name of the collection (users...)
-   * @param {string} docReference reference to the document seeked (userid...)
+   * Add a new user to DB
+   * @param {string} userId
+   * @param {object} configNewUser
    * @returns {Promise<T>}
    */
-  getDocument = async (collection, docReference) =>
-    await this.db.collection(collection).doc(docReference).get();
+  addUser = (uid, configNewUser) => {
+    return this.db.doc(`users/${uid}`).set(configNewUser);
+  };
+
+  getUser = async (uid) => {
+    const user = (await this.db.doc(`users/${uid}`).get()).data();
+    return new User(user);
+  };
 }
 export default Firebase;

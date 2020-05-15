@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { User } from "./models";
 import { UserApi } from "./AppContext";
+import { FirebaseContext } from "./components/firebase";
 import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "./Routes";
 import Container from "react-bootstrap/Container";
@@ -8,16 +10,25 @@ import { Menu } from "./components";
 import "./App.css";
 
 function App() {
+  const firebase = useContext(FirebaseContext);
+  const [infoMsg, setInfoMsg] = useState(null);
   const [user, setUser] = useState({
-    userId: "",
+    uid: "",
     isLoggedIn: false,
   });
 
-  const checkStorage = () => {
+  const checkStorage = async () => {
     if (localStorage.getItem("user") !== null) {
-      const userId = JSON.parse(localStorage.getItem("user")).uid;
-      //!TODO : se connecter à la DB et chercher si le user est admin / raidleader puis mettre à jour le User
-      setUser({ ...user, userId, isLoggedIn: true, isAdmin: true }); //! mettre à jour l'info : isAdmin selon la data récupéré
+      const storagedUser = new User(JSON.parse(localStorage.getItem("user")));
+      setUser(storagedUser);
+      try {
+        const updatedUser = await firebase.getUser(storagedUser.uid);
+        if (updatedUser)
+          localStorage.setItem("user", JSON.stringify(updatedUser));
+        setUser(updatedUser); // instance of User
+      } catch (error) {
+        setInfoMsg(<p>Info error : {error.message}</p>);
+      }
     }
   };
 
@@ -30,6 +41,7 @@ function App() {
       <Router>
         <UserApi.Provider value={{ user, setUser }}>
           <Menu user={user} />
+          {infoMsg}
           <div className="row mt-3 d-flex justify-content-center align-items-center">
             <Routes />
           </div>

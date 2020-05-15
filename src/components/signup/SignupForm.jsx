@@ -16,7 +16,19 @@ const SignupForm = () => {
     const signupToFirebase = async (values) => {
         setErrorMsg(null)
         try {
-            await firebase.signUpUser(values.email.trim(), values.password.trim());
+            const newUser = await firebase.signUpUser(values.email.trim(), values.password.trim());
+            const uid = newUser.user.uid;
+            const configNewUser = {
+                uid,
+                pseudo: values.pseudo.trim(),
+                email: values.email.trim(),
+                createdAt: new Date(),
+                isAdmin: false,
+                isRaidLeader: false,
+                isCrafter: false,
+                isGatherer: false,
+            };
+            firebase.addUser(uid, configNewUser);
             history.push("/");
         } catch (error) {
             setErrorMsg(<Alert variant="danger" className="mt-3">Erreur : <br /><strong>{error.message}</strong></Alert>);
