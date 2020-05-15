@@ -3,7 +3,9 @@ import CharacterDetail from "./CharacterDetail"
 import Loading from "../Loading"
 import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container'
-import SearchBtn from "../formElements/SearchBtn"
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import { SearchBtn, AddBtn } from '../formElements'
 import XIVAPI from 'xivapi-js'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -14,6 +16,7 @@ const CharacterSearch = () => {
   const [loading, setLoading] = useState(false);
   const [serverList, setServerList] = useState([]);
   const [characters, setCharacters] = useState([]);
+  const [characterSelected, setcharacterSelected] = useState(null);
   const xiv = new XIVAPI({
     language: 'fr',
     snake_case: true
@@ -36,6 +39,7 @@ const CharacterSearch = () => {
       resCumul = [...resCumul, res];
     });
     setCharacters(resCumul);
+    setcharacterSelected(resCumul[0]);
     setLoading(false);
   };
 
@@ -48,6 +52,10 @@ const CharacterSearch = () => {
       </optgroup>
     )
   })
+
+  const characterDetailDisplay = (event) => {
+    setcharacterSelected(characters.find(character => character.id === parseInt(event.target.value)))
+  }
 
   const ChrSearchSchema = Yup.object().shape({
     characterName: Yup.string()
@@ -108,22 +116,31 @@ const CharacterSearch = () => {
         }
       </Formik>
       {loading && <Loading />}
-      <Form.Group controlId="selectChr">
-        <Form.Label>Personnage</Form.Label>
-        <Form.Control
-          as="select"
-          custom
-        >
-          {characters.map((character) => {
-            return <option value={character.id} key={character.id} style={{ backgroundImage: `url(${character.avatar})` }}>{character.name} - {character.server}</option>
-          })}
-        </Form.Control>
-      </Form.Group>
-      <div className="box_character_list">
-        {characters.map((character) => {
-          return <CharacterDetail key={character.id} chr={character} />;
-        })}
-      </div>
+      {
+        characterSelected &&
+        <>
+          <Row>
+            <Col>
+              <Form.Group controlId="selectChr">
+                <Form.Label>Personnage</Form.Label>
+                <Form.Control
+                  as="select"
+                  custom
+                  onChange={characterDetailDisplay}
+                >
+                  {characters.map((character) => {
+                    return <option value={character.id} key={character.id} >{character.name} - {character.server}</option>
+                  })}
+                </Form.Control>
+              </Form.Group>
+              <AddBtn label="ce personnage" handleClick={() => console.log("character :", characterSelected)} />
+            </Col>
+            <Col className="box_character">
+              <CharacterDetail key={characterSelected.id} chr={characterSelected} />
+            </Col>
+          </Row>
+        </>
+      }
     </Container>
   );
 };

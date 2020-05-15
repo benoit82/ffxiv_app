@@ -25,7 +25,7 @@
   -moz-appearance: none;
 }
 
-.box_character_list {
+.box_character {
   margin-top: 10px;
   display: flex;
   flex-direction: column;

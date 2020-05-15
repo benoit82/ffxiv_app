@@ -30,7 +30,7 @@ function App() {
       <Router>
         <UserApi.Provider value={{ user, setUser }}>
           <Menu user={user} />
-          <div className="row mt-3 d-flex justify-content-center align-items-center bg-dark">
+          <div className="row mt-3 d-flex justify-content-center align-items-center">
             <Routes />
           </div>
         </UserApi.Provider>

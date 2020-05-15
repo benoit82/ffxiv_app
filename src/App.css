@@ -18,6 +18,10 @@
   margin-right: 0.3rem;
 }
 
+.active {
+  border: 1px solid #696969af;
+}
+
 @media screen and (max-width: 960px) {
   .App {
     background-image: linear-gradient(

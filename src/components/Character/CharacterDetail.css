@@ -3,23 +3,12 @@
 }
 
 .character_main_container {
-  border-radius: 10px;
-  width: calc(360px - 30px - 20px);
-  height: 130px;
-  margin: 0 5px;
-  padding: 10px;
+  border-radius: 65px;
+  background-color: #98a6dfd6;
+  border: solid black;
   display: flex;
   align-content: center;
   justify-content: space-between;
-}
-
-.active,
-.character_main_container:hover {
-  background-color: #cccccc;
-}
-
-.active {
-  border: 1px solid #808080;
 }
 
 .character_details_container {
