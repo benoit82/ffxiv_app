@@ -133,6 +133,9 @@ const CharacterSearch = () => {
                   })}
                 </Form.Control>
               </Form.Group>
+              {/*
+                * !TODO handleClick à gerer pour ajouter un personnage au compte / au roster
+              */}
               <AddBtn label="ce personnage" handleClick={() => console.log("character :", characterSelected)} />
             </Col>
             <Col className="box_character">

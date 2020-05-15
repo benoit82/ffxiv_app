@@ -4,7 +4,7 @@ import "./CharacterDetail.css";
 const CharacterDetail = ({ chr }) => {
 
 
-  const { name, avatar } = chr;
+  const { name, avatar, server } = chr;
   return (
     <div
       className="character_main_container"
@@ -14,6 +14,7 @@ const CharacterDetail = ({ chr }) => {
       </aside>
       <aside className="character_details_container">
         <h4>{name}</h4>
+        <p>{server}</p>
       </aside>
     </div>
 
