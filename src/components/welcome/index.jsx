@@ -13,8 +13,8 @@ const Welcome = () => {
 
     return (
         <Jumbotron>
-            <h1>Bienvenue {user.isLoggedIn && `${user.pseudo}`}!</h1>
-            <p>Sur l'application pour gerer les récompenses de raid dans un premier temps.</p>
+            <h1>\o Lali-ho {user.isLoggedIn && `${user.pseudo}`} ! o/</h1>
+            <p>Bienvenue sur l'application pour gerer les récompenses de raid dans un premier temps.</p>
             <p>D'autres options viendront compléter l'application dans les futurs versions !</p>
             {!user.isLoggedIn && (
                 <>

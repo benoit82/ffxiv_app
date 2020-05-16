@@ -20,7 +20,6 @@ const LoginForm = () => {
         try {
             const response = await firebase.signInUser(values.email.trim(), values.password.trim());
             User.setUser(response);
-            console.log(response);
             values.remindMe ? localStorage.setItem("user", JSON.stringify(response)) : localStorage.removeItem("user");
             history.push("/");
         } catch (error) {

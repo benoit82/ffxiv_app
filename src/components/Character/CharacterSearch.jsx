@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import CharacterDetail from "./CharacterDetail"
 import Loading from "../Loading"
 import Form from 'react-bootstrap/Form'
+import Alert from 'react-bootstrap/Alert'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -9,6 +10,7 @@ import { SearchBtn, AddBtn } from '../formElements'
 import XIVAPI from 'xivapi-js'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import pluralize from 'pluralize'
 
 import "./CharacterSearch.css"
 
@@ -16,14 +18,15 @@ const CharacterSearch = () => {
   const [loading, setLoading] = useState(false);
   const [serverList, setServerList] = useState([]);
   const [characters, setCharacters] = useState([]);
-  const [characterSelected, setcharacterSelected] = useState(null);
+  const [infoMsg, setInfoMsg] = useState(null);
+  const [characterSelected, setCharacterSelected] = useState(null);
   const xiv = new XIVAPI({
     language: 'fr',
     snake_case: true
   });
 
   useEffect(() => {
-    // retrieve server list by datacenter  [dc, [...servers]], [dc, [...servers]],...
+    // retrieve server list and add "all server" option for global search
     (async () => {
       const datacenters = await xiv.data.datacenters();
       setServerList([["Choisir un serveur", ["Tous"]], ...Object.entries(datacenters)]);
@@ -31,6 +34,7 @@ const CharacterSearch = () => {
   }, []);
 
   const fetchCharacters = async (values) => {
+    setCharacterSelected(null);
     let resCumul = [];
     setLoading(true);
     setCharacters([]);
@@ -39,7 +43,7 @@ const CharacterSearch = () => {
       resCumul = [...resCumul, res];
     });
     setCharacters(resCumul);
-    setcharacterSelected(resCumul[0]);
+    setCharacterSelected(resCumul[0]);
     setLoading(false);
   };
 
@@ -54,7 +58,7 @@ const CharacterSearch = () => {
   })
 
   const characterDetailDisplay = (event) => {
-    setcharacterSelected(characters.find(character => character.id === parseInt(event.target.value)))
+    setCharacterSelected(characters.find(character => character.id === parseInt(event.target.value)))
   }
 
   const ChrSearchSchema = Yup.object().shape({
@@ -64,6 +68,19 @@ const CharacterSearch = () => {
     ,
     selectServer: Yup.string(),
   });
+
+  /*
+  * !TODO handleClick à gerer pour ajouter un personnage au compte / au roster
+  * voir si le personnage selectionné n'est pas déjà dans la liste sauvegardé
+  */
+  const handleAddChr = () => {
+    setCharacters(null);
+    setCharacterSelected(null)
+    setInfoMsg(<Alert variant="info"><strong>{characterSelected.name}</strong> ajouté ^_^</Alert>)
+    setTimeout(() => {
+      setInfoMsg(null);
+    }, 2000);
+  }
 
 
   return (
@@ -84,7 +101,7 @@ const CharacterSearch = () => {
             errors, }) => (
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="characterName">
-                  <Form.Label>Nom du personnage</Form.Label>
+                  <Form.Label>Nom du personnage :</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Nom du personnage"
@@ -99,7 +116,7 @@ const CharacterSearch = () => {
                 </Form.Group>
 
                 <Form.Group controlId="selectServer">
-                  <Form.Label>Server</Form.Label>
+                  <Form.Label>Serveur :</Form.Label>
                   <Form.Control
                     as="select"
                     custom
@@ -114,37 +131,37 @@ const CharacterSearch = () => {
             )
         }
       </Formik>
-      {loading && <Loading />}
-      {
-        characterSelected &&
-        <div className="mt-3">
-          <Row>
-            <Col>
-              <Form.Group controlId="selectChr">
-                <Form.Label>Personnage</Form.Label>
-                <Form.Control
-                  as="select"
-                  custom
-                  onChange={characterDetailDisplay}
-                >
-                  {characters.map((character) => {
-                    return <option value={character.id} key={character.id} >{character.name} - {character.server}</option>
-                  })}
-                </Form.Control>
-              </Form.Group>
-              {/*
-                * !TODO handleClick à gerer pour ajouter un personnage au compte / au roster
-              */}
-              <AddBtn label="ce personnage" handleClick={() => console.log("character :", characterSelected)} />
-            </Col>
-          </Row>
-          <Row>
-            <Col className="box_character">
-              <CharacterDetail key={characterSelected.id} chr={characterSelected} />
-            </Col>
-          </Row>
-        </div>
-      }
+      <div className="mt-3">
+        {infoMsg}
+        {loading && <Loading />}
+        {
+          characterSelected &&
+          <>
+            <Row>
+              <Col>
+                <Form.Group controlId="selectChr">
+                  <Form.Label>Résultat : {pluralize("personnage", characters.length, true)}</Form.Label>
+                  <Form.Control
+                    as="select"
+                    custom
+                    onChange={characterDetailDisplay}
+                  >
+                    {characters.map((character) => {
+                      return <option value={character.id} key={character.id} >{character.name} - {character.server}</option>
+                    })}
+                  </Form.Control>
+                </Form.Group>
+                <AddBtn label="ce personnage" handleClick={handleAddChr} />
+              </Col>
+            </Row>
+            <Row>
+              <Col className="box_character">
+                <CharacterDetail key={characterSelected.id} chr={characterSelected} />
+              </Col>
+            </Row>
+          </>
+        }
+      </div>
     </Container>
   );
 };
