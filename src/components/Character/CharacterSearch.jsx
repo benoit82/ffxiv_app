@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react"
-import CharacterDetail from "./CharacterDetail"
+import React, { useState, useEffect } from 'react'
 import Loading from "../Loading"
 import Form from 'react-bootstrap/Form'
 import Alert from 'react-bootstrap/Alert'
@@ -14,7 +13,7 @@ import pluralize from 'pluralize'
 
 import "./CharacterSearch.css"
 
-const CharacterSearch = () => {
+const CharacterSearch = ({ handleAdd }) => {
   const [loading, setLoading] = useState(false);
   const [serverList, setServerList] = useState([]);
   const [characters, setCharacters] = useState([]);
@@ -74,12 +73,13 @@ const CharacterSearch = () => {
   * voir si le personnage selectionné n'est pas déjà dans la liste sauvegardé
   */
   const handleAddChr = () => {
-    setCharacters(null);
+    handleAdd(characterSelected)
+    setCharacters(null)
     setCharacterSelected(null)
-    setInfoMsg(<Alert variant="info"><strong>{characterSelected.name}</strong> ajouté ^_^</Alert>)
+    setInfoMsg(<Alert variant="info"><strong>{characterSelected.name}</strong> ajouté !</Alert>)
     setTimeout(() => {
-      setInfoMsg(null);
-    }, 2000);
+      setInfoMsg(null)
+    }, 2000)
   }
 
 
@@ -152,11 +152,6 @@ const CharacterSearch = () => {
                   </Form.Control>
                 </Form.Group>
                 <AddBtn label="ce personnage" handleClick={handleAddChr} />
-              </Col>
-            </Row>
-            <Row>
-              <Col className="box_character">
-                <CharacterDetail key={characterSelected.id} chr={characterSelected} />
               </Col>
             </Row>
           </>

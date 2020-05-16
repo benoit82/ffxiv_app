@@ -46,6 +46,7 @@ class Firebase {
   passwordReset = async (email) =>
     await this.auth.sendPasswordResetEmail(email);
 
+  // User management
   /**
    * Add a new user to DB
    * @param {string} userId
@@ -53,12 +54,47 @@ class Firebase {
    * @returns {Promise<T>}
    */
   addUser = (uid, configNewUser) => {
-    return this.db.doc(`users/${uid}`).set(configNewUser);
+    return this.db.collection("users").doc(uid).set(configNewUser);
   };
 
   getUser = async (uid) => {
     const user = (await this.db.doc(`users/${uid}`).get()).data();
     return new User(user);
+  };
+
+  // Character management
+  addCharacter = (uid, character) => {
+    // replace id by lodestoneId
+    return this.db
+      .collection("users")
+      .doc(uid)
+      .collection("characters")
+      .add(character);
+  };
+
+  deleteCharacter = async (uid, character) => {
+    const deletedChr = await this.db
+      .collection("users")
+      .doc(uid)
+      .collection("characters")
+      .doc(character._id)
+      .delete();
+    return deletedChr;
+  };
+
+  userListCharacter = (uid, listSetter) => {
+    return this.db
+      .collection("users")
+      .doc(uid)
+      .collection("characters")
+      .orderBy("name", "asc")
+      .onSnapshot((snapshot) => {
+        const cList = snapshot.docs.map((character, index) => ({
+          _id: snapshot.docs[index].id,
+          ...character.data(),
+        }));
+        listSetter(cList);
+      });
   };
 }
 export default Firebase;

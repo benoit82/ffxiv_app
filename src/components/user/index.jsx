@@ -2,6 +2,7 @@ import React from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import AddCharacter from './AddCharacter'
 
 const UserOptionPage = () => {
 
@@ -9,14 +10,16 @@ const UserOptionPage = () => {
 
     return (
         <Container fluid>
-            <h1>Espace utilisateur</h1>
+            <h1>Mes personnages</h1>
             <Row>
-                <Col xs={12} lg={3}>MenuConfigPerso
-                <ul>
-                        <li>Ajouter un personnage</li>
+                <Col xs={12} lg={3}>
+                    <ul>
+                        <li>Menu : Mes personnages</li>
                     </ul>
                 </Col>
-                <Col>Fiche du personnage (si au moins 1 personnage associé au compte utilisateur)
+                {/* routes */}
+                <Col>
+                    <AddCharacter />
                 </Col>
             </Row>
         </Container>

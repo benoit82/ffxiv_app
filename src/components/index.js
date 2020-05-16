@@ -10,6 +10,7 @@ import Disconnect from "./disconnect/Disconnect";
 import Welcome from "./welcome";
 import Admin from "./admin";
 import UserOptionPage from "./user";
+import AddCharacter from "./user/AddCharacter";
 import ForgottenPasswordPage from "./forgottenpassword";
 
 export {
@@ -26,4 +27,5 @@ export {
   Welcome,
   Admin,
   UserOptionPage,
+  AddCharacter,
 };

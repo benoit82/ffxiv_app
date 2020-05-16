@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
-import { User } from "./models";
 import { UserApi } from "./AppContext";
 import { FirebaseContext } from "./components/firebase";
 import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "./Routes";
 import Container from "react-bootstrap/Container";
+import Alert from "react-bootstrap/Alert";
 import { Menu } from "./components";
 
 import "./App.css";
@@ -18,16 +18,18 @@ function App() {
   });
 
   const checkStorage = async () => {
-    if (localStorage.getItem("user") !== null) {
-      const storagedUser = new User(JSON.parse(localStorage.getItem("user")));
-      setUser(storagedUser);
+    if (localStorage.getItem("uid") !== null) {
+      const uid = JSON.parse(localStorage.getItem("uid"));
+      console.log(uid);
       try {
-        const updatedUser = await firebase.getUser(storagedUser.uid);
-        if (updatedUser)
-          localStorage.setItem("user", JSON.stringify(updatedUser));
-        setUser(updatedUser); // instance of User
+        const userFromDB = await firebase.getUser(uid); // new User()
+        setUser(userFromDB); // instance of User
       } catch (error) {
-        setInfoMsg(<p>Info error : {error.message}</p>);
+        setInfoMsg(
+          <Alert variant="danger">
+            Une érreur est survenu :<br /> {error.message}
+          </Alert>
+        );
       }
     }
   };

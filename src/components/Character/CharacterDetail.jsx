@@ -1,10 +1,11 @@
 import React from "react";
+import Button from 'react-bootstrap/Button'
 import "./CharacterDetail.css";
 
-const CharacterDetail = ({ chr }) => {
+const CharacterDetail = ({ chr, handleDelete }) => {
 
 
-  const { name, avatar, server } = chr;
+  const { name, avatar, server, id } = chr;
   return (
     <div
       className="character_main_container"
@@ -16,8 +17,10 @@ const CharacterDetail = ({ chr }) => {
         <h4>{name}</h4>
         <p>{server}</p>
       </aside>
+      <aside>
+        <Button variant="danger" onClick={() => handleDelete(chr)}>X</Button>
+      </aside>
     </div>
-
   );
 };
 
