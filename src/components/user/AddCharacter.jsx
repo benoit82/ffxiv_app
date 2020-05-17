@@ -8,29 +8,46 @@ import Alert from 'react-bootstrap/Alert'
 const AddCharacter = () => {
     const [msgInfo, setMsgInfo] = useState(null)
     const [charactersList, setCharactersList] = useState([])
+
     const firebase = useContext(FirebaseContext)
     const User = useContext(UserApi)
     const { uid } = User.user;
 
     useEffect(() => {
         // load the character list from DB linked to the uid
-        const unsubcribe = firebase.userListCharacter(uid, setCharactersList)
+        const unsubcribe = firebase.db
+            .collection("users")
+            .doc(uid)
+            .collection("characters")
+            .orderBy("name", "asc")
+            .onSnapshot(
+                (snapshot) => {
+                    const cList = snapshot.docs.map((character, index) => ({
+                        _id: snapshot.docs[index].id,
+                        ...character.data(),
+                    }));
+                    setCharactersList(cList);
+                },
+                (error) => {
+                    throw setMsgInfo(<Alert variant="danger">Une erreur est survenu :<br><strong>{error.message}</strong></br></Alert>);
+                }
+            );
+
         return () => unsubcribe()
-    }, [charactersList])
+    }, [])
 
 
     const handleAdd = async (character) => {
         if (!charactersList.some(storedChr => storedChr.id === character.id)) {
             // new character record on DB
-            const storedChr = await firebase.addCharacter(uid, character)
-            setCharactersList([...charactersList, storedChr])
-            console.log('storedChr :>> ', storedChr);
+            await firebase.addCharacter(uid, character)
+            setMsgInfo(<Alert variant="info"><strong>{character.name}</strong> enregistré ;)</Alert>)
         } else {
             setMsgInfo(<Alert variant="danger"><strong>{character.name}</strong> est déjà dans la liste</Alert>)
-            setTimeout(() => {
-                setMsgInfo(null)
-            }, 2000);
         }
+        setTimeout(() => {
+            setMsgInfo(null)
+        }, 2000);
     }
 
     const handleDelete = async (character) => {
@@ -45,7 +62,7 @@ const AddCharacter = () => {
     return (
         <>
             {msgInfo}
-            {charactersList.length > 0 &&
+            {charactersList &&
                 <>
                     <h3>Vos personnages enregistré</h3>
                     <ul>

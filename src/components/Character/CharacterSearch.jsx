@@ -17,7 +17,6 @@ const CharacterSearch = ({ handleAdd }) => {
   const [loading, setLoading] = useState(false);
   const [serverList, setServerList] = useState([]);
   const [characters, setCharacters] = useState([]);
-  const [infoMsg, setInfoMsg] = useState(null);
   const [characterSelected, setCharacterSelected] = useState(null);
   const xiv = new XIVAPI({
     language: 'fr',
@@ -76,10 +75,6 @@ const CharacterSearch = ({ handleAdd }) => {
     handleAdd(characterSelected)
     setCharacters(null)
     setCharacterSelected(null)
-    setInfoMsg(<Alert variant="info"><strong>{characterSelected.name}</strong> ajouté !</Alert>)
-    setTimeout(() => {
-      setInfoMsg(null)
-    }, 2000)
   }
 
 
@@ -132,7 +127,6 @@ const CharacterSearch = ({ handleAdd }) => {
         }
       </Formik>
       <div className="mt-3">
-        {infoMsg}
         {loading && <Loading />}
         {
           characterSelected &&

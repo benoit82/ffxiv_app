@@ -82,19 +82,24 @@ class Firebase {
     return deletedChr;
   };
 
-  userListCharacter = (uid, listSetter) => {
-    return this.db
+  userListCharacter = async (uid, listSetter) => {
+    return await this.db
       .collection("users")
       .doc(uid)
       .collection("characters")
       .orderBy("name", "asc")
-      .onSnapshot((snapshot) => {
-        const cList = snapshot.docs.map((character, index) => ({
-          _id: snapshot.docs[index].id,
-          ...character.data(),
-        }));
-        listSetter(cList);
-      });
+      .onSnapshot(
+        (snapshot) => {
+          const cList = snapshot.docs.map((character, index) => ({
+            _id: snapshot.docs[index].id,
+            ...character.data(),
+          }));
+          listSetter(cList);
+        },
+        (error) => {
+          throw error;
+        }
+      );
   };
 }
 export default Firebase;
