@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Loading from "../Loading"
 import Form from 'react-bootstrap/Form'
-import Alert from 'react-bootstrap/Alert'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -31,18 +30,21 @@ const CharacterSearch = ({ handleAdd }) => {
     })();
   }, []);
 
-  const fetchCharacters = async (values) => {
-    setCharacterSelected(null);
-    let resCumul = [];
-    setLoading(true);
-    setCharacters([]);
-    const res = await xiv.character.search(values.characterName, { server: values.selectServer });
+  const fetchCharacters = async (values, { resetForm }) => {
+    setCharacterSelected(null)
+    let resCumul = []
+    setLoading(true)
+    setCharacters([])
+    const res = await xiv.character.search(values.characterName, { server: values.selectServer })
     res.results.forEach((res) => {
-      resCumul = [...resCumul, res];
-    });
-    setCharacters(resCumul);
-    setCharacterSelected(resCumul[0]);
-    setLoading(false);
+      resCumul = [...resCumul, res]
+    })
+    setCharacters(resCumul)
+    setCharacterSelected(resCumul[0])
+    if (characters.length > 0) {
+      resetForm({})
+    }
+    setLoading(false)
   };
 
   const servers = serverList.map((datacenter, index) => {
@@ -82,7 +84,7 @@ const CharacterSearch = ({ handleAdd }) => {
     <Container>
       <Formik
         validationSchema={ChrSearchSchema}
-        onSubmit={values => fetchCharacters(values)}
+        onSubmit={fetchCharacters}
         initialValues={{
           characterName: '',
           selectServer: '',

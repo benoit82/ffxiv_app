@@ -24,6 +24,11 @@ const RosterForm = () => {
       .required("champs obligatoire"),
   });
 
+  const onSubmit = (values, { resetForm }) => {
+    createRoster(values);
+    resetForm({});
+  };
+
   return (
     <>
       <Container>
@@ -47,7 +52,7 @@ const RosterForm = () => {
         {infoMsg}
         <Formik
           validationSchema={RosterSchema}
-          onSubmit={(values) => createRoster(values)}
+          onSubmit={onSubmit}
           initialValues={{
             name: "",
           }}

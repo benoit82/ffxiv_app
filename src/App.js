@@ -6,6 +6,7 @@ import Routes from "./Routes";
 import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
 import { Menu } from "./components";
+import checkStorage from "./utils/checkStorage";
 
 import "./App.css";
 
@@ -17,25 +18,16 @@ function App() {
     isLoggedIn: false,
   });
 
-  const checkStorage = async () => {
-    if (localStorage.getItem("uid") !== null) {
-      const uid = JSON.parse(localStorage.getItem("uid"));
-      console.log(uid);
-      try {
-        const userFromDB = await firebase.getUser(uid); // new User()
-        setUser(userFromDB); // instance of User
-      } catch (error) {
-        setInfoMsg(
-          <Alert variant="danger">
-            Une érreur est survenu :<br /> {error.message}
-          </Alert>
-        );
-      }
-    }
-  };
-
   useEffect(() => {
-    checkStorage();
+    try {
+      checkStorage(firebase, setUser);
+    } catch (error) {
+      setInfoMsg(
+        <Alert variant="danger">
+          Une érreur est survenu :<br /> {error.message}
+        </Alert>
+      );
+    }
   }, []);
 
   return (
