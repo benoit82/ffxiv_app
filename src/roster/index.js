@@ -12,6 +12,7 @@ import Msg from "../utils/Msg";
 import CharacterDetailInline from "../components/character/CharacterDetailInline";
 import Button from "react-bootstrap/Button";
 import DeleteBtn from "../components/formElements/DeleteBtn";
+import EditBtn from "../components/formElements/EditBtn";
 
 const RosterForm = () => {
   const firebase = useContext(FirebaseContext);
@@ -112,6 +113,8 @@ const RosterForm = () => {
                       />
                     </td>
                     <td>
+                      {/* ! TODO editer roster */}
+                      <EditBtn handleClick={() => console.log(roster)} />{" "}
                       <AddBtn label="des membres" />{" "}
                       <DeleteBtn handleClick={() => handleDelete(roster)} />
                     </td>
