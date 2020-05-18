@@ -10,7 +10,6 @@ import { SendBtn, AddBtn } from "../components/formElements";
 import { FirebaseContext } from "../components/firebase";
 import Msg from "../utils/Msg";
 import CharacterDetailInline from "../components/character/CharacterDetailInline";
-import Button from "react-bootstrap/Button";
 import DeleteBtn from "../components/formElements/DeleteBtn";
 import EditBtn from "../components/formElements/EditBtn";
 
