@@ -13,10 +13,10 @@ import pluralize from 'pluralize'
 import "./CharacterSearch.css"
 
 const CharacterSearch = ({ handleAdd }) => {
-  const [loading, setLoading] = useState(false);
-  const [serverList, setServerList] = useState([]);
-  const [characters, setCharacters] = useState([]);
-  const [characterSelected, setCharacterSelected] = useState(null);
+  const [loading, setLoading] = useState(false)
+  const [serverList, setServerList] = useState([])
+  const [characters, setCharacters] = useState([])
+  const [characterSelected, setCharacterSelected] = useState(null)
   const xiv = new XIVAPI({
     language: 'fr',
     snake_case: true
@@ -25,10 +25,10 @@ const CharacterSearch = ({ handleAdd }) => {
   useEffect(() => {
     // retrieve server list and add "all server" option for global search
     (async () => {
-      const datacenters = await xiv.data.datacenters();
-      setServerList([["Choisir un serveur", ["Tous"]], ...Object.entries(datacenters)]);
-    })();
-  }, []);
+      const datacenters = await xiv.data.datacenters()
+      setServerList([["Choisir un serveur", ["Tous"]], ...Object.entries(datacenters)])
+    })()
+  }, [])
 
   const fetchCharacters = async (values, { resetForm }) => {
     setCharacterSelected(null)
@@ -70,7 +70,7 @@ const CharacterSearch = ({ handleAdd }) => {
   });
 
   /*
-  * !TODO handleClick à gerer pour ajouter un personnage au compte / au roster
+  * ! TODO handleClick à gerer pour ajouter un personnage au compte / au roster
   * voir si le personnage selectionné n'est pas déjà dans la liste sauvegardé
   */
   const handleAddChr = () => {

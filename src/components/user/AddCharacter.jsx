@@ -4,6 +4,7 @@ import { FirebaseContext } from '../firebase'
 import CharacterSearch from '../character/CharacterSearch'
 import CharacterDetail from '../character/CharacterDetail'
 import Alert from 'react-bootstrap/Alert'
+import Msg from '../../utils/Msg'
 
 const AddCharacter = () => {
     const [msgInfo, setMsgInfo] = useState(null)
@@ -23,15 +24,16 @@ const AddCharacter = () => {
             .onSnapshot(
                 (snapshot) => {
                     const cList = snapshot.docs.map((character, index) => ({
-                        _id: snapshot.docs[index].id,
                         ...character.data(),
+                        _id: snapshot.docs[index].id,
                     }));
                     setCharactersList(cList);
                 },
                 (error) => {
-                    throw setMsgInfo(<Alert variant="danger">Une erreur est survenu :<br><strong>{error.message}</strong></br></Alert>);
+                    throw setMsgInfo(<Msg error={{ message: error.message }} />);
                 }
             );
+
 
         return () => unsubcribe()
     }, [])
@@ -41,20 +43,13 @@ const AddCharacter = () => {
         if (!charactersList.some(storedChr => storedChr.id === character.id)) {
             // new character record on DB
             await firebase.addCharacter(uid, character)
-            setMsgInfo(<Alert variant="info"><strong>{character.name}</strong> enregistré ;)</Alert>)
-        } else {
-            setMsgInfo(<Alert variant="danger"><strong>{character.name}</strong> est déjà dans la liste</Alert>)
         }
-        setTimeout(() => {
-            setMsgInfo(null)
-        }, 2000);
     }
 
     const handleDelete = async (character) => {
         const confirmation = window.confirm(`êtes-vous certain de supprimer ${character.name} de votre compte ?`)
         if (confirmation) {
             firebase.deleteCharacter(uid, character);
-            setCharactersList(charactersList.filter(chr => chr.id !== character.id));
         }
     }
 

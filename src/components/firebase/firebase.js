@@ -62,9 +62,41 @@ class Firebase {
     return new User(user);
   };
 
+  // Roster management
+  addRoster = (roster) => {
+    return this.db.collection("rosters").add(roster);
+  };
+
+  deleteRoster = async (_id) => {
+    const deletedRoster = await this.db.collection("rosters").doc(_id).delete();
+    return deletedRoster;
+  };
+
+  updateRoster = (roster) => {};
+
+  getRoster = (roster) => {};
+
   // Character management
+  getAllCharacters = async (chrsSetter) => {
+    let resTab = [];
+    const docs = await this.db.collectionGroup("characters").get();
+    docs.forEach((snap) => {
+      resTab = [...resTab, { _id: snap.id, ...snap.data() }];
+    });
+    chrsSetter(resTab);
+    return docs;
+  };
+
+  getCharacter = async (_id, characterSetter) => {
+    let character = null;
+    const response = (await this.db.collectionGroup("characters").get()).docs;
+    character = response.some((doc) => doc.id === _id)
+      ? response.filter((doc) => doc.id === _id)[0].data()
+      : {};
+    characterSetter(character);
+  };
+
   addCharacter = (uid, character) => {
-    // replace id by lodestoneId
     return this.db
       .collection("users")
       .doc(uid)
@@ -82,8 +114,11 @@ class Firebase {
     return deletedChr;
   };
 
-  userListCharacter = async (uid, listSetter) => {
-    return await this.db
+  /**
+   * not used : do not return the unsubscribe function... 😢 => useEffect on user/AddCharacter.jsx
+   */
+  userListCharacters = async (uid, listSetter, handleError) => {
+    let unsubscribe = await this.db
       .collection("users")
       .doc(uid)
       .collection("characters")
@@ -97,9 +132,10 @@ class Firebase {
           listSetter(cList);
         },
         (error) => {
-          throw error;
+          handleError(error.message);
         }
       );
+    return unsubscribe;
   };
 }
 export default Firebase;
