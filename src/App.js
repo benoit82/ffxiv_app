@@ -28,7 +28,7 @@ function App() {
         </Alert>
       );
     }
-  }, []);
+  }, [firebase]);
 
   return (
     <Container fluid className="App">

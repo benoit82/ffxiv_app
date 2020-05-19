@@ -4,7 +4,6 @@ import { UserApi } from "./AppContext";
 import {
   Welcome,
   ItemSearch,
-  CharacterSearch,
   SignupPage,
   LoginPage,
   ForgottenPasswordPage,
@@ -25,7 +24,6 @@ const Routes = () => {
       <Route path="/login" component={LoginPage} />
       <Route path="/resetpassword" component={ForgottenPasswordPage} />
       <Route path="/itemSearch" component={ItemSearch} />
-      <Route path="/characterSearch" component={CharacterSearch} />
       <ProtectedRoute
         path="/admin"
         allowedUser={user.isAdmin}

@@ -4,7 +4,6 @@ import { FirebaseContext } from '../firebase'
 import Form from 'react-bootstrap/Form';
 import { SendBtn, ResetBtn } from "../formElements";
 import Alert from 'react-bootstrap/Alert';
-import Loading from '../Loading';
 import { Formik } from 'formik';
 import * as Yup from 'yup'
 

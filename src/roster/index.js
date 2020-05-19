@@ -40,7 +40,7 @@ const RosterForm = () => {
       );
 
     return () => unsubcribe();
-  }, []);
+  }, [firebase]);
 
   const createRoster = (values) => {
     const { name, refRaidLeader } = values;

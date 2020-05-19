@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Loading from "../Loading"
 import Form from 'react-bootstrap/Form'
-import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { SearchBtn, AddBtn } from '../formElements'
@@ -12,7 +11,7 @@ import pluralize from 'pluralize'
 
 import "./CharacterSearch.css"
 
-const CharacterSearch = ({ handleAdd }) => {
+const CharacterSearch = ({ handleAdd, setAddShow }) => {
   const [loading, setLoading] = useState(false)
   const [serverList, setServerList] = useState([])
   const [characters, setCharacters] = useState([])
@@ -81,7 +80,7 @@ const CharacterSearch = ({ handleAdd }) => {
 
 
   return (
-    <Container>
+    <>
       <Formik
         validationSchema={ChrSearchSchema}
         onSubmit={fetchCharacters}
@@ -96,40 +95,49 @@ const CharacterSearch = ({ handleAdd }) => {
             values,
             touched,
             errors, }) => (
-              <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="characterName">
-                  <Form.Label>Nom du personnage :</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Nom du personnage"
-                    value={values.characterName}
-                    onChange={handleChange}
-                    isValid={touched.characterName && !errors.characterName}
-                    isInvalid={!!errors.characterName}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errors.characterName}
-                  </Form.Control.Feedback>
-                </Form.Group>
-
-                <Form.Group controlId="selectServer">
-                  <Form.Label>Serveur :</Form.Label>
-                  <Form.Control
-                    as="select"
-                    custom
-                    onChange={handleChange}
-                    value={values.selectServer}
-                  >
-                    {servers}
-                  </Form.Control>
-                </Form.Group>
-                <SearchBtn />
-              </Form>
+              <>
+                <Form onSubmit={handleSubmit}>
+                  <Row>
+                    <Col>
+                      <Form.Group controlId="characterName">
+                        <Form.Label>Nom du personnage :</Form.Label>
+                        <Form.Control
+                          type="text"
+                          placeholder="Nom du personnage"
+                          value={values.characterName}
+                          onChange={handleChange}
+                          isValid={touched.characterName && !errors.characterName}
+                          isInvalid={!!errors.characterName}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.characterName}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                    <Col>
+                      <Form.Group controlId="selectServer">
+                        <Form.Label>Serveur :</Form.Label>
+                        <Form.Control
+                          as="select"
+                          custom
+                          onChange={handleChange}
+                          value={values.selectServer}
+                        >
+                          {servers}
+                        </Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <SearchBtn />
+                  </Row>
+                </Form>
+                {loading && <Loading />}
+              </>
             )
         }
       </Formik>
-      <div className="mt-3">
-        {loading && <Loading />}
+      <Col>
         {
           characterSelected &&
           <>
@@ -152,8 +160,8 @@ const CharacterSearch = ({ handleAdd }) => {
             </Row>
           </>
         }
-      </div>
-    </Container>
+      </Col>
+    </>
   );
 };
 

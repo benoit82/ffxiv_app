@@ -24,6 +24,8 @@ const Admin = () => {
                         -> nom
                         -> raid leader (id du personnage)
                         -> ajouter des membres
+
+                        Editer un nouveau patch (wish list, nouveaux boss)
                 </Row>
                 </Col>
             </Row>

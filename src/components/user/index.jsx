@@ -1,26 +1,29 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import AddCharacter from './AddCharacter'
 import EditCharacter from './EditCharacter'
 import Table from 'react-bootstrap/Table'
-import EditBtn from '../formElements/EditBtn'
-import DeleteBtn from '../formElements/DeleteBtn'
 import CharacterDetailInline from '../character/CharacterDetailInline'
 import { FirebaseContext } from '../firebase'
 import Msg from '../../utils/Msg'
 import { UserApi } from '../../AppContext'
-import { Switch, Route, Link } from 'react-router-dom'
+import { AddBtn, CloseBtn, DeleteBtn, EditBtn } from '../formElements'
 
 const UserOptionPage = () => {
 
     // créer un useEffect pour charger le personnage, sinon, proposer de chercher le personnage et 
     const [characters, setCharacters] = useState([])
+    const [addShow, setAddShow] = useState(false)
     const [msgInfo, setMsgInfo] = useState(null)
-    const firebase = useContext(FirebaseContext);
+    const [editShow, setEditShow] = useState(false)
+    const [targetChr, setTargetChr] = useState(null)
+    const firebase = useContext(FirebaseContext)
     const User = useContext(UserApi)
+
     const { uid } = User.user
+
+
 
     useEffect(() => {
         // load the character list from DB linked to the uid
@@ -44,13 +47,14 @@ const UserOptionPage = () => {
 
 
         return () => unsubcribe()
-    }, [])
+    }, [uid, firebase])
 
     const findCharacter = _id => {
         return characters.some(chr => chr._id === _id)
             ? characters.find(chr => chr._id === _id)
             : {};
-    };
+
+    }
 
     const handleDelete = character => {
         const confirmation = window.confirm(`êtes-vous certain de supprimer ${character.name} de votre compte ?`)
@@ -59,63 +63,69 @@ const UserOptionPage = () => {
         }
     }
 
+    const handleEdit = chr => {
+        setTargetChr(chr)
+        setEditShow(true)
+    }
+
+    const handleUnmount = () => {
+        setAddShow(false)
+        setEditShow(false)
+    }
+
+
+
     return (
-        <Container fluid>
+        <Container fluid className="ml-2 mr-2">
             <h1>Mes personnages</h1>
             <Row>
-                <Col xs={12} lg={3}>
-                    <ul>
-                        <Link to="/user/add">Ajouter un perso</Link>
-                    </ul>
-                </Col>
-                {/* routes */}
-                <Col>
-                    <Row>
-                        {msgInfo}
-                        {characters.length > 0 ? (
-                            <>
-                                <h3>Vos personnages enregistré</h3>
-                                <Table striped bordered hover variant="dark">
-                                    <thead>
-                                        <tr>
-                                            <th>Personnage</th>
-                                            <th>Options</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {characters.map((character, index) => (
-                                            <tr key={index}>
-                                                <td>
-                                                    <CharacterDetailInline
-                                                        character={findCharacter(character._id)}
-                                                    />
-                                                </td>
-                                                <td>
-                                                    {/* ! TODO edit character */}
-                                                    <Link to={`/user/${character._id}`}> <EditBtn /></Link>
-                                                    {" "}
-                                                    <DeleteBtn handleClick={() => handleDelete(character)} />
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </Table>
-                            </>
-                        ) : (
-                                <p>aucun personnage lié à votre compte.</p>
-                            )}
-                    </Row>
-                    <Row>
-                        <Switch>
-                            <Route path="/user/add">
-                                <AddCharacter characters={characters} />
-                            </Route>
-                            <Route path="/user/:chr_id">
-                                <EditCharacter />
-                            </Route>
-                        </Switch>
-                    </Row>
-                </Col>
+                {msgInfo}
+
+                {characters.length > 0 ? (
+                    <Table striped bordered hover variant="dark">
+                        <thead>
+                            <tr>
+                                <th>Personnage</th>
+                                <th>Main Job</th>
+                                <th>Job 2</th>
+                                <th>Job 3</th>
+                                <th>Options</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {characters.map((character, index) => (
+                                <tr key={index}>
+                                    <td>
+                                        <CharacterDetailInline
+                                            character={findCharacter(character._id)}
+                                        />
+                                    </td>
+                                    <td>
+                                        main job
+                                    </td>
+                                    <td>
+                                        job 2
+                                    </td>
+                                    <td>
+                                        job 3
+                                    </td>
+                                    <td>
+
+                                        <DeleteBtn handleClick={() => { handleDelete(character) }} />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                ) : (
+                        <p>aucun personnage lié à votre compte.</p>
+                    )}
+                {!addShow ? <AddBtn handleClick={() => setAddShow(true)} /> : <CloseBtn handleClick={() => setAddShow(false)} />}
+                {<EditBtn handleClick={() => { setEditShow(true) }} />}
+            </Row>
+            <Row>
+                {addShow && <AddCharacter characters={characters} unmount={handleUnmount} />}
+                {editShow && <EditCharacter characters={characters} unmount={handleUnmount} />}
             </Row>
         </Container>
     )

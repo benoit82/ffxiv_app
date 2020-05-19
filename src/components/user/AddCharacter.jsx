@@ -4,7 +4,7 @@ import { FirebaseContext } from '../firebase'
 import CharacterSearch from '../character/CharacterSearch'
 
 
-const AddCharacter = ({ characters }) => {
+const AddCharacter = ({ characters, unmount }) => {
 
     const firebase = useContext(FirebaseContext)
     const User = useContext(UserApi)
@@ -15,14 +15,12 @@ const AddCharacter = ({ characters }) => {
         if (!characters.some(storedChr => storedChr.id === character.id)) {
             // new character record on DB
             await firebase.addCharacter(uid, character)
+            unmount()
         }
     }
 
     return (
-        <>
-            <h3>Ajouter un nouveau personnage</h3>
-            <CharacterSearch handleAdd={handleAdd} />
-        </>
+        <CharacterSearch handleAdd={handleAdd} />
     )
 }
 
