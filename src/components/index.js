@@ -12,6 +12,7 @@ import Admin from "./admin";
 import UserOptionPage from "./user";
 import AddCharacter from "./user/AddCharacter";
 import ForgottenPasswordPage from "./forgottenpassword";
+import Footer from "./footer";
 
 export {
   ItemDetail,
@@ -28,4 +29,5 @@ export {
   Admin,
   UserOptionPage,
   AddCharacter,
+  Footer,
 };

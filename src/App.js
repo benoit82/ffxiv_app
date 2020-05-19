@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "./Routes";
 import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
-import { Menu } from "./components";
+import { Menu, Footer } from "./components";
 import checkStorage from "./utils/checkStorage";
 
 import "./App.css";
@@ -41,6 +41,7 @@ function App() {
           </div>
         </UserApi.Provider>
       </Router>
+      <Footer />
     </Container>
   );
 }
