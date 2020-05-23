@@ -74,8 +74,6 @@ const UserOptionPage = () => {
 
     return (
         <Container fluid className="ml-2 mr-2">
-            <h1>Mes personnages</h1>
-            {!addShow ? <AddBtn handleClick={() => setAddShow(true)} /> : <CloseBtn handleClick={() => setAddShow(false)} />}
             <Row>
                 {msgInfo}
                 {characters.length > 0
@@ -91,6 +89,9 @@ const UserOptionPage = () => {
                     : (
                         <p>aucun personnage lié à votre compte.</p>
                     )}
+            </Row>
+            <Row className="mt-3">
+                {!addShow ? <AddBtn handleClick={() => setAddShow(true)} /> : <CloseBtn handleClick={() => setAddShow(false)} />}
             </Row>
             <Row>
                 {addShow && <AddCharacter characters={characters} unmount={handleUnmount} />}
