@@ -2,9 +2,9 @@ import React from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import RosterForm from '../../roster'
+import { RosterForm } from '../../roster'
 
-const Admin = () => {
+const AdminOptionPage = () => {
     return (
         <Container>
             <Row>
@@ -33,4 +33,4 @@ const Admin = () => {
     )
 }
 
-export default Admin
+export default AdminOptionPage

@@ -2,13 +2,13 @@ import React, { useState, useEffect, useContext } from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import AddCharacter from './AddCharacter'
-import EditCharacter from './EditCharacter'
 import Table from 'react-bootstrap/Table'
 import CharacterDetailInline from '../character/CharacterDetailInline'
 import { FirebaseContext } from '../firebase'
 import Msg from '../../utils/Msg'
 import { UserApi } from '../../AppContext'
-import { AddBtn, CloseBtn, DeleteBtn, EditBtn } from '../formElements'
+import { AddBtn, CloseBtn, DeleteBtn } from '../formElements'
+import { Link } from 'react-router-dom'
 
 const UserOptionPage = () => {
 
@@ -16,8 +16,6 @@ const UserOptionPage = () => {
     const [characters, setCharacters] = useState([])
     const [addShow, setAddShow] = useState(false)
     const [msgInfo, setMsgInfo] = useState(null)
-    const [editShow, setEditShow] = useState(false)
-    const [targetChr, setTargetChr] = useState(null)
     const firebase = useContext(FirebaseContext)
     const User = useContext(UserApi)
 
@@ -27,26 +25,29 @@ const UserOptionPage = () => {
 
     useEffect(() => {
         // load the character list from DB linked to the uid
-        const unsubcribe = firebase.db
-            .collection("users")
-            .doc(uid)
-            .collection("characters")
-            .orderBy("name", "asc")
-            .onSnapshot(
-                (snapshot) => {
-                    const cList = snapshot.docs.map((character, index) => ({
-                        ...character.data(),
-                        _id: snapshot.docs[index].id,
-                    }));
-                    setCharacters(cList);
-                },
-                (error) => {
-                    throw setMsgInfo(<Msg error={{ message: error.message }} />);
-                }
-            );
+        let unsubcribe;
+        if (uid) {
+            unsubcribe = firebase.db
+                .collection("users")
+                .doc(uid)
+                .collection("characters")
+                .orderBy("name", "asc")
+                .onSnapshot(
+                    (snapshot) => {
+                        const cList = snapshot.docs.map((character, index) => ({
+                            ...character.data(),
+                            _id: snapshot.docs[index].id,
+                        }));
+                        setCharacters(cList);
+                    },
+                    (error) => {
+                        throw setMsgInfo(<Msg error={{ message: error.message }} />);
+                    }
+                );
+            return () => unsubcribe()
+        }
 
 
-        return () => unsubcribe()
     }, [uid, firebase])
 
     const findCharacter = _id => {
@@ -63,14 +64,8 @@ const UserOptionPage = () => {
         }
     }
 
-    const handleEdit = chr => {
-        setTargetChr(chr)
-        setEditShow(true)
-    }
-
     const handleUnmount = () => {
         setAddShow(false)
-        setEditShow(false)
     }
 
 
@@ -112,6 +107,7 @@ const UserOptionPage = () => {
                                     <td>
 
                                         <DeleteBtn handleClick={() => { handleDelete(character) }} />
+                                        <Link to={`/chr/${character._id}`} className="btn btn-success">Editer</Link>
                                     </td>
                                 </tr>
                             ))}
@@ -121,11 +117,9 @@ const UserOptionPage = () => {
                         <p>aucun personnage lié à votre compte.</p>
                     )}
                 {!addShow ? <AddBtn handleClick={() => setAddShow(true)} /> : <CloseBtn handleClick={() => setAddShow(false)} />}
-                {<EditBtn handleClick={() => { setEditShow(true) }} />}
             </Row>
             <Row>
                 {addShow && <AddCharacter characters={characters} unmount={handleUnmount} />}
-                {editShow && <EditCharacter characters={characters} unmount={handleUnmount} />}
             </Row>
         </Container>
     )

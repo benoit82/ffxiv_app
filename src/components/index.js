@@ -1,16 +1,13 @@
-import ItemDetail from "./item/ItemDetail";
-import ItemSearch from "./item/ItemSearch";
-import CharacterDetail from "./character/CharacterDetail";
-import CharacterSearch from "./character/CharacterSearch";
+import { ItemDetail, ItemSearch } from "./item";
+import { CharacterDetail, CharacterSearch } from "./character";
 import Loading from "./Loading";
 import Menu from "./Menu";
 import SignupPage from "./signup/SignupPage";
-import LoginPage from "./login/LoginPage";
-import Disconnect from "./disconnect/Disconnect";
-import Welcome from "./welcome";
-import Admin from "./admin";
-import UserOptionPage from "./user";
-import AddCharacter from "./user/AddCharacter";
+import { LoginPage } from "./login";
+import { Disconnect } from "./disconnect";
+import { Welcome } from "./welcome";
+import { AdminOptionPage } from "./admin";
+import { AddCharacter, EditCharacter, UserOptionPage } from "./user";
 import ForgottenPasswordPage from "./forgottenpassword";
 import Footer from "./footer";
 
@@ -26,8 +23,9 @@ export {
   ForgottenPasswordPage,
   Disconnect,
   Welcome,
-  Admin,
+  AdminOptionPage,
   UserOptionPage,
+  EditCharacter,
   AddCharacter,
   Footer,
 };

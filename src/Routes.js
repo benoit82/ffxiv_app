@@ -7,8 +7,9 @@ import {
   SignupPage,
   LoginPage,
   ForgottenPasswordPage,
-  Admin,
+  AdminOptionPage,
   UserOptionPage,
+  EditCharacter,
 } from "./components";
 import ProtectedRoute from "./utils/ProtectedRoute";
 
@@ -27,12 +28,17 @@ const Routes = () => {
       <ProtectedRoute
         path="/admin"
         allowedUser={user.isAdmin}
-        component={Admin}
+        component={AdminOptionPage}
       />
       <ProtectedRoute
         path="/user"
         allowedUser={user.isLoggedIn}
         component={UserOptionPage}
+      />
+      <ProtectedRoute
+        path="/chr/:chr_id"
+        allowedUser={user.isLoggedIn}
+        component={EditCharacter}
       />
     </Switch>
   );
