@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import AddCharacter from './AddCharacter'
+import CardDeck from 'react-bootstrap/CardDeck'
 import Table from 'react-bootstrap/Table'
 import CharacterDetailInline from '../character/CharacterDetailInline'
 import { FirebaseContext } from '../firebase'
@@ -9,6 +10,7 @@ import Msg from '../../utils/Msg'
 import { UserApi } from '../../AppContext'
 import { AddBtn, CloseBtn, DeleteBtn } from '../formElements'
 import { Link } from 'react-router-dom'
+import CharacterDetailCard from '../character/CharacterDetailCard'
 
 const UserOptionPage = () => {
 
@@ -73,50 +75,22 @@ const UserOptionPage = () => {
     return (
         <Container fluid className="ml-2 mr-2">
             <h1>Mes personnages</h1>
+            {!addShow ? <AddBtn handleClick={() => setAddShow(true)} /> : <CloseBtn handleClick={() => setAddShow(false)} />}
             <Row>
                 {msgInfo}
-
-                {characters.length > 0 ? (
-                    <Table striped bordered hover variant="dark">
-                        <thead>
-                            <tr>
-                                <th>Personnage</th>
-                                <th>Main Job</th>
-                                <th>Job 2</th>
-                                <th>Job 3</th>
-                                <th>Options</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {characters.map((character, index) => (
-                                <tr key={index}>
-                                    <td>
-                                        <CharacterDetailInline
-                                            character={findCharacter(character._id)}
-                                        />
-                                    </td>
-                                    <td>
-                                        main job
-                                    </td>
-                                    <td>
-                                        job 2
-                                    </td>
-                                    <td>
-                                        job 3
-                                    </td>
-                                    <td>
-
-                                        <DeleteBtn handleClick={() => { handleDelete(character) }} />
-                                        <Link to={`/chr/${character._id}`} className="btn btn-success">Editer</Link>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                ) : (
+                {characters.length > 0
+                    ? (
+                        <CardDeck>
+                            {characters.map((character, index) =>
+                                <CharacterDetailCard
+                                    key={index}
+                                    character={findCharacter(character._id)} />
+                            )}
+                        </CardDeck>
+                    )
+                    : (
                         <p>aucun personnage lié à votre compte.</p>
                     )}
-                {!addShow ? <AddBtn handleClick={() => setAddShow(true)} /> : <CloseBtn handleClick={() => setAddShow(false)} />}
             </Row>
             <Row>
                 {addShow && <AddCharacter characters={characters} unmount={handleUnmount} />}

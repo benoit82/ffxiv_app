@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserApi } from "./AppContext";
+import { UserApi, XIVApi } from "./AppContext";
 import { FirebaseContext } from "./components/firebase";
 import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "./Routes";
 import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
 import { Menu, Footer } from "./components";
+import XIVAPI from "xivapi-js";
 import checkStorage from "./utils/checkStorage";
 
 import "./App.css";
@@ -16,6 +17,10 @@ function App() {
   const [user, setUser] = useState({
     uid: "",
     isLoggedIn: false,
+  });
+  const xivapi = new XIVAPI({
+    language: "fr",
+    snake_case: true,
   });
 
   useEffect(() => {
@@ -34,11 +39,15 @@ function App() {
     <Container fluid className="App">
       <Router>
         <UserApi.Provider value={{ user, setUser }}>
-          <Menu user={user} />
-          {infoMsg}
-          <div className="row mt-3 d-flex justify-content-center align-items-center">
-            <Routes />
-          </div>
+          <XIVApi.Provider value={xivapi}>
+            <Menu user={user} />
+            <Container>
+              {infoMsg}
+              <div className="row mt-3 d-flex justify-content-center align-items-center">
+                <Routes />
+              </div>
+            </Container>
+          </XIVApi.Provider>
         </UserApi.Provider>
       </Router>
       <Footer />

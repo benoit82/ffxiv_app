@@ -7,11 +7,11 @@ const CharacterDetailInline = ({ character }) => {
 
     return (
         <>
-            <p><img style={{ height: "50px" }} src={avatar} alt={`avatar de ${name}`} /><a
+            <p><img style={{ height: "50px" }} src={avatar} alt={`avatar de ${name}`} />{name}{" "}<a
+                className="ml-auto"
                 href={`https://fr.finalfantasyxiv.com/lodestone/character/${id}`}
-                className="ml-2 btn btn-primary"
                 target={"_blanck"}
-            >{name}</a></p>
+            ><span className="badge badge-pill badge-info">lodestone</span></a></p>
         </>
     )
 }

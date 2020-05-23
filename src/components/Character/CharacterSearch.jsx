@@ -1,25 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Loading from "../Loading"
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { SearchBtn, AddBtn } from '../formElements'
-import XIVAPI from 'xivapi-js'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import pluralize from 'pluralize'
 
 import "./CharacterSearch.css"
+import { XIVApi } from '../../AppContext'
 
 const CharacterSearch = ({ handleAdd, setAddShow }) => {
   const [loading, setLoading] = useState(false)
   const [serverList, setServerList] = useState([])
   const [characters, setCharacters] = useState([])
   const [characterSelected, setCharacterSelected] = useState(null)
-  const xiv = new XIVAPI({
-    language: 'fr',
-    snake_case: true
-  });
+  const xiv = useContext(XIVApi);
 
   useEffect(() => {
     // retrieve server list and add "all server" option for global search

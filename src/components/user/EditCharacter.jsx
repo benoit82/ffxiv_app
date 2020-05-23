@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Container from 'react-bootstrap/Container'
-import UserOptionPage from './UserOptionPage'
+import Row from 'react-bootstrap/Row'
 
 const EditCharacter = () => {
 
@@ -31,32 +31,37 @@ const EditCharacter = () => {
         )
     })
 
-    const { name, id } = character
+    const { avatar, name, id } = character
     return (
-        <>
-            <Container>
-                <div className="bg-light">
-                    job 1 / 2 / 3
-
-                    wish list pour chaque jobs : 1 par patch => admin : ajouter un patch
-                    son stuff actuel (import depuis lodestone ?)
-
-            </div>
-                <hr />
-                <div className="bg-light">
-                    <h3>Edition de : {name}</h3>
-
-                    <a
-                        href={`https://fr.finalfantasyxiv.com/lodestone/character/${id}`}
-                        className="btn btn-primary"
-                        target={"_blanck"}
-                    >Voir le profil lodestone</a>
-
-
-
+        <Container>
+            <Row className="d-flex justify-content-center">
+                <div className="d-flex bg-light rounded p-2 w-auto align-items-center">
+                    <img src={avatar} alt={`avatar de ${name}`} className="rounded rounded-circle" />
+                    <div className="d-flex flex-column">
+                        <h3 className="ml-5">{name}</h3>
+                        <a
+                            className="ml-auto"
+                            href={`https://fr.finalfantasyxiv.com/lodestone/character/${id}`}
+                            target={"_blanck"}
+                        ><span className="badge badge-pill badge-info">lodestone</span></a>
+                    </div>
                 </div>
-            </Container>
-        </>
+
+            </Row>
+            <Row className="bg-light mt-2">
+                <h4>Jobs</h4>
+                <ul>
+                    <li>Job 1 : <select name="job1" id=""><option>---</option>{optJobs}</select></li>
+                    <li>Job 2 : <select name="job2" id=""><option>---</option>{optJobs}</select></li>
+                    <li>Job 3 : <select name="job3" id=""><option>---</option>{optJobs}</select></li>
+                </ul>
+            </Row>
+            <Row className="bg-light mt-2">
+                <h4>Wish list</h4>
+                <p>wish list pour chaque jobs : 1 par patch => admin : ajouter un patch
+                son stuff actuel (import depuis lodestone ?)</p>
+            </Row>
+        </Container>
     )
 }
 
