@@ -3,13 +3,10 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import AddCharacter from './AddCharacter'
 import CardDeck from 'react-bootstrap/CardDeck'
-import Table from 'react-bootstrap/Table'
-import CharacterDetailInline from '../character/CharacterDetailInline'
 import { FirebaseContext } from '../firebase'
 import Msg from '../../utils/Msg'
 import { UserApi } from '../../AppContext'
-import { AddBtn, CloseBtn, DeleteBtn } from '../formElements'
-import { Link } from 'react-router-dom'
+import { AddBtn, CloseBtn, } from '../formElements'
 import CharacterDetailCard from '../character/CharacterDetailCard'
 
 const UserOptionPage = () => {
@@ -59,19 +56,6 @@ const UserOptionPage = () => {
 
     }
 
-    const handleDelete = character => {
-        const confirmation = window.confirm(`êtes-vous certain de supprimer ${character.name} de votre compte ?`)
-        if (confirmation) {
-            firebase.deleteCharacter(uid, character);
-        }
-    }
-
-    const handleUnmount = () => {
-        setAddShow(false)
-    }
-
-
-
     return (
         <Container fluid className="ml-2 mr-2">
             <Row>
@@ -94,7 +78,7 @@ const UserOptionPage = () => {
                 {!addShow ? <AddBtn handleClick={() => setAddShow(true)} /> : <CloseBtn handleClick={() => setAddShow(false)} />}
             </Row>
             <Row>
-                {addShow && <AddCharacter characters={characters} unmount={handleUnmount} />}
+                {addShow && <AddCharacter characters={characters} unmount={() => setAddShow(false)} />}
             </Row>
         </Container>
     )

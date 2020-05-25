@@ -74,7 +74,20 @@ class Firebase {
 
   updateRoster = (roster) => {};
 
-  getRoster = (roster) => {};
+  getRoster = async (roster_id, rosterSetter, errorSetter) => {
+    let roster = null;
+    try {
+      const response = await this.db.collection("rosters").doc(roster_id).get();
+      roster = { ...response.data(), _id: roster_id };
+      if (roster.name !== undefined) {
+        rosterSetter(roster);
+      } else {
+        throw new Error("Roster non trouvé");
+      }
+    } catch (error) {
+      errorSetter(error.message);
+    }
+  };
 
   // Character management
   getAllCharacters = async (chrsSetter) => {
@@ -83,17 +96,37 @@ class Firebase {
     docs.forEach((snap) => {
       resTab = [...resTab, { _id: snap.id, ...snap.data() }];
     });
-    chrsSetter(resTab);
-    return docs;
+    if (chrsSetter) chrsSetter(resTab);
+    return [resTab, docs];
   };
 
-  getCharacter = async (_id, characterSetter) => {
-    let character = null;
-    const response = (await this.db.collectionGroup("characters").get()).docs;
-    character = response.some((doc) => doc.id === _id)
-      ? response.filter((doc) => doc.id === _id)[0].data()
-      : {};
-    characterSetter(character);
+  getCharacterByAccount = async (uid, chr_id, characterSetter, errorSetter) => {
+    let chr = null;
+    try {
+      const response = await this.db
+        .collection("users")
+        .doc(uid)
+        .collection("characters")
+        .doc(chr_id)
+        .get();
+      chr = { ...response.data(), _id: chr_id };
+      chr.id
+        ? characterSetter(chr)
+        : errorSetter(
+            new Error("personnage non trouvé ou non lié à votre compte")
+          );
+    } catch (error) {
+      errorSetter(error.message);
+    }
+  };
+
+  getCharacterByAdmin = async (chr_id, characterSetter) => {
+    const chrsList = await this.getAllCharacters();
+    if (chrsList[0].some((chr) => chr._id === chr_id)) {
+      characterSetter(chrsList[0].find((chr) => chr._id === chr_id));
+    } else {
+      characterSetter({});
+    }
   };
 
   addCharacter = (uid, character) => {

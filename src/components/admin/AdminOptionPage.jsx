@@ -2,7 +2,7 @@ import React from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import { RosterForm } from '../../roster'
+import { RosterForm } from '../roster'
 
 const AdminOptionPage = () => {
     return (
@@ -19,14 +19,13 @@ const AdminOptionPage = () => {
                         <h1>Page admin</h1>
                     </Row>
                     <Row>
-                        Créer un Roster
                         <RosterForm />
-                        -> nom
-                        -> raid leader (id du personnage)
-                        -> ajouter des membres
+                        -> nom <br />
+                        -> raid leader (id du personnage) <br />
+                        -> ajouter des membres <br />
 
-                        Editer un nouveau patch (wish list, nouveaux boss)
-                </Row>
+                        Editer un nouveau patch (wish list, nouveaux boss) <br />
+                    </Row>
                 </Col>
             </Row>
         </Container>

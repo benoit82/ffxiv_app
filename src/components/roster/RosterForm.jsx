@@ -6,12 +6,12 @@ import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { SendBtn, AddBtn } from "../components/formElements";
-import { FirebaseContext } from "../components/firebase";
-import Msg from "../utils/Msg";
-import CharacterDetailInline from "../components/character/CharacterDetailInline";
-import DeleteBtn from "../components/formElements/DeleteBtn";
-import EditBtn from "../components/formElements/EditBtn";
+import { SendBtn, AddBtn } from "../formElements";
+import { FirebaseContext } from "../firebase";
+import Msg from "../../utils/Msg";
+import CharacterDetailInline from "../character/CharacterDetailInline";
+import DeleteBtn from "../formElements/DeleteBtn";
+import { Link } from "react-router-dom";
 
 const RosterForm = () => {
     const firebase = useContext(FirebaseContext);
@@ -35,7 +35,7 @@ const RosterForm = () => {
                     setRosters(rostersList);
                 },
                 (error) => {
-                    throw setInfoMsg(<Msg error={{ message: error.message }} />);
+                    throw setInfoMsg(<Msg error={error.message} />);
                 }
             );
 
@@ -113,7 +113,7 @@ const RosterForm = () => {
                                         </td>
                                         <td>
                                             {/* ! TODO editer roster */}
-                                            <EditBtn handleClick={() => console.log(roster)} />{" "}
+                                            <Link to={`/roster/${roster._id}`} className="btn btn-success"><i className="fas fa-edit"></i>Editer</Link>
                                             <AddBtn label="des membres" />{" "}
                                             <DeleteBtn handleClick={() => handleDelete(roster)} />
                                         </td>
