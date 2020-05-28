@@ -3,16 +3,12 @@ import Card from 'react-bootstrap/Card'
 import { Link } from 'react-router-dom'
 import { DeleteBtn } from '../formElements'
 import { FirebaseContext } from '../firebase'
-import { UserApi } from '../../AppContext'
 
 import './CharacterDetailCard.scss'
 
 const CharacterDetailCard = ({ character }) => {
 
     const firebase = useContext(FirebaseContext)
-    const User = useContext(UserApi)
-
-    const { uid } = User.user
 
     const { avatar, name, id, _id } = character
 
@@ -22,7 +18,7 @@ const CharacterDetailCard = ({ character }) => {
     const handleDelete = character => {
         const confirmation = window.confirm(`êtes-vous certain de supprimer ${name} de votre compte ?`)
         if (confirmation) {
-            firebase.deleteCharacter(uid, character);
+            firebase.deleteCharacter(character);
         }
     }
 

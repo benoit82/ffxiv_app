@@ -26,7 +26,7 @@ const Menu = ({ user }) => {
               <NavLink className="nav-link" to="/signup"><i className="fas fa-user-plus"></i>Inscription</NavLink>
             </>)}
           {/* si l'utilisateur est admin */
-            isAdmin && (<>
+            (isAdmin || isRaidLeader) && (<>
               <NavLink className="nav-link" to="/admin"><i className="fas fa-meteor"></i>Admin</NavLink>
             </>)
           }

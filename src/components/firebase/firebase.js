@@ -16,8 +16,8 @@ class Firebase {
    * @param {string} email
    * @param {string} password
    */
-  signUpUser = (email, password) => {
-    return this.auth.createUserWithEmailAndPassword(email, password);
+  signUpUser = async (email, password) => {
+    return await this.auth.createUserWithEmailAndPassword(email, password);
   };
 
   /**
@@ -72,7 +72,11 @@ class Firebase {
     return deletedRoster;
   };
 
-  updateRoster = (roster) => {};
+  setRoster = async (roster) => {
+    const { _id } = roster;
+    delete roster._id;
+    this.db.collection("rosters").doc(_id).set(roster);
+  };
 
   getRoster = async (roster_id, rosterSetter, errorSetter) => {
     let roster = null;
@@ -92,9 +96,21 @@ class Firebase {
   // Character management
   getAllCharacters = async (chrsSetter) => {
     let resTab = [];
-    const docs = await this.db.collectionGroup("characters").get();
+    const docs = await this.db.collection("characters").get();
     docs.forEach((snap) => {
-      resTab = [...resTab, { _id: snap.id, ...snap.data() }];
+      resTab = [
+        ...resTab,
+        {
+          _id: snap.id,
+          ...snap.data(),
+          label: snap.data().name, // for react-select
+          value: snap.id, // for react-select
+        },
+      ];
+    });
+    // order by name, asc
+    resTab.sort((a, b) => {
+      return a.name > b.name ? 1 : -1;
     });
     if (chrsSetter) chrsSetter(resTab);
     return [resTab, docs];
@@ -103,14 +119,9 @@ class Firebase {
   getCharacterByAccount = async (uid, chr_id, characterSetter, errorSetter) => {
     let chr = null;
     try {
-      const response = await this.db
-        .collection("users")
-        .doc(uid)
-        .collection("characters")
-        .doc(chr_id)
-        .get();
+      const response = await this.db.collection("characters").doc(chr_id).get();
       chr = { ...response.data(), _id: chr_id };
-      chr.id
+      chr.id && chr.uid === uid
         ? characterSetter(chr)
         : errorSetter(
             new Error("personnage non trouvé ou non lié à votre compte")
@@ -130,17 +141,12 @@ class Firebase {
   };
 
   addCharacter = (uid, character) => {
-    return this.db
-      .collection("users")
-      .doc(uid)
-      .collection("characters")
-      .add(character);
+    character.uid = uid;
+    return this.db.collection("characters").add(character);
   };
 
-  deleteCharacter = async (uid, character) => {
+  deleteCharacter = async (character) => {
     const deletedChr = await this.db
-      .collection("users")
-      .doc(uid)
       .collection("characters")
       .doc(character._id)
       .delete();
@@ -152,9 +158,8 @@ class Firebase {
    */
   userListCharacters = async (uid, listSetter, handleError) => {
     let unsubscribe = await this.db
-      .collection("users")
-      .doc(uid)
       .collection("characters")
+      .where("uid", "==", uid)
       .orderBy("name", "asc")
       .onSnapshot(
         (snapshot) => {

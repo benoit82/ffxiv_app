@@ -12,6 +12,7 @@ import CharacterDetailCard from '../character/CharacterDetailCard'
 const UserOptionPage = () => {
 
     // créer un useEffect pour charger le personnage, sinon, proposer de chercher le personnage et 
+    const MAX_CHR_ALLOWED = 2
     const [characters, setCharacters] = useState([])
     const [addShow, setAddShow] = useState(false)
     const [msgInfo, setMsgInfo] = useState(null)
@@ -27,9 +28,8 @@ const UserOptionPage = () => {
         let unsubcribe;
         if (uid) {
             unsubcribe = firebase.db
-                .collection("users")
-                .doc(uid)
                 .collection("characters")
+                .where("uid", "==", uid)
                 .orderBy("name", "asc")
                 .onSnapshot(
                     (snapshot) => {
@@ -40,7 +40,7 @@ const UserOptionPage = () => {
                         setCharacters(cList);
                     },
                     (error) => {
-                        throw setMsgInfo(<Msg error={{ message: error.message }} />);
+                        throw setMsgInfo(<Msg error={error.message} />);
                     }
                 );
             return () => unsubcribe()
@@ -58,28 +58,33 @@ const UserOptionPage = () => {
 
     return (
         <Container fluid className="ml-2 mr-2">
-            <Row>
-                {msgInfo}
-                {characters.length > 0
-                    ? (
-                        <CardDeck>
-                            {characters.map((character, index) =>
-                                <CharacterDetailCard
-                                    key={index}
-                                    character={findCharacter(character._id)} />
-                            )}
-                        </CardDeck>
-                    )
-                    : (
-                        <p>aucun personnage lié à votre compte.</p>
-                    )}
-            </Row>
-            <Row className="mt-3">
-                {!addShow ? <AddBtn handleClick={() => setAddShow(true)} /> : <CloseBtn handleClick={() => setAddShow(false)} />}
-            </Row>
-            <Row>
-                {addShow && <AddCharacter characters={characters} unmount={() => setAddShow(false)} />}
-            </Row>
+
+            {msgInfo}
+            {characters.length > 0
+                ? (<>
+                    <h3>Vos personnages ({`${characters.length}/${MAX_CHR_ALLOWED}`})</h3>
+                    <Row className="justify-content-around">
+                        {characters.map((character, index) =>
+                            <CharacterDetailCard
+                                key={index}
+                                character={findCharacter(character._id)} />
+                        )}
+                    </Row>
+                </>
+                )
+                : (
+                    <h3>aucun personnage lié à votre compte.</h3>
+                )}
+
+            {characters.length < MAX_CHR_ALLOWED &&
+                <>
+                    <Row className="mt-3">
+                        {!addShow ? <AddBtn handleClick={() => setAddShow(true)} /> : <CloseBtn handleClick={() => setAddShow(false)} />}
+                    </Row>
+                    <Row>
+                        {addShow && <AddCharacter characters={characters} unmount={() => setAddShow(false)} />}
+                    </Row>
+                </>}
         </Container>
     )
 }

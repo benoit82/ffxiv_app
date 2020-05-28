@@ -42,6 +42,7 @@ const RosterForm = () => {
         return () => unsubcribe();
     }, [firebase]);
 
+
     const createRoster = (values) => {
         const { name, refRaidLeader } = values;
         //enregistrement DB
@@ -76,8 +77,9 @@ const RosterForm = () => {
     ));
 
     const onSubmit = (values, { resetForm }) => {
-        createRoster(values);
-        resetForm({});
+        console.log(values)
+        createRoster(values)
+        resetForm({})
     };
 
     const findCharacter = (_id) => {
@@ -85,6 +87,7 @@ const RosterForm = () => {
             ? characters.find((chr) => chr._id === _id)
             : {};
     };
+
 
     return (
         <>
@@ -130,11 +133,11 @@ const RosterForm = () => {
                 <h2>Créer un roster</h2>
                 {infoMsg}
                 <Formik
+                    enableReinitialize
                     validationSchema={RosterSchema}
                     onSubmit={onSubmit}
                     initialValues={{
-                        name: "",
-                        refRaidLeader: "",
+                        name: ""
                     }}
                 >
                     {({ handleSubmit, handleChange, values, touched, errors }) => (
@@ -145,7 +148,7 @@ const RosterForm = () => {
                                         <Form.Control
                                             type="text"
                                             placeholder="nom du roster"
-                                            autoComplete="false"
+                                            autoComplete={false}
                                             value={values.name}
                                             onChange={handleChange}
                                             isValid={touched.name && !errors.name}
@@ -164,7 +167,7 @@ const RosterForm = () => {
                                             onChange={handleChange}
                                             value={values.refRaidLeader}
                                         >
-                                            <option disabled>Choisir le perso raid leader</option>
+                                            <option value="">Choisir le perso raid leader</option>
                                             {optCharacters}
                                         </Form.Control>
                                     </Form.Group>

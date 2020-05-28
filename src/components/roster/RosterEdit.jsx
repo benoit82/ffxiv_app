@@ -1,25 +1,32 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Msg from '../../utils/Msg'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
-import { Formik, FieldArray, Field } from 'formik'
 import Form from 'react-bootstrap/Form'
-import { SendBtn, AddBtn } from '../formElements'
-import * as Yup from 'yup'
+import Select from 'react-select'
 import Col from 'react-bootstrap/Col'
+import * as pluralize from 'pluralize'
+import { UpdateBtn } from '../formElements'
+
+
 
 const RosterEdit = () => {
-
     const { roster_id } = useParams()
-    const history = useHistory()
     const firebase = useContext(FirebaseContext)
     const [roster, setRoster] = useState({})
     const [errorMsg, setErrorMsg] = useState(null)
     const [characters, setCharacters] = useState([])
 
+    //--- select state
+    const [raidLeader, setRaidLeader] = useState({})
+    const [charactersFiltered, setCharactersFiltered] = useState([])
+    const [rosterMembers, setRosterMembers] = useState([])
+
     const { name, refRaidLeader } = roster
+
+
 
     useEffect(() => {
         firebase.getRoster(roster_id, setRoster, setErrorMsg)
@@ -27,26 +34,58 @@ const RosterEdit = () => {
     }, [])
 
     useEffect(() => {
-        if (errorMsg) {
-            setTimeout(() => {
-                history.push("/admin")
-            }, 2000);
+        findRaidLeader()
+        if (raidLeader.value !== undefined) {
+            setCharactersFiltered(characters.filter(chr => chr.value !== raidLeader.value))
         }
-    }, [errorMsg])
+    }, [characters, raidLeader])
 
-    const findRefRaidLeader = () => {
-        return characters.some(chr => chr._id === refRaidLeader) ? characters.find(chr => chr._id === refRaidLeader)._id : ''
+    const findRaidLeader = () => {
+        let rl = {}
+        if (!raidLeader.value) {
+            // on load
+            if (characters.some(chr => chr.value === refRaidLeader)) {
+                rl = characters.find(chr => chr.value === refRaidLeader)
+            }
+        } else {
+            // on change for raid leader list selected
+            if (characters.some(chr => chr.value === raidLeader.value)) {
+                rl = characters.find(chr => chr.value === raidLeader.value)
+                // removing raid leader if he has been selected on member list
+                setRosterMembers(rosterMembers.filter(chr => chr.value !== raidLeader.value))
+            }
+        }
+        setRaidLeader(rl)
     }
 
-    const handleSubmit = (values) => {
-        console.log(values)
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        if (raidLeader) {
+            let rosterMembersCopy = [];
+            rosterMembersCopy = rosterMembers.map(chr => [...rosterMembersCopy, chr._id]).flat() // TODO : créer des collections de characters plutot qu'un array ?
+            setRoster({ ...roster, refRaidLeader: raidLeader._id, rosterMembers: rosterMembersCopy })
+            console.log(roster)
+            // TODO find all character with roster id => set to null (field rostermember + roster rl), then update all chrs selected to put the roster id on rostermember/rosterRL
+            //firebase.setRoster(roster)
+        } else {
+            setErrorMsg("Un raid lead doit être désigner.")
+        }
+
     }
 
-    const rosterSchema = Yup.object().shape({
-        refRaidLeader: Yup.string()
-            .required("choisissez une autre value")
-        ,
-    });
+    const handleChange = (tabValues) => {
+        if (tabValues !== null) {
+            if (tabValues.length <= 7) {
+                tabValues.sort((a, b) => {
+                    return a.label > b.label ? 1 : -1
+                })
+                setRosterMembers(tabValues)
+
+            }
+        } else {
+            setRosterMembers([])
+        }
+    }
 
     return (
         <>
@@ -56,70 +95,34 @@ const RosterEdit = () => {
                     <Row>
                         <h2>Roster : {name}</h2>
                     </Row>
-
-                    <Formik
-                        enableReinitialize
-                        initialValues={
-                            {
-                                refRaidLeader: findRefRaidLeader(),
-                                refMembers: ["", "", "", "", "", "", "",]
-                            }}
-                        onSubmit={handleSubmit}
-                        validationSchema={rosterSchema}
-                    >
-                        {({ handleSubmit, handleChange, values, errors }) => (
-                            <Row>
-                                <Form onSubmit={handleSubmit}>
-
-                                    <Form.Group controlId="refRaidLeader">
-                                        <Form.Label>Raid Leader : </Form.Label>
-                                        <Form.Control
-                                            custom
-                                            as="select"
-                                            value={values.refRaidLeader}
-                                            onChange={handleChange}
-                                            isInvalid={errors.refRaidLeader}
-                                        >
-                                            <option key={0} value="" disabled>Choisir un nouveau raid leader</option>
-                                            {characters.map(chr => <option key={chr._id} value={chr._id} >{chr.name}</option>)}
-                                        </Form.Control>
-                                        <Form.Control.Feedback type="invalid">{errors.refRaidLeader}</Form.Control.Feedback>
-                                    </Form.Group>
-
-                                    Membres :
-
-                                    <FieldArray
-                                        name="refMembers"
-                                        render={arrayHelpers => (
-                                            <>
-                                                {
-                                                    values.refMembers && values.refMembers.map((member, index) => (
-                                                        <Form.Group key={index} controlId={`refMembers.${index}`}>
-                                                            <Form.Control
-                                                                custom
-                                                                as="select"
-                                                                value={values.refMembers[index]}
-                                                                onChange={handleChange}
-                                                                isInvalid={errors.refMembers}
-                                                            >
-                                                                <option key={0} value="" disabled>Choisir un nouveau membre</option>
-                                                                {characters.map(chr => <option key={chr._id} value={chr._id} >{chr.name}</option>)}
-                                                            </Form.Control>
-                                                            <Form.Control.Feedback type="invalid">{errors.refMembers}</Form.Control.Feedback>
-
-                                                        </Form.Group>
-                                                    ))
-                                                }
-                                            </>
-                                        )}
+                    <Row>
+                        <Col>
+                            <Form onSubmit={handleSubmit}>
+                                <Form.Group>
+                                    <Form.Label>Raid leader</Form.Label>
+                                    <Select
+                                        id="refRaidLeader"
+                                        options={characters}
+                                        onChange={setRaidLeader}
+                                        value={raidLeader}
                                     />
-                                    <Form.Group>
-                                        <SendBtn />
-                                    </Form.Group>
-                                </Form>
-                            </Row>
-                        )}
-                    </Formik>
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>{rosterMembers.length > 0 ? pluralize("membre", rosterMembers.length, true) : "aucun membre associé"}</Form.Label>
+                                    <Select
+                                        id="refRosterMembers"
+                                        isMulti
+                                        options={charactersFiltered}
+                                        onChange={(optionSelected) => handleChange(optionSelected)}
+                                        defaultValue={rosterMembers}
+                                        value={rosterMembers}
+                                    />
+                                </Form.Group>
+                                <UpdateBtn />
+                            </Form>
+                        </Col>
+                    </Row>
+
 
                 </Container>
             }
