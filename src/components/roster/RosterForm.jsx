@@ -117,8 +117,7 @@ const RosterForm = () => {
                                         <td>
                                             {/* ! TODO editer roster */}
                                             <Link to={`/roster/${roster._id}`} className="btn btn-success"><i className="fas fa-edit"></i>Editer</Link>
-                                            <AddBtn label="des membres" />{" "}
-                                            <DeleteBtn handleClick={() => handleDelete(roster)} />
+                                            {" "}<DeleteBtn handleClick={() => handleDelete(roster)} />
                                         </td>
                                     </tr>
                                 ))}
@@ -148,7 +147,6 @@ const RosterForm = () => {
                                         <Form.Control
                                             type="text"
                                             placeholder="nom du roster"
-                                            autoComplete={false}
                                             value={values.name}
                                             onChange={handleChange}
                                             isValid={touched.name && !errors.name}

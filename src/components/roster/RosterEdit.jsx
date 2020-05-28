@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Msg from '../../utils/Msg'
 import Row from 'react-bootstrap/Row'
@@ -13,20 +13,19 @@ import { UpdateBtn } from '../formElements'
 
 
 const RosterEdit = () => {
+    const history = useHistory()
     const { roster_id } = useParams()
     const firebase = useContext(FirebaseContext)
+
+    const MAX_MEMBERS_ALLOWED = 7
+
     const [roster, setRoster] = useState({})
     const [errorMsg, setErrorMsg] = useState(null)
     const [characters, setCharacters] = useState([])
-
-    //--- select state
+    //--- select
     const [raidLeader, setRaidLeader] = useState({})
     const [charactersFiltered, setCharactersFiltered] = useState([])
     const [rosterMembers, setRosterMembers] = useState([])
-
-    const { name, refRaidLeader } = roster
-
-
 
     useEffect(() => {
         firebase.getRoster(roster_id, setRoster, setErrorMsg)
@@ -35,17 +34,21 @@ const RosterEdit = () => {
 
     useEffect(() => {
         findRaidLeader()
-        if (raidLeader.value !== undefined) {
+        if (raidLeader.value) {
             setCharactersFiltered(characters.filter(chr => chr.value !== raidLeader.value))
         }
     }, [characters, raidLeader])
+
+    useEffect(() => {
+        setRosterMembers(roster.rosterMembers)
+    }, [roster])
 
     const findRaidLeader = () => {
         let rl = {}
         if (!raidLeader.value) {
             // on load
-            if (characters.some(chr => chr.value === refRaidLeader)) {
-                rl = characters.find(chr => chr.value === refRaidLeader)
+            if (characters.some(chr => chr.value === roster.refRaidLeader)) {
+                rl = characters.find(chr => chr.value === roster.refRaidLeader)
             }
         } else {
             // on change for raid leader list selected
@@ -61,12 +64,9 @@ const RosterEdit = () => {
     const handleSubmit = (event) => {
         event.preventDefault()
         if (raidLeader) {
-            let rosterMembersCopy = [];
-            rosterMembersCopy = rosterMembers.map(chr => [...rosterMembersCopy, chr._id]).flat() // TODO : créer des collections de characters plutot qu'un array ?
-            setRoster({ ...roster, refRaidLeader: raidLeader._id, rosterMembers: rosterMembersCopy })
-            console.log(roster)
-            // TODO find all character with roster id => set to null (field rostermember + roster rl), then update all chrs selected to put the roster id on rostermember/rosterRL
-            //firebase.setRoster(roster)
+            const newRosterSetup = { ...roster, refRaidLeader: raidLeader._id, rosterMembers }
+            firebase.setRoster(newRosterSetup)
+            history.push("/admin")
         } else {
             setErrorMsg("Un raid lead doit être désigner.")
         }
@@ -75,7 +75,7 @@ const RosterEdit = () => {
 
     const handleChange = (tabValues) => {
         if (tabValues !== null) {
-            if (tabValues.length <= 7) {
+            if (tabValues.length <= MAX_MEMBERS_ALLOWED) {
                 tabValues.sort((a, b) => {
                     return a.label > b.label ? 1 : -1
                 })
@@ -93,7 +93,7 @@ const RosterEdit = () => {
                 ? <Msg error={errorMsg} />
                 : <Container>
                     <Row>
-                        <h2>Roster : {name}</h2>
+                        <h2>Roster : {roster.name}</h2>
                     </Row>
                     <Row>
                         <Col>
@@ -108,13 +108,14 @@ const RosterEdit = () => {
                                     />
                                 </Form.Group>
                                 <Form.Group>
-                                    <Form.Label>{rosterMembers.length > 0 ? pluralize("membre", rosterMembers.length, true) : "aucun membre associé"}</Form.Label>
+                                    <Form.Label>{rosterMembers && `${pluralize("membre", rosterMembers.length, true)} / ${MAX_MEMBERS_ALLOWED}`}</Form.Label>
                                     <Select
                                         id="refRosterMembers"
                                         isMulti
+                                        placeholder="Selection des membres..."
                                         options={charactersFiltered}
                                         onChange={(optionSelected) => handleChange(optionSelected)}
-                                        defaultValue={rosterMembers}
+                                        defaultValue={roster.rosterMembers}
                                         value={rosterMembers}
                                     />
                                 </Form.Group>

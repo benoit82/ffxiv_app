@@ -5,7 +5,13 @@ const ProtectedRoute = ({ allowedUser, component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={() => (allowedUser ? <Component /> : <Redirect to="/" />)}
+      render={(props) =>
+        allowedUser ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to={{ pathname: "/", state: { from: props.location } }} />
+        )
+      }
     ></Route>
   );
 };
