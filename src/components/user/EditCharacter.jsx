@@ -18,9 +18,9 @@ const EditCharacter = () => {
     const [character, setCharacter] = useState({})
 
     // select state
-    const [job1, setJob1] = useState(null)
-    const [job2, setJob2] = useState(null)
-    const [job3, setJob3] = useState(null)
+    const [job1, setJob1] = useState("")
+    const [job2, setJob2] = useState("")
+    const [job3, setJob3] = useState("")
 
     const { user } = User
 
@@ -38,6 +38,9 @@ const EditCharacter = () => {
                 (snapshot) => {
                     const chr = { ...snapshot.data(), _id: snapshot.id }
                     setCharacter(chr)
+                    if (chr.mainJob) setJob1(chr.mainJob)
+                    if (chr.secondJob) setJob2(chr.secondJob)
+                    if (chr.thirdJob) setJob3(chr.thirdJob)
                 },
                 (error) => {
                     console.log(error.message)
@@ -59,10 +62,14 @@ const EditCharacter = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        firebase.updateCharacter({ ...character, mainJob: job1.value })
+        let chrToUpdate = { ...character }
+        if (job1.value) chrToUpdate = { ...chrToUpdate, mainJob: job1.value }
+        if (job2.value) chrToUpdate = { ...chrToUpdate, secondJob: job2.value }
+        if (job3.value) chrToUpdate = { ...chrToUpdate, thirdJob: job3.value }
+        firebase.updateCharacter(chrToUpdate)
     }
 
-    const { avatar, name, id, mainJob } = character
+    const { avatar, name, id, mainJob, secondJob, thirdJob } = character
     return (
         <Container>
 
@@ -72,7 +79,11 @@ const EditCharacter = () => {
                     <img src={avatar} alt={`avatar de ${name}`} className="rounded rounded-circle" />
                     <div className="d-flex flex-column">
                         <h3 className="ml-5">{name}</h3>
-                        <div><span className="badge badge-pill">{mainJob && <JobListDisplay job={mainJob} />}</span></div>
+                        <div>
+                            <span className="badge badge-pill">{mainJob && <JobListDisplay job={mainJob} />}</span>
+                            <span className="badge badge-pill">{secondJob && <JobListDisplay job={secondJob} />}</span>
+                            <span className="badge badge-pill">{thirdJob && <JobListDisplay job={thirdJob} />}</span>
+                        </div>
                         <a
                             className="ml-auto"
                             href={`https://fr.finalfantasyxiv.com/lodestone/character/${id}`}
@@ -85,23 +96,52 @@ const EditCharacter = () => {
             <Row className="bg-light mt-2">
                 <Col>
                     <h4>Jobs</h4>
-                    <ul><li>
-                        <form onSubmit={handleSubmit}>
-                            <Select
-                                className="basic-single"
-                                placeholder="Main job"
-                                onChange={setJob1}
-                                value={job1}
-                                isSearchable
-                                name="jobmain"
-                                options={jobsGroup}
-                                formatGroupLabel={formatGroupLabel}
-                            />
-                            <button type="submit">Envoyer</button>
-                        </form>
-
-
-                    </li>
+                    <ul>
+                        <li>
+                            <form onSubmit={handleSubmit}>
+                                <Select
+                                    className="basic-single"
+                                    placeholder="Main job"
+                                    onChange={setJob1}
+                                    value={job1}
+                                    isSearchable
+                                    name="job1"
+                                    options={jobsGroup}
+                                    formatGroupLabel={formatGroupLabel}
+                                />
+                                <button type="submit">Envoyer</button>
+                            </form>
+                        </li>
+                        <li>
+                            <form onSubmit={handleSubmit}>
+                                <Select
+                                    className="basic-single"
+                                    placeholder="2eme Job"
+                                    onChange={setJob2}
+                                    value={job2}
+                                    isSearchable
+                                    name="job2"
+                                    options={jobsGroup}
+                                    formatGroupLabel={formatGroupLabel}
+                                />
+                                <button type="submit">Envoyer</button>
+                            </form>
+                        </li>
+                        <li>
+                            <form onSubmit={handleSubmit}>
+                                <Select
+                                    className="basic-single"
+                                    placeholder="3eme Job"
+                                    onChange={setJob3}
+                                    value={job3}
+                                    isSearchable
+                                    name="job3"
+                                    options={jobsGroup}
+                                    formatGroupLabel={formatGroupLabel}
+                                />
+                                <button type="submit">Envoyer</button>
+                            </form>
+                        </li>
                     </ul>
                 </Col>
             </Row>
