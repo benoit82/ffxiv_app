@@ -23,6 +23,7 @@ const RosterEdit = () => {
     const [errorMsg, setErrorMsg] = useState(null)
     const [characters, setCharacters] = useState([])
     //--- select
+    const [name, setName] = useState("")
     const [raidLeader, setRaidLeader] = useState({})
     const [charactersFiltered, setCharactersFiltered] = useState([])
     const [rosterMembers, setRosterMembers] = useState([])
@@ -41,6 +42,7 @@ const RosterEdit = () => {
 
     useEffect(() => {
         setRosterMembers(roster.rosterMembers)
+        setName(roster.name)
     }, [roster])
 
     const findRaidLeader = () => {
@@ -63,12 +65,12 @@ const RosterEdit = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        if (raidLeader) {
-            const newRosterSetup = { ...roster, refRaidLeader: raidLeader._id, rosterMembers }
+        if (raidLeader && name) {
+            const newRosterSetup = { ...roster, name, refRaidLeader: raidLeader._id, rosterMembers }
             firebase.setRoster(newRosterSetup)
             history.push("/admin")
         } else {
-            setErrorMsg("Un raid lead doit être désigner.")
+            setErrorMsg("champs invalides ou non completé")
         }
 
     }
@@ -88,46 +90,48 @@ const RosterEdit = () => {
     }
 
     return (
-        <>
-            {errorMsg
-                ? <Msg error={errorMsg} />
-                : <Container>
-                    <Row>
-                        <h2>Roster : {roster.name}</h2>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Form onSubmit={handleSubmit}>
-                                <Form.Group>
-                                    <Form.Label>Raid leader</Form.Label>
-                                    <Select
-                                        id="refRaidLeader"
-                                        options={characters}
-                                        onChange={setRaidLeader}
-                                        value={raidLeader}
-                                    />
-                                </Form.Group>
-                                <Form.Group>
-                                    <Form.Label>{rosterMembers && `${pluralize("membre", rosterMembers.length, true)} / ${MAX_MEMBERS_ALLOWED}`}</Form.Label>
-                                    <Select
-                                        id="refRosterMembers"
-                                        isMulti
-                                        placeholder="Selection des membres..."
-                                        options={charactersFiltered}
-                                        onChange={(optionSelected) => handleChange(optionSelected)}
-                                        defaultValue={roster.rosterMembers}
-                                        value={rosterMembers}
-                                    />
-                                </Form.Group>
-                                <UpdateBtn />
-                            </Form>
-                        </Col>
-                    </Row>
-
-
-                </Container>
-            }
-        </>
+        <Container>
+            {errorMsg && <Msg error={errorMsg} />}
+            <Row>
+                <Col>
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group>
+                            <Form.Label>Nom du roster</Form.Label>
+                            <br />
+                            <Form.Control
+                                custom
+                                type="text"
+                                id="name"
+                                placeholder="Nom du roster"
+                                onChange={(e) => setName(e.target.value)}
+                                value={name}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Raid leader</Form.Label>
+                            <Select
+                                id="refRaidLeader"
+                                options={characters}
+                                onChange={setRaidLeader}
+                                value={raidLeader}
+                            />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>{rosterMembers && `${pluralize("membre", rosterMembers.length, true)} / ${MAX_MEMBERS_ALLOWED}`}</Form.Label>
+                            <Select
+                                id="refRosterMembers"
+                                isMulti
+                                placeholder="Selection des membres..."
+                                options={charactersFiltered}
+                                onChange={(optionSelected) => handleChange(optionSelected)}
+                                value={rosterMembers}
+                            />
+                        </Form.Group>
+                        <UpdateBtn />
+                    </Form>
+                </Col>
+            </Row>
+        </Container>
     )
 }
 

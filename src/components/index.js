@@ -7,7 +7,7 @@ import { LoginPage } from "./login";
 import { Disconnect } from "./disconnect";
 import { Welcome } from "./welcome";
 import { AdminOptionPage } from "./admin";
-import { RosterEdit } from "./roster";
+import { RosterEdit, ViewRoster } from "./roster";
 import { AddCharacter, EditCharacter, UserOptionPage } from "./user";
 import ForgottenPasswordPage from "./forgottenpassword";
 import Footer from "./footer";
@@ -25,6 +25,7 @@ export {
   Disconnect,
   Welcome,
   AdminOptionPage,
+  ViewRoster,
   RosterEdit,
   UserOptionPage,
   EditCharacter,

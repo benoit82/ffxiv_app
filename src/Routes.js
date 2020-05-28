@@ -10,6 +10,7 @@ import {
   AdminOptionPage,
   UserOptionPage,
   EditCharacter,
+  ViewRoster,
   RosterEdit,
 } from "./components";
 import ProtectedRoute from "./utils/ProtectedRoute";
@@ -32,10 +33,11 @@ const Routes = () => {
         component={AdminOptionPage}
       />
       <ProtectedRoute
-        path="/roster/:roster_id"
+        path="/roster/edit/:roster_id"
         allowedUser={user.isAdmin || user.isRaidLeader}
         component={RosterEdit}
       />
+      <Route path="/roster/:roster_id" component={ViewRoster} />
       <ProtectedRoute
         path="/user"
         allowedUser={user.isLoggedIn}
