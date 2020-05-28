@@ -70,11 +70,13 @@ const EditCharacter = () => {
     }
 
     const { avatar, name, id, mainJob, secondJob, thirdJob } = character
+    const mainRoleColor = 
     return (
         <Container>
 
 
             <Row className="d-flex justify-content-center">
+                {/* cadre avatar */}
                 <div className="d-flex bg-light rounded p-2 w-auto align-items-center">
                     <img src={avatar} alt={`avatar de ${name}`} className="rounded rounded-circle" />
                     <div className="d-flex flex-column">

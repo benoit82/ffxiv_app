@@ -1,6 +1,15 @@
 import React from "react";
 import JobListDisplay from "./JobListDisplay";
 
+export const jobRole = [
+  ["TANKS", ["DRK", "GNB", "PLD", "WAR"]],
+  ["HEALERS", ["AST", "SCH", "WHM"]],
+  [
+    "DPS",
+    ["BRD", "BLM", "DNC", "DRG", "MCH", "MNK", "NIN", "RDM", "SAM", "SMN"],
+  ],
+];
+
 export const jobsTank = [
   {
     value: "DRK",

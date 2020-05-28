@@ -57,7 +57,11 @@ const RosterEdit = () => {
             if (characters.some(chr => chr.value === raidLeader.value)) {
                 rl = characters.find(chr => chr.value === raidLeader.value)
                 // removing raid leader if he has been selected on member list
-                setRosterMembers(rosterMembers.filter(chr => chr.value !== raidLeader.value))
+                if (rosterMembers) {
+                    setRosterMembers(rosterMembers.filter(chr => chr.value !== raidLeader.value))
+                } else {
+                    setRosterMembers([])
+                }
             }
         }
         setRaidLeader(rl)
