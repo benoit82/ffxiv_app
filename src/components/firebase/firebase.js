@@ -153,6 +153,12 @@ class Firebase {
     return deletedChr;
   };
 
+  updateCharacter = (character) => {
+    const { _id } = character;
+    delete character._id;
+    this.db.collection("characters").doc(_id).set(character);
+  };
+
   /**
    * not used : do not return the unsubscribe function... 😢 => useEffect on user/AddCharacter.jsx
    */

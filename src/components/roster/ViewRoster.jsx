@@ -36,6 +36,8 @@ const ViewRoster = () => {
                 </tbody>
             </Table>
             {/* check if User is RL => give option to manage loot 
+
+            - get number of missing loot per item
             
             - boss list
             - depending boss down : loot list (add)
