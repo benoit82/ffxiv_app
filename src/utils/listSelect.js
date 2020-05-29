@@ -1,101 +1,30 @@
-import React from "react";
-import JobListDisplay from "./JobListDisplay";
+import TankIcon from "../img/jobicon/role/TankRole.png";
+import HealerIcon from "../img/jobicon/role/HealerRole.png";
+import DPSIcon from "../img/jobicon/role/DPSRole.png";
 
 export const jobRole = [
-  ["TANKS", ["DRK", "GNB", "PLD", "WAR"]],
-  ["HEALERS", ["AST", "SCH", "WHM"]],
   [
-    "DPS",
+    // TANKS
+    {
+      backgroundColor: "#2980b9",
+      background: `#2980b9 url(${TankIcon}) no-repeat top right`,
+    },
+    ["DRK", "GNB", "PLD", "WAR"],
+  ],
+  [
+    // HEALERS
+    {
+      backgroundColor: "#27ae60",
+      background: `#27ae60 url(${HealerIcon}) no-repeat top right`,
+    },
+    ["AST", "SCH", "WHM"],
+  ],
+  [
+    // DPS
+    {
+      backgroundColor: "#c0392b",
+      background: `#c0392b url(${DPSIcon}) no-repeat top right`,
+    },
     ["BRD", "BLM", "DNC", "DRG", "MCH", "MNK", "NIN", "RDM", "SAM", "SMN"],
   ],
-];
-
-export const jobsTank = [
-  {
-    value: "DRK",
-    label: <JobListDisplay job={"DRK"} />,
-  },
-  {
-    value: "GNB",
-    label: <JobListDisplay job={"GNB"} />,
-  },
-  {
-    value: "PLD",
-    label: <JobListDisplay job={"PLD"} />,
-  },
-  {
-    value: "WAR",
-    label: <JobListDisplay job={"WAR"} />,
-  },
-];
-export const jobsHealer = [
-  {
-    value: "AST",
-    label: <JobListDisplay job={"AST"} />,
-  },
-  {
-    value: "SCH",
-    label: <JobListDisplay ijob={"SCH"} />,
-  },
-  {
-    value: "WHM",
-    label: <JobListDisplay job={"WHM"} />,
-  },
-];
-export const jobsDPS = [
-  {
-    value: "BRD",
-    label: <JobListDisplay job={"BRD"} />,
-  },
-  {
-    value: "BLM",
-    label: <JobListDisplay job={"BLM"} />,
-  },
-  {
-    value: "DNC",
-    label: <JobListDisplay job={"DNC"} />,
-  },
-  {
-    value: "DRG",
-    label: <JobListDisplay job={"DRG"} />,
-  },
-  {
-    value: "MCH",
-    label: <JobListDisplay job={"MCH"} />,
-  },
-  {
-    value: "MNK",
-    label: <JobListDisplay job={"MNK"} />,
-  },
-  {
-    value: "NIN",
-    label: <JobListDisplay job={"NIN"} />,
-  },
-  {
-    value: "RDM",
-    label: <JobListDisplay job={"RDM"} />,
-  },
-  {
-    value: "SAM",
-    label: <JobListDisplay job={"SAM"} />,
-  },
-  {
-    value: "SMN",
-    label: <JobListDisplay job={"SMN"} />,
-  },
-];
-
-export const jobsGroup = [
-  {
-    label: <JobListDisplay job={"TANKS"} />,
-    options: jobsTank,
-  },
-  {
-    label: <JobListDisplay job={"HEALERS"} />,
-    options: jobsHealer,
-  },
-  {
-    label: <JobListDisplay job={"DPS"} />,
-    options: jobsDPS,
-  },
 ];

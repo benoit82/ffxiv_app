@@ -1,17 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
-import Msg from '../../utils/Msg'
+import ListGroup from 'react-bootstrap/ListGroup'
 import { UserApi } from '../../AppContext'
 import Select from 'react-select'
-import { jobsGroup } from '../../utils/listSelect'
+import { selectJobsGroup } from '../../utils/jobs'
+import { styleRole } from '../../utils/styleRole'
 import Col from 'react-bootstrap/Col'
 import JobListDisplay from '../../utils/JobListDisplay'
 
-const EditCharacter = () => {
+import './EditCharacter.scss'
 
+const EditCharacter = () => {
+    const history = useHistory()
     const { chr_id } = useParams()
     const firebase = useContext(FirebaseContext)
     const User = useContext(UserApi)
@@ -30,6 +33,7 @@ const EditCharacter = () => {
         </div>
     );
     useEffect(() => {
+        console.log(selectJobsGroup)
         // load the roster
         const unsubcribe = firebase.db
             .collection("characters")
@@ -37,6 +41,7 @@ const EditCharacter = () => {
             .onSnapshot(
                 (snapshot) => {
                     const chr = { ...snapshot.data(), _id: snapshot.id }
+                    if (chr.uid !== user.uid || !user.isAdmin) history.push("/")
                     setCharacter(chr)
                     if (chr.mainJob) setJob1(chr.mainJob)
                     if (chr.secondJob) setJob2(chr.secondJob)
@@ -50,15 +55,8 @@ const EditCharacter = () => {
         return () => unsubcribe();
     }, [firebase]);
 
-    // useEffect(() => {
-    //     // fetch a specific character by _id on param
-    //     firebase.getCharacterByAccount(user.uid, chr_id, setCharacter, setErrorMsg)
-    //     if (errorMsg) {
-    //         setTimeout(() => {
-    //             history.push("/user")
-    //         }, 2000);
-    //     }
-    // }, [errorMsg])
+
+
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -70,18 +68,27 @@ const EditCharacter = () => {
     }
 
     const { avatar, name, id, mainJob, secondJob, thirdJob } = character
-    const mainRoleColor = 
+
+    const style_role = styleRole(character.mainJob)
+
+
+
+
+
+
+
     return (
         <Container>
 
 
             <Row className="d-flex justify-content-center">
                 {/* cadre avatar */}
-                <div className="d-flex bg-light rounded p-2 w-auto align-items-center">
+                <div className="d-flex rounded p-2 w-auto align-items-center"
+                    style={style_role}>
                     <img src={avatar} alt={`avatar de ${name}`} className="rounded rounded-circle" />
                     <div className="d-flex flex-column">
-                        <h3 className="ml-5">{name}</h3>
-                        <div>
+                        <h3 className="ml-7">{name}</h3>
+                        <div className="ml-5">
                             <span className="badge badge-pill">{mainJob && <JobListDisplay job={mainJob} />}</span>
                             <span className="badge badge-pill">{secondJob && <JobListDisplay job={secondJob} />}</span>
                             <span className="badge badge-pill">{thirdJob && <JobListDisplay job={thirdJob} />}</span>
@@ -98,53 +105,47 @@ const EditCharacter = () => {
             <Row className="bg-light mt-2">
                 <Col>
                     <h4>Jobs</h4>
-                    <ul>
-                        <li>
-                            <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit}>
+                        <ListGroup horizontal>
+                            <ListGroup.Item className="selectJob">
                                 <Select
                                     className="basic-single"
-                                    placeholder="Main job"
+                                    placeholder={character.mainJob || "Main job"}
                                     onChange={setJob1}
                                     value={job1}
                                     isSearchable
                                     name="job1"
-                                    options={jobsGroup}
+                                    options={selectJobsGroup}
                                     formatGroupLabel={formatGroupLabel}
                                 />
-                                <button type="submit">Envoyer</button>
-                            </form>
-                        </li>
-                        <li>
-                            <form onSubmit={handleSubmit}>
+                            </ListGroup.Item>
+                            {mainJob && <ListGroup.Item className="selectJob">
                                 <Select
                                     className="basic-single"
-                                    placeholder="2eme Job"
+                                    placeholder={character.secondJob || "2eme Job"}
                                     onChange={setJob2}
                                     value={job2}
                                     isSearchable
                                     name="job2"
-                                    options={jobsGroup}
+                                    options={selectJobsGroup}
                                     formatGroupLabel={formatGroupLabel}
                                 />
-                                <button type="submit">Envoyer</button>
-                            </form>
-                        </li>
-                        <li>
-                            <form onSubmit={handleSubmit}>
+                            </ListGroup.Item>}
+                            {secondJob && <ListGroup.Item className="selectJob">
                                 <Select
                                     className="basic-single"
-                                    placeholder="3eme Job"
+                                    placeholder={character.thirdJob || "3eme Job"}
                                     onChange={setJob3}
                                     value={job3}
                                     isSearchable
                                     name="job3"
-                                    options={jobsGroup}
+                                    options={selectJobsGroup}
                                     formatGroupLabel={formatGroupLabel}
                                 />
-                                <button type="submit">Envoyer</button>
-                            </form>
-                        </li>
-                    </ul>
+                            </ListGroup.Item>}
+                        </ListGroup>
+                        <button type="submit">Envoyer</button>
+                    </form>
                 </Col>
             </Row>
             <Row className="bg-light mt-2">

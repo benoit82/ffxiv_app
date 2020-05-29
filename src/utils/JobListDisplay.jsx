@@ -21,13 +21,16 @@ import SummonerIcon from "../img/jobicon/dps/Summoner.png";
 import TankIcon from "../img/jobicon/role/TankRole.png";
 import HealerIcon from "../img/jobicon/role/HealerRole.png";
 import DPSIcon from "../img/jobicon/role/DPSRole.png";
+import { styleRole } from "./styleRole";
 
 const JobListDisplay = ({ job }) => {
 
-    const [imgSrc, setImgSrc] = useState(null)
+    const [imgSrc, setImgSrc] = useState(TankIcon)
+    const [jobStyleRole, setJobStyleRole] = useState({ backgroundColor: "#000" })
 
     useEffect(() => {
         jobBuilder(job)
+        setJobStyleRole(styleRole(job))
     }, [job])
 
     const jobBuilder = (job) => {
@@ -100,7 +103,10 @@ const JobListDisplay = ({ job }) => {
 
 
     return (
-        < div style={{ height: "1rem", marginBottom: "1rem" }}>
+        < div style={{
+            minWidth: "55px", maxWidth: "85px", margin: "0.5rem", border: "1px solid #7b7b7b91", borderRadius: "7%", padding: "2px",
+            backgroundColor: jobStyleRole.backgroundColor
+        }}>
             <img style={{ height: "1.5em", marginRight: "5px" }} src={imgSrc} alt={job} />
             <span>{job}</span>
         </div >
