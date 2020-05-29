@@ -77,7 +77,6 @@ const RosterForm = () => {
     ));
 
     const onSubmit = (values, { resetForm }) => {
-        console.log(values)
         createRoster(values)
         resetForm({})
     };

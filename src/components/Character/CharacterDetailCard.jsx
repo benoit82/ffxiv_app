@@ -43,7 +43,7 @@ const CharacterDetailCard = ({ character }) => {
                 </Card.Text>
             }
             <Card.Footer className="d-flex justify-content-around">
-                <Link to={`/chr/${_id}`} className="btn btn-success"><i className="fas fa-edit"></i>Editer</Link>
+                <Link to={`/chr/${_id}`} className="btn btn-success"><i className="fas fa-edit"></i>éditer</Link>
                 <DeleteBtn handleClick={() => { handleDelete(character) }} />
             </Card.Footer>
         </Card>

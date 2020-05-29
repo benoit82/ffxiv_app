@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 const SearchBtn = () => {
     return (
         <Button variant="primary" type="submit">
-            <i className="fas fa-binoculars"></i>Rechercher
+            <i className="fas fa-binoculars"></i>rechercher
         </Button>
     )
 }

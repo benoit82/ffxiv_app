@@ -4,6 +4,7 @@ import { FirebaseContext } from '../firebase'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import ListGroup from 'react-bootstrap/ListGroup'
+import { SendBtn } from '../formElements'
 import { UserApi } from '../../AppContext'
 import Select from 'react-select'
 import { selectJobsGroup } from '../../utils/jobs'
@@ -33,7 +34,6 @@ const EditCharacter = () => {
         </div>
     );
     useEffect(() => {
-        console.log(selectJobsGroup)
         // load the roster
         const unsubcribe = firebase.db
             .collection("characters")
@@ -53,7 +53,7 @@ const EditCharacter = () => {
             );
 
         return () => unsubcribe();
-    }, [firebase]);
+    }, []);
 
 
 
@@ -87,7 +87,7 @@ const EditCharacter = () => {
                     style={style_role}>
                     <img src={avatar} alt={`avatar de ${name}`} className="rounded rounded-circle" />
                     <div className="d-flex flex-column">
-                        <h3 className="ml-7">{name}</h3>
+                        <h3 className="title_name">{name}</h3>
                         <div className="ml-5">
                             <span className="badge badge-pill">{mainJob && <JobListDisplay job={mainJob} />}</span>
                             <span className="badge badge-pill">{secondJob && <JobListDisplay job={secondJob} />}</span>
@@ -119,7 +119,7 @@ const EditCharacter = () => {
                                     formatGroupLabel={formatGroupLabel}
                                 />
                             </ListGroup.Item>
-                            {mainJob && <ListGroup.Item className="selectJob">
+                            {job1 && <ListGroup.Item className="selectJob">
                                 <Select
                                     className="basic-single"
                                     placeholder={character.secondJob || "2eme Job"}
@@ -131,7 +131,7 @@ const EditCharacter = () => {
                                     formatGroupLabel={formatGroupLabel}
                                 />
                             </ListGroup.Item>}
-                            {secondJob && <ListGroup.Item className="selectJob">
+                            {job2 && <ListGroup.Item className="selectJob">
                                 <Select
                                     className="basic-single"
                                     placeholder={character.thirdJob || "3eme Job"}
@@ -144,7 +144,7 @@ const EditCharacter = () => {
                                 />
                             </ListGroup.Item>}
                         </ListGroup>
-                        <button type="submit">Envoyer</button>
+                        <SendBtn />
                     </form>
                 </Col>
             </Row>
