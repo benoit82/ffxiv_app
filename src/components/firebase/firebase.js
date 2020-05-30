@@ -141,7 +141,7 @@ class Firebase {
   };
 
   addCharacter = (uid, character) => {
-    character.uid = uid;
+    character.user = this.db.collection("users").doc(uid);
     return this.db.collection("characters").add(character);
   };
 

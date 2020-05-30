@@ -20,6 +20,8 @@ const UserOptionPage = () => {
 
     const { uid } = User.user
 
+    const userDocRef = firebase.db.collection("users").doc(uid)
+
 
 
     useEffect(() => {
@@ -28,7 +30,7 @@ const UserOptionPage = () => {
         if (uid) {
             unsubcribe = firebase.db
                 .collection("characters")
-                .where("uid", "==", uid)
+                .where("user", "==", userDocRef)
                 .orderBy("name", "asc")
                 .onSnapshot(
                     (snapshot) => {
@@ -64,7 +66,7 @@ const UserOptionPage = () => {
                     <h3>Vos personnages ({`${characters.length}/${MAX_CHR_ALLOWED}`})</h3>
                     <Row className="justify-content-around">
                         {characters.map((character, index) =>
-                            <CharacterDetailCard
+                            < CharacterDetailCard
                                 key={index}
                                 character={findCharacter(character._id)} />
                         )}
