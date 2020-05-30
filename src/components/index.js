@@ -1,5 +1,5 @@
 import { ItemDetail, ItemSearch } from "./item";
-import { CharacterDetail, CharacterSearch } from "./character";
+import { CharacterDetail, CharacterSearch, BISForm } from "./character";
 import Loading from "./Loading";
 import Menu from "./Menu";
 import SignupPage from "./signup/SignupPage";
@@ -30,5 +30,6 @@ export {
   UserOptionPage,
   EditCharacter,
   AddCharacter,
+  BISForm,
   Footer,
 };

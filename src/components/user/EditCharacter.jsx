@@ -3,6 +3,8 @@ import { useParams, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
+import Accordion from 'react-bootstrap/Accordion'
+import Card from 'react-bootstrap/Card'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { SendBtn } from '../formElements'
 import { UserApi } from '../../AppContext'
@@ -13,6 +15,7 @@ import Col from 'react-bootstrap/Col'
 import JobListDisplay from '../../utils/JobListDisplay'
 
 import './EditCharacter.scss'
+import CharacterWishListAccordion from './CharacterWishListAccordion'
 
 const EditCharacter = () => {
     const history = useHistory()
@@ -71,12 +74,6 @@ const EditCharacter = () => {
 
     const style_role = styleRole(character.mainJob)
 
-
-
-
-
-
-
     return (
         <Container>
 
@@ -102,7 +99,7 @@ const EditCharacter = () => {
                 </div>
 
             </Row>
-            <Row className="bg-light mt-2">
+            <Row className="mt-2">
                 <Col>
                     <h4>Jobs</h4>
                     <form onSubmit={handleSubmit}>
@@ -143,11 +140,25 @@ const EditCharacter = () => {
                                     formatGroupLabel={formatGroupLabel}
                                 />
                             </ListGroup.Item>}
+                            <ListGroup.Item>
+                                <SendBtn />
+                            </ListGroup.Item>
                         </ListGroup>
-                        <SendBtn />
+
                     </form>
                 </Col>
             </Row>
+            {mainJob && <Row className="mt-2">
+                <Col>
+                    <h4>BIS</h4>
+                    <Accordion defaultActiveKey="0">
+                        <CharacterWishListAccordion job={mainJob} key={"0"} />
+                        {secondJob && <CharacterWishListAccordion job={secondJob} key={"1"} />}
+                        {thirdJob && <CharacterWishListAccordion job={thirdJob} key={"2"} />}
+                    </Accordion>
+                </Col>
+            </Row>}
+
             <Row className="bg-light mt-2">
                 <h4>Wish list</h4>
                 <p>wish list pour chaque jobs : 1 par patch => admin : ajouter un patch
