@@ -1,14 +1,15 @@
 import React from 'react'
-import { Formik, Field } from 'formik'
+import { Formik, Field, setNestedObjectValues } from 'formik'
 import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import { UpdateBtn, ResetBtn } from '../formElements'
 
 const BISForm = ({ handleSubmit, job }) => {
 
     /**
-     * element choice : Memo or Loot
+     * element choice : Memo (0) or Loot (1)
      */
     const gearType = ["Memo", "Loot"]
 
@@ -16,106 +17,64 @@ const BISForm = ({ handleSubmit, job }) => {
      * GearSet :  // (upgrade : only for "Memo" type)
      * {
      *  weapon1: { type: gearType[1], obtained: false },
-     *  weapon2: { type: gearType[0], obtained: false, upgrade: { type: "Weapon", obtained: false } },
-     *  head:   { type: "Memo" || "Loot", obtained?, upgrade:  { type: "Armor", obtained?}},
-     *  body:   { type: "Memo" || "Loot", obtained?, upgrade:  { type: "Armor", obtained?}},
-     *  hands:  { type: "Memo" || "Loot", obtained?, upgrade:  { type: "Armor", obtained?}},
-     *  belt:   { type: "Memo" || "Loot", obtained?, upgrade:  { type: "Accessory", obtained?}},
-     *  leg:    { type: "Memo" || "Loot", obtained? , upgrade: { type: "Armor", obtained?}},
-     *  boots:  { type: "Memo" || "Loot", obtained? , upgrade: { type: "Armor", obtained?}},
-     *  earring:{ type: "Memo" || "Loot", obtained? , upgrade: { type: "Accessory", obtained?}},
-     *  neck:   { type: "Memo" || "Loot", obtained? , upgrade: { type: "Accessory", obtained?}},
-     *  wrist:  { type: "Memo" || "Loot", obtained? , upgrade: { type: "Accessory", obtained?}},
-     *  ring1:  { type: "Memo" || "Loot", obtained? , upgrade: { type: "Accessory", obtained?}},
-     *  ring2:  { type: "Memo" || "Loot", obtained? , upgrade: { type: "Accessory", obtained?}},   
+     *  weapon2: { type: gearType[0], obtained: false, upgrade: { type: "Weapon", needed: false } },
+     *  head:   { type: "Memo" || "Loot", obtained?, upgrade:  { type: "Armor", needed?}},
+     *  body:   { type: "Memo" || "Loot", obtained?, upgrade:  { type: "Armor", needed?}},
+     *  hands:  { type: "Memo" || "Loot", obtained?, upgrade:  { type: "Armor", needed?}},
+     *  belt:   { type: "Memo" || "Loot", obtained?, upgrade:  { type: "Accessory", needed?}},
+     *  leg:    { type: "Memo" || "Loot", obtained? , upgrade: { type: "Armor", needed?}},
+     *  boots:  { type: "Memo" || "Loot", obtained? , upgrade: { type: "Armor", needed?}},
+     *  earring:{ type: "Memo" || "Loot", obtained? , upgrade: { type: "Accessory", needed?}},
+     *  neck:   { type: "Memo" || "Loot", obtained? , upgrade: { type: "Accessory", needed?}},
+     *  wrist:  { type: "Memo" || "Loot", obtained? , upgrade: { type: "Accessory", needed?}},
+     *  ring1:  { type: "Memo" || "Loot", obtained? , upgrade: { type: "Accessory", needed?}},
+     *  ring2:  { type: "Memo" || "Loot", obtained? , upgrade: { type: "Accessory", needed?}},   
      * }
      */
     const initialGearSet = {
-        weapon1: { name: "Arme Loot", type: gearType[1], obtained: false },
-        weapon2: { name: "Arme Memo", type: gearType[0], obtained: false, upgrade: { type: "Weapon", obtained: false } },
-        head: { name: "Tête", type: gearType[0], obtained: false, upgrade: { type: "Armor", obtained: false } },
-        body: { name: "Torse", type: gearType[0], obtained: false, upgrade: { type: "Armor", obtained: false } },
-        hands: { name: "Mains", type: gearType[0], obtained: false, upgrade: { type: "Armor", obtained: false } },
-        belt: { name: "Ceinture", type: gearType[0], obtained: false, upgrade: { type: "Accessory", obtained: false } },
-        leg: { name: "Jambière", type: gearType[0], obtained: false, upgrade: { type: "Armor", obtained: false } },
-        boots: { name: "Bottes", type: gearType[0], obtained: false, upgrade: { type: "Armor", obtained: false } },
-        earring: { name: "Oreilles", type: gearType[0], obtained: false, upgrade: { type: "Accessory", obtained: false } },
-        neck: { name: "Ras de cou", type: gearType[0], obtained: false, upgrade: { type: "Accessory", obtained: false } },
-        wrist: { name: "Poignet", type: gearType[0], obtained: false, upgrade: { type: "Accessory", obtained: false } },
-        ring1: { name: "Bague #1", type: gearType[0], obtained: false, upgrade: { type: "Accessory", obtained: false } },
-        ring2: { name: "Bague #2", type: gearType[1], obtained: false },
+        weapon1: { name: "Arme Loot", type: gearType[1], obtained: false, },
+        weapon2: { name: "Arme Memo", type: gearType[0], obtained: false, upgrade: { type: "Weapon", needed: true } },
+        head: { name: "Tête", type: gearType[0], obtained: false, upgrade: { type: "Armor", needed: true } },
+        body: { name: "Torse", type: gearType[0], obtained: false, upgrade: { type: "Armor", needed: true } },
+        hands: { name: "Mains", type: gearType[0], obtained: false, upgrade: { type: "Armor", needed: true } },
+        belt: { name: "Ceinture", type: gearType[0], obtained: false, upgrade: { type: "Accessory", needed: true } },
+        leg: { name: "Jambière", type: gearType[0], obtained: false, upgrade: { type: "Armor", needed: true } },
+        boots: { name: "Bottes", type: gearType[0], obtained: false, upgrade: { type: "Armor", needed: true } },
+        earring: { name: "Oreilles", type: gearType[0], obtained: false, upgrade: { type: "Accessory", needed: true } },
+        neck: { name: "Ras de cou", type: gearType[0], obtained: false, upgrade: { type: "Accessory", needed: true } },
+        wrist: { name: "Poignet", type: gearType[0], obtained: false, upgrade: { type: "Accessory", needed: true } },
+        ring1: { name: "Bague Memo", type: gearType[0], obtained: false, upgrade: { type: "Accessory", needed: true } },
+        ring2: { name: "Bague Loot", type: gearType[1], obtained: false, },
     }
 
+    const updateBis = (values) => {
+        Object.entries(values).map(armorElement => {
+            const { type, obtained } = armorElement[1];
+            if (armorElement[1].upgrade && type === gearType[0]) {
+                armorElement[1].upgrade.needed = !obtained;
+            }
+        })
+        console.log(values)
+    }
     return (
         <Formik
-            onSubmit={(values) => console.log('submit : ', values)}
+            enableReinitialize
+            onSubmit={updateBis}
             initialValues={initialGearSet}
         >
-            {({ handleSubmit, values }) => (
-                <Form onSubmit={handleSubmit}>
-                    <Container>
-                        <Row>
-                            <Col>
-                                {Object.entries(initialGearSet).map((armorElement) => {
-                                    let gearPiece = armorElement[0]
-                                    let { name } = armorElement[1]
-                                    return (
-                                        <Row key={gearPiece}>
-                                            <Form.Group>
-                                                <Col>
-                                                    <Form.Label>
-                                                        <Field
-                                                            as={Form.Check}
-                                                            type="checkbox"
-                                                            id={`${job}_${gearPiece}_obtained`}
-                                                            name={`${gearPiece}.obtained`}
-                                                            label={name}
-                                                            inline
-                                                            custom
-                                                        /></Form.Label>
-                                                </Col>
-                                                <Col>
-                                                    <Field
-                                                        as={Form.Check}
-                                                        type="radio"
-                                                        id={`${job}_${gearPiece}_loot`}
-                                                        name={`${gearPiece}.type`}
-                                                        label={gearType[1]}
-                                                        value={gearType[1]}
-                                                        inline
-                                                        custom />
-                                                    <Field
-                                                        as={Form.Check}
-                                                        type="radio"
-                                                        id={`${job}_${gearPiece}_memo`}
-                                                        name={`${gearPiece}.type`}
-                                                        label={gearType[0]}
-                                                        value={gearType[0]}
-                                                        inline
-                                                        custom
-                                                        disabled={gearPiece === "weapon1" || gearPiece === "ring2"} />
-                                                    {/* if gearpiece type is "Memo" */
-                                                        values[gearPiece].type === gearType[0] &&
-                                                        <Field
-                                                            as={Form.Check}
-                                                            type="checkbox"
-                                                            id={`${job}_${gearPiece}_upgrade_obtained`}
-                                                            name={`${gearPiece}.upgrade.obtained`}
-                                                            label="Améliorant obtenu"
-                                                            inline
-                                                            custom
-                                                        />}
-                                                </Col>
-                                            </Form.Group>
-                                        </Row>)
-                                })}
-                            </Col>
-                            <Col>
-                                <button type="submit">tester</button>
-                            </Col>
-                        </Row>
-                    </Container>
-                </Form>
+            {({ handleSubmit, setValues, values }) => (
+                <Container className="bg-light">
+                    <Form onSubmit={handleSubmit}>
+                        <Row><UpdateBtn /></Row>
+                        <div style={{ maxHeight: "400px", overflowY: "scroll", overflowX: "hidden" }} className="d-flex flex-column flex-lg-wrap">
+                            {
+                                Object.entries(initialGearSet).map((armorElement, index) => {
+                                    return <Row><GearPiece tabArmorElement={armorElement} job={job} gearType={gearType} /></Row>
+                                })
+                            }
+                        </div>
+                    </Form>
+                </Container>
             )
             }
         </Formik >
@@ -123,3 +82,53 @@ const BISForm = ({ handleSubmit, job }) => {
 }
 
 export default BISForm
+
+const GearPiece = ({ tabArmorElement, job, gearType }) => {
+
+    const gearPiece = tabArmorElement[0]
+    const { name } = tabArmorElement[1]
+
+    return (
+        <Col>
+            <Form.Group key={gearPiece}>
+                <Form.Label>
+                    <Field
+                        as={Form.Check}
+                        type="checkbox"
+                        id={`${job}_${gearPiece}_obtained`}
+                        name={`${gearPiece}.obtained`}
+                        label={name}
+                        inline
+                        custom
+                    />
+                </Form.Label>
+                {
+                    !gearPiece.match(/(weapon.)|(ring.)/) &&
+                    <>
+                        <Field
+                            as={Form.Check}
+                            type="radio"
+                            id={`${job}_${gearPiece}_loot`}
+                            name={`${gearPiece}.type`}
+                            label={gearType[1]}
+                            value={gearType[1]}
+                            inline
+                            custom
+                        />
+
+                        <Field
+                            as={Form.Check}
+                            type="radio"
+                            id={`${job}_${gearPiece}_memo`}
+                            name={`${gearPiece}.type`}
+                            label={gearType[0]}
+                            value={gearType[0]}
+                            inline
+                            custom
+                        />
+                    </>
+                }
+            </Form.Group>
+        </Col>
+    )
+}

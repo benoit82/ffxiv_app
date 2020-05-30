@@ -16,6 +16,7 @@ import JobListDisplay from '../../utils/JobListDisplay'
 
 import './EditCharacter.scss'
 import CharacterWishListAccordion from './CharacterWishListAccordion'
+import BISForm from '../character/BISForm'
 
 const EditCharacter = () => {
     const history = useHistory()
@@ -151,19 +152,21 @@ const EditCharacter = () => {
             {mainJob && <Row className="mt-2">
                 <Col>
                     <h4>BIS</h4>
-                    <Accordion defaultActiveKey="0">
-                        <CharacterWishListAccordion job={mainJob} key={"0"} />
-                        {secondJob && <CharacterWishListAccordion job={secondJob} key={"1"} />}
-                        {thirdJob && <CharacterWishListAccordion job={thirdJob} key={"2"} />}
-                    </Accordion>
+                    <Select
+                        className="basic-single"
+                        placeholder={character.mainJob || "Main job"}
+                        onChange={setJob1}
+                        value={job1}
+                        isSearchable
+                        name="job1"
+                        options={selectJobsGroup}
+                        formatGroupLabel={formatGroupLabel}
+                    />
+
+                    <BISForm job={mainJob} />
                 </Col>
             </Row>}
 
-            <Row className="bg-light mt-2">
-                <h4>Wish list</h4>
-                <p>wish list pour chaque jobs : 1 par patch => admin : ajouter un patch
-                son stuff actuel (import depuis lodestone ?)</p>
-            </Row>
 
 
 
