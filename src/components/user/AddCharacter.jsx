@@ -13,16 +13,13 @@ const AddCharacter = ({ characters, unmount }) => {
 
 
     const handleAdd = async (character) => {
-        if (!characters.some(storedChr => storedChr.id === character.id)) {
-            // new character record on DB
-            character.userRef = userRef
-            await firebase.addCharacter(uid, character)
-            unmount()
-        }
+        character.userRef = userRef
+        await firebase.addCharacter(uid, character)
+        unmount()
     }
 
     return (
-        <CharacterSearch handleAdd={handleAdd} />
+        <CharacterSearch handleAdd={handleAdd} userCharacters={characters} />
     )
 }
 

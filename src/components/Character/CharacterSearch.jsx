@@ -11,7 +11,7 @@ import pluralize from 'pluralize'
 import "./CharacterSearch.css"
 import { XIVApi } from '../../AppContext'
 
-const CharacterSearch = ({ handleAdd, setAddShow }) => {
+const CharacterSearch = ({ handleAdd, userCharacters }) => {
   const [loading, setLoading] = useState(false)
   const [serverList, setServerList] = useState([])
   const [characters, setCharacters] = useState([])
@@ -28,15 +28,17 @@ const CharacterSearch = ({ handleAdd, setAddShow }) => {
 
   const fetchCharacters = async (values, { resetForm }) => {
     setCharacterSelected(null)
-    let resCumul = []
+    let allDatas = []
     setLoading(true)
     setCharacters([])
     const res = await xiv.character.search(values.characterName, { server: values.selectServer })
-    res.results.forEach((res) => {
-      resCumul = [...resCumul, res]
+    res.results.forEach(data => {
+      if (!userCharacters.some(storedChr => storedChr.id === data.id)) {
+        allDatas = [...allDatas, data]
+      }
     })
-    setCharacters(resCumul)
-    setCharacterSelected(resCumul[0])
+    setCharacters(allDatas)
+    setCharacterSelected(allDatas[0])
     if (characters.length > 0) {
       resetForm({})
     }

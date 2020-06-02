@@ -18,7 +18,7 @@ const LoginPage = () => {
             checkStorage(firebase, setUser)
         }
         if (user.isLoggedIn) {
-            history.replace(location.state.from.pathname)
+            history.replace(location.state ? location.state.from.pathname : "/")
         }
     })
 
