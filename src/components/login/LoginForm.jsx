@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
-import { UserApi } from "../../AppContext"
+import { UserApi } from '../../AppContext'
 import Form from 'react-bootstrap/Form'
 import { SendBtn } from "../formElements"
 import { Formik } from 'formik'
@@ -10,20 +10,28 @@ import FormCheck from 'react-bootstrap/FormCheck'
 import Alert from 'react-bootstrap/Alert'
 
 const LoginForm = () => {
-    const User = useContext(UserApi);
-    const firebase = useContext(FirebaseContext);
-    const [errorMsg, setErrorMsg] = useState(null);
-    const history = useHistory();
+    const firebase = useContext(FirebaseContext)
+    const history = useHistory()
+    const location = useLocation()
+    const [errorMsg, setErrorMsg] = useState(null)
+    const User = useContext(UserApi)
+    const { user } = User
 
     const loginWithFirebase = async (values) => {
         setErrorMsg(null)
         try {
-            const response = await firebase.signInUser(values.email.trim(), values.password.trim());
-            User.setUser(response);
-            values.remindMe ? localStorage.setItem("user", JSON.stringify(response)) : localStorage.removeItem("user");
-            history.push("/");
+            const response = await firebase.signInUser(values.email.trim(), values.password.trim())
+            User.setUser(response)
+            values.remindMe ? localStorage.setItem("user", JSON.stringify(response)) : localStorage.removeItem("user")
+            if (location.state !== null && location.state.from.pathname === "/admin"
+                && !response.isAdmin) {
+                setErrorMsg(<Alert variant="danger" className="mt-3">Erreur : <br /><strong>Accès insuffisant pour accèder à la page demandée, redirection dans 2 secondes vers la page d'acceuil</strong></Alert>)
+                setTimeout(() => { history.push("/") }, 2000)
+            } else {
+                history.push(location.state ? location.state.from.pathname : "/")
+            }
         } catch (error) {
-            setErrorMsg(<Alert variant="danger" className="mt-3">Erreur : <br /><strong>{error.message}</strong></Alert>);
+            setErrorMsg(<Alert variant="danger" className="mt-3">Erreur : <br /><strong>{error.message}</strong></Alert>)
         }
     }
 
@@ -39,7 +47,7 @@ const LoginForm = () => {
         ,
         remindMe: Yup.boolean()
             .notRequired()
-    });
+    })
 
 
     return (

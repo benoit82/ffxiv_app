@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import LoginForm from "./LoginForm"
 import Alert from 'react-bootstrap/Alert'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useHistory } from 'react-router-dom'
+import checkStorage from '../../utils/checkStorage'
+import { UserApi } from '../../AppContext'
+import { FirebaseContext } from '../firebase'
 
 const LoginPage = () => {
+    const firebase = useContext(FirebaseContext);
+    const history = useHistory()
+    const location = useLocation()
+    const User = useContext(UserApi)
+    const { user, setUser } = User
+
+    useEffect(() => {
+        if (!user.isLoggedIn) {
+            checkStorage(firebase, setUser)
+        }
+        if (user.isLoggedIn) {
+            history.replace(location.state.from.pathname)
+        }
+    }, [])
     return (
         <div className="col-sm-12 col-md-8 p-3 bg-light">
             <h1 className="text-center font-weight-bold">Connexion</h1>

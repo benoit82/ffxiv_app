@@ -3,8 +3,6 @@ import { useParams, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
-import Accordion from 'react-bootstrap/Accordion'
-import Card from 'react-bootstrap/Card'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { SendBtn } from '../formElements'
 import { UserApi } from '../../AppContext'
@@ -13,10 +11,9 @@ import { selectJobsGroup } from '../../utils/jobs'
 import { styleRole } from '../../utils/styleRole'
 import Col from 'react-bootstrap/Col'
 import JobListDisplay from '../../utils/JobListDisplay'
+import BISForm from '../character/BISForm'
 
 import './EditCharacter.scss'
-import CharacterWishListAccordion from './CharacterWishListAccordion'
-import BISForm from '../character/BISForm'
 
 const EditCharacter = () => {
     const history = useHistory()
@@ -32,6 +29,8 @@ const EditCharacter = () => {
 
     const { user } = User
 
+    const userDocRef = firebase.db.collection("users").doc(user.uid)
+
     const formatGroupLabel = data => (
         <div style={{ height: "20px" }}>
             <span>{data.label}</span>
@@ -42,10 +41,12 @@ const EditCharacter = () => {
         const unsubcribe = firebase.db
             .collection("characters")
             .doc(chr_id)
+            .where("user", "==", userDocRef)
             .onSnapshot(
                 (snapshot) => {
                     const chr = { ...snapshot.data(), _id: snapshot.id }
-                    if (chr.uid !== user.uid || !user.isAdmin) history.push("/")
+                    // debugger
+                    // if (chr.user !== userDocRef) history.push("/")
                     setCharacter(chr)
                     if (chr.mainJob) setJob1(chr.mainJob)
                     if (chr.secondJob) setJob2(chr.secondJob)
