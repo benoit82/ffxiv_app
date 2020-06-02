@@ -29,8 +29,6 @@ const EditCharacter = () => {
 
     const { user } = User
 
-    const userDocRef = firebase.db.collection("users").doc(user.uid)
-
     const formatGroupLabel = data => (
         <div style={{ height: "20px" }}>
             <span>{data.label}</span>
@@ -41,12 +39,19 @@ const EditCharacter = () => {
         const unsubcribe = firebase.db
             .collection("characters")
             .doc(chr_id)
-            .where("user", "==", userDocRef)
             .onSnapshot(
                 (snapshot) => {
                     const chr = { ...snapshot.data(), _id: snapshot.id }
-                    // debugger
-                    // if (chr.user !== userDocRef) history.push("/")
+                    if (chr.userRef !== null) {
+                        chr.userRef.get().then(
+                            response => {
+                                const userData = response.data()
+                                if (userData.uid !== user.uid) history.goBack()
+                            }
+                        )
+                    } else {
+                        history.goBack()
+                    }
                     setCharacter(chr)
                     if (chr.mainJob) setJob1(chr.mainJob)
                     if (chr.secondJob) setJob2(chr.secondJob)
@@ -58,7 +63,7 @@ const EditCharacter = () => {
             );
 
         return () => unsubcribe();
-    }, []);
+    }, [chr_id]);
 
 
 

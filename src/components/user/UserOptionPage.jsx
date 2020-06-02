@@ -30,7 +30,7 @@ const UserOptionPage = () => {
         if (uid) {
             unsubcribe = firebase.db
                 .collection("characters")
-                .where("user", "==", userDocRef)
+                .where("userRef", "==", userDocRef)
                 .orderBy("name", "asc")
                 .onSnapshot(
                     (snapshot) => {
@@ -46,9 +46,8 @@ const UserOptionPage = () => {
                 );
             return () => unsubcribe()
         }
-
-
-    }, [uid, firebase])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [uid, firebase]) // <-- avoid repeating request
 
     const findCharacter = _id => {
         return characters.some(chr => chr._id === _id)

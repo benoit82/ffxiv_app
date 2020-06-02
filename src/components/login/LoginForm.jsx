@@ -15,7 +15,6 @@ const LoginForm = () => {
     const location = useLocation()
     const [errorMsg, setErrorMsg] = useState(null)
     const User = useContext(UserApi)
-    const { user } = User
 
     const loginWithFirebase = async (values) => {
         setErrorMsg(null)

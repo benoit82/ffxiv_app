@@ -121,7 +121,8 @@ class Firebase {
     try {
       const response = await this.db.collection("characters").doc(chr_id).get();
       chr = { ...response.data(), _id: chr_id };
-      chr.id && chr.uid === uid
+      const userRef = await this.db.doc(chr.userRef).get();
+      chr.id && (userRef.uid === uid || userRef.isAdmin)
         ? characterSetter(chr)
         : errorSetter(
             new Error("personnage non trouvé ou non lié à votre compte")
@@ -141,7 +142,7 @@ class Firebase {
   };
 
   addCharacter = (uid, character) => {
-    character.user = this.db.collection("users").doc(uid);
+    character.userRef = this.db.collection("users").doc(uid);
     return this.db.collection("characters").add(character);
   };
 
