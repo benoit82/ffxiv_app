@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Container from 'react-bootstrap/Container'
+import Alert from 'react-bootstrap/Alert'
 import Row from 'react-bootstrap/Row'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { SendBtn } from '../formElements'
@@ -21,6 +22,7 @@ const EditCharacter = () => {
     const firebase = useContext(FirebaseContext)
     const User = useContext(UserApi)
     const [character, setCharacter] = useState({})
+    const [updated, setUpdated] = useState(false)
 
     // select state
     const [job1, setJob1] = useState("")
@@ -77,14 +79,32 @@ const EditCharacter = () => {
         firebase.updateCharacter(chrToUpdate)
     }
 
+    const updateBis = (val, job) => {
+        let chrToUpdate = {
+            ...character, bis: {
+                [job]: val
+            }
+        }
+        firebase.updateCharacter(chrToUpdate)
+        setUpdated(true)
+        setTimeout(() => {
+            setUpdated(false)
+        }, 1500)
+    }
+
+    const resetBis = (job, emptyGearSet) => {
+        if (window.confirm(`Êtes-vous certain de remettre à zero la liste B.I.S. pour le job ${job} ?`)) {
+            let chrToUpdate = { ...character, bis: { [job]: emptyGearSet } }
+            firebase.updateCharacter(chrToUpdate)
+        }
+    }
+
     const { avatar, name, id, mainJob, secondJob, thirdJob } = character
 
     const style_role = styleRole(character.mainJob)
 
     return (
         <Container>
-
-
             <Row className="d-flex justify-content-center">
                 {/* cadre avatar */}
                 <div className="d-flex rounded p-2 w-auto align-items-center"
@@ -158,6 +178,8 @@ const EditCharacter = () => {
             {mainJob && <Row className="mt-2">
                 <Col>
                     <h4>BIS</h4>
+                    {updated && <Alert variant="info">BIS mis à jour !</Alert>}
+                    {/* TODO : select on job1/2/3 only */}
                     <Select
                         className="basic-single"
                         placeholder={character.mainJob || "Main job"}
@@ -169,13 +191,9 @@ const EditCharacter = () => {
                         formatGroupLabel={formatGroupLabel}
                     />
 
-                    <BISForm job={mainJob} />
+                    {character && <BISForm job={mainJob} character={character} updateBis={updateBis} resetBis={resetBis} />}
                 </Col>
             </Row>}
-
-
-
-
         </Container>
     )
 }
