@@ -45,12 +45,12 @@ const RosterEdit = () => {
         setName(roster.name)
     }, [roster])
 
-    const findRaidLeader = () => {
-        let rl = {}
+    const findRaidLeader = async () => {
+        let rl = roster.refRaidLeader ? (await roster.refRaidLeader.get()).data() : {}
         if (!raidLeader.value) {
             // on load
-            if (characters.some(chr => chr.value === roster.refRaidLeader)) {
-                rl = characters.find(chr => chr.value === roster.refRaidLeader)
+            if (characters.some(chr => chr.id === rl.id)) {
+                rl = characters.find(chr => chr.id === rl.id)
             }
         } else {
             // on change for raid leader list selected
@@ -69,8 +69,18 @@ const RosterEdit = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
+        // convert characters to ref
+        let rosterMembersCopy = []
+        rosterMembers.forEach(member => {
+            rosterMembersCopy = [...rosterMembersCopy, { refMember: firebase.db.doc(`characters/${member._id}`) }]
+        })
         if (raidLeader && name) {
-            const newRosterSetup = { ...roster, name, refRaidLeader: raidLeader._id, rosterMembers }
+            const newRosterSetup = {
+                ...roster,
+                name,
+                refRaidLeader: firebase.db.doc(`characters/${raidLeader._id}`),
+                rosterMembers: rosterMembersCopy
+            }
             firebase.setRoster(newRosterSetup)
             history.push("/admin")
         } else {
