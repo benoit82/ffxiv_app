@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container'
 import Alert from 'react-bootstrap/Alert'
 import Row from 'react-bootstrap/Row'
 import ListGroup from 'react-bootstrap/ListGroup'
-import { SendBtn } from '../formElements'
+import { SendBtn, EditBtn, ResetBtn } from '../formElements'
 import { UserApi } from '../../AppContext'
 import Select from 'react-select'
 import { selectJobsGroup } from '../../utils/jobs'
@@ -13,6 +13,7 @@ import { styleRole } from '../../utils/styleRole'
 import Col from 'react-bootstrap/Col'
 import JobListDisplay from '../../utils/JobListDisplay'
 import BISForm from '../character/BISForm'
+import { resetGearSet } from '../../utils/jobs'
 
 import './EditCharacter.scss'
 
@@ -22,12 +23,13 @@ const EditCharacter = () => {
     const firebase = useContext(FirebaseContext)
     const User = useContext(UserApi)
     const [character, setCharacter] = useState({})
-    const [updated, setUpdated] = useState(false)
+    const [msgUpdate, setMsgUpdate] = useState("")
 
     // select state
     const [job1, setJob1] = useState("")
     const [job2, setJob2] = useState("")
     const [job3, setJob3] = useState("")
+    const [jobForBis, setJobForBis] = useState("")
 
     const { user } = User
 
@@ -68,8 +70,6 @@ const EditCharacter = () => {
     }, [chr_id]);
 
 
-
-
     const handleSubmit = (event) => {
         event.preventDefault()
         let chrToUpdate = { ...character }
@@ -79,23 +79,43 @@ const EditCharacter = () => {
         firebase.updateCharacter(chrToUpdate)
     }
 
+    const editBis = (job) => {
+        setJobForBis(<BISForm job={job} character={character} updateBis={updateBis} resetBis={resetBis} />)
+    }
+
     const updateBis = (val, job) => {
+        let bis = { ...character.bis }
         let chrToUpdate = {
             ...character, bis: {
+                ...bis,
                 [job]: val
             }
         }
         firebase.updateCharacter(chrToUpdate)
-        setUpdated(true)
+        setMsgUpdate(<Alert variant="info">BIS pour {job} mis à jour !</Alert>)
         setTimeout(() => {
-            setUpdated(false)
+            setMsgUpdate("")
         }, 1500)
     }
 
-    const resetBis = (job, emptyGearSet) => {
+    const resetBis = (job) => {
         if (window.confirm(`Êtes-vous certain de remettre à zero la liste B.I.S. pour le job ${job} ?`)) {
-            let chrToUpdate = { ...character, bis: { [job]: emptyGearSet } }
+            let bis = { ...character.bis }
+            let chrToUpdate = { ...character, bis: { ...bis, [job]: resetGearSet } }
             firebase.updateCharacter(chrToUpdate)
+        }
+    }
+
+    const resetAllBis = () => {
+        if (window.confirm(`Êtes-vous certain de remettre à zero les listes B.I.S. ?`)) {
+            let chrToUpdate = { ...character }
+            let bis = {}
+            if (character.mainJob) bis = { ...bis, [mainJob]: resetGearSet }
+            if (character.secondJob) bis = { ...bis, [secondJob]: resetGearSet }
+            if (character.thirdJob) bis = { ...bis, [thirdJob]: resetGearSet }
+            chrToUpdate.bis = { bis }
+            firebase.updateCharacter(chrToUpdate)
+            setJobForBis("")
         }
     }
 
@@ -124,7 +144,6 @@ const EditCharacter = () => {
                         ><span className="badge badge-pill badge-info">lodestone</span></a>
                     </div>
                 </div>
-
             </Row>
             <Row className="mt-2">
                 <Col>
@@ -142,6 +161,7 @@ const EditCharacter = () => {
                                     options={selectJobsGroup}
                                     formatGroupLabel={formatGroupLabel}
                                 />
+                                {character.mainJob && <EditBtn label={`édit. BIS ${character.mainJob}`} handleClick={() => editBis(character.mainJob)} />}
                             </ListGroup.Item>
                             {job1 && <ListGroup.Item className="selectJob">
                                 <Select
@@ -154,6 +174,7 @@ const EditCharacter = () => {
                                     options={selectJobsGroup}
                                     formatGroupLabel={formatGroupLabel}
                                 />
+                                {character.secondJob && <EditBtn label={`édit. BIS ${character.secondJob}`} handleClick={() => editBis(character.secondJob)} />}
                             </ListGroup.Item>}
                             {job2 && <ListGroup.Item className="selectJob">
                                 <Select
@@ -166,32 +187,21 @@ const EditCharacter = () => {
                                     options={selectJobsGroup}
                                     formatGroupLabel={formatGroupLabel}
                                 />
+                                {character.thirdJob && <EditBtn label={`édit. BIS ${character.thirdJob}`} handleClick={() => editBis(character.thirdJob)} />}
                             </ListGroup.Item>}
                             <ListGroup.Item>
-                                <SendBtn />
+                                <SendBtn label="mettre à jour les jobs" /> <br />
+                                {character.bis && <ResetBtn label="réinitialiser tous les BIS" handleReset={resetAllBis} />}
                             </ListGroup.Item>
                         </ListGroup>
 
                     </form>
                 </Col>
             </Row>
-            {mainJob && <Row className="mt-2">
+            {jobForBis && <Row className="mt-2">
                 <Col>
-                    <h4>BIS</h4>
-                    {updated && <Alert variant="info">BIS mis à jour !</Alert>}
-                    {/* TODO : select on job1/2/3 only */}
-                    <Select
-                        className="basic-single"
-                        placeholder={character.mainJob || "Main job"}
-                        onChange={setJob1}
-                        value={job1}
-                        isSearchable
-                        name="job1"
-                        options={selectJobsGroup}
-                        formatGroupLabel={formatGroupLabel}
-                    />
-
-                    {character && <BISForm job={mainJob} character={character} updateBis={updateBis} resetBis={resetBis} />}
+                    {msgUpdate}
+                    {jobForBis}
                 </Col>
             </Row>}
         </Container>

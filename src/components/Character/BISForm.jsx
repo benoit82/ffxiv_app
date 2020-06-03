@@ -1,39 +1,15 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Formik, Field } from 'formik'
 import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { UpdateBtn, ResetBtn } from '../formElements'
+import { gearType, resetGearSet } from '../../utils/jobs'
 
 const BISForm = ({ job, character, updateBis, resetBis }) => {
-    /**
-     * element choice : Memo (0) or Loot (1)
-     */
-    const gearType = ["Memo", "Loot"]
 
-    /**
-     * GearSet :  // (upgrade : only for "Memo" type) - order is for Form builder
-     * {
-     *  gearPiece: { order, name, type: "Memo" | "Loot", obtained, upgrade: { type: "Weapon" | "Armor" | "Accessory", needed } } 
-     * }
-     */
-    const resetGearSet = {
-        weapon1: { order: 1, name: "Arme Loot", type: gearType[1], obtained: false, },
-        weapon2: { order: 2, name: "Arme Memo", type: gearType[0], obtained: false, upgrade: { type: "Weapon", needed: true } },
-        head: { order: 3, name: "Tête", type: null, obtained: false, upgrade: { type: "Armor", needed: true } },
-        body: { order: 4, name: "Torse", type: null, obtained: false, upgrade: { type: "Armor", needed: true } },
-        hands: { order: 5, name: "Mains", type: null, obtained: false, upgrade: { type: "Armor", needed: true } },
-        belt: { order: 6, name: "Ceinture", type: null, obtained: false, upgrade: { type: "Accessory", needed: true } },
-        leg: { order: 7, name: "Jambière", type: null, obtained: false, upgrade: { type: "Armor", needed: true } },
-        boots: { order: 8, name: "Bottes", type: null, obtained: false, upgrade: { type: "Armor", needed: true } },
-        earring: { order: 9, name: "Oreilles", type: null, obtained: false, upgrade: { type: "Accessory", needed: true } },
-        neck: { order: 10, name: "Ras de cou", type: null, obtained: false, upgrade: { type: "Accessory", needed: true } },
-        wrist: { order: 11, name: "Poignet", type: null, obtained: false, upgrade: { type: "Accessory", needed: true } },
-        ring1: { order: 12, name: "Bague Memo", type: gearType[0], obtained: false, upgrade: { type: "Accessory", needed: true } },
-        ring2: { order: 13, name: "Bague Loot", type: gearType[1], obtained: false, },
-    }
-    const initialGearSet = character.bis ? character.bis[job] : resetGearSet
+    const initialGearSet = character.bis && character.bis[job] ? character.bis[job] : resetGearSet
 
     const submitForm = (values) => {
         Object.entries(values).forEach(armorElement => {
@@ -51,9 +27,12 @@ const BISForm = ({ job, character, updateBis, resetBis }) => {
             initialValues={initialGearSet}
         >
             {({ handleSubmit }) => (
-                <Container className="bg-light">
+                <Container className="bg-light mt-3">
+                    <Row>
+                        <h3>BIS : {job} - Cochez les équipements obtenu</h3>
+                    </Row>
                     <Form onSubmit={handleSubmit}>
-                        <Row><UpdateBtn /> <ResetBtn handleReset={() => resetBis(job, resetGearSet)} /></Row>
+
                         <div style={{ maxHeight: "400px", overflowY: "scroll", overflowX: "hidden" }} className="d-flex flex-column flex-lg-wrap">
                             {
                                 Object.entries(initialGearSet)
@@ -65,6 +44,7 @@ const BISForm = ({ job, character, updateBis, resetBis }) => {
                                     })
                             }
                         </div>
+                        <Row><UpdateBtn /> <ResetBtn handleReset={() => resetBis(job, resetGearSet)} /></Row>
                     </Form>
                 </Container>
             )
