@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 import { DeleteBtn } from '../formElements'
 import { FirebaseContext } from '../firebase'
 
-import './CharacterDetailCard.scss'
-import JobListDisplay from '../../utils/JobListDisplay'
+import './characterDetailCard.scss'
+import JobListDisplay from '../../utils/jobListDisplay'
 import { styleRole } from '../../utils/styleRole'
 
 const CharacterDetailCard = ({ character }) => {

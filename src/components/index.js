@@ -1,20 +1,28 @@
 import { ItemDetail, ItemSearch } from "./item";
-import { CharacterDetail, CharacterSearch, BISForm } from "./character";
-import Loading from "./Loading";
-import Menu from "./Menu";
-import SignupPage from "./signup/SignupPage";
+import {
+  ChrOptionPage,
+  CharacterDetail,
+  CharacterSearch,
+  EditCharacter,
+  BISForm,
+} from "./character";
+import Loading from "./loading";
+import Menu from "./menu";
+import { SignupPage } from "./signup";
 import { LoginPage } from "./login";
 import { Disconnect } from "./disconnect";
 import { Welcome } from "./welcome";
 import { AdminOptionPage } from "./admin";
 import { RosterEdit, ViewRoster } from "./roster";
-import { AddCharacter, EditCharacter, UserOptionPage } from "./user";
-import ForgottenPasswordPage from "./forgottenpassword";
-import Footer from "./footer";
+import { UserOptionPage } from "./user";
+import { ForgottenPasswordPage } from "./forgottenpassword";
+import { Footer } from "./footer";
 
 export {
   ItemDetail,
   ItemSearch,
+  ChrOptionPage,
+  EditCharacter,
   CharacterDetail,
   CharacterSearch,
   Loading,
@@ -28,8 +36,6 @@ export {
   ViewRoster,
   RosterEdit,
   UserOptionPage,
-  EditCharacter,
-  AddCharacter,
   BISForm,
   Footer,
 };

@@ -1,11 +1,11 @@
-import ResetBtn from "./ResetBtn";
-import SendBtn from "./SendBtn";
-import AddBtn from "./AddBtn";
-import SearchBtn from "./SearchBtn";
-import CloseBtn from "./CloseBtn";
-import DeleteBtn from "./DeleteBtn";
-import EditBtn from "./EditBtn";
-import UpdateBtn from "./UpdateBtn";
+import ResetBtn from "./resetBtn";
+import SendBtn from "./sendBtn";
+import AddBtn from "./addBtn";
+import SearchBtn from "./searchBtn";
+import CloseBtn from "./closeBtn";
+import DeleteBtn from "./deleteBtn";
+import EditBtn from "./editBtn";
+import UpdateBtn from "./updateBtn";
 
 export {
   ResetBtn,

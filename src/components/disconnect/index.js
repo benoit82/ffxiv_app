@@ -1,3 +1,3 @@
-import Disconnect from "./Disconnect";
+import Disconnect from "./disconnect";
 
 export { Disconnect };

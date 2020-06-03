@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import ItemDetail from "./ItemDetail";
+import ItemDetail from "./itemDetail";
 import { Item } from "../../models";
 
 const ItemSearch = () => {

@@ -6,16 +6,16 @@ import Alert from 'react-bootstrap/Alert'
 import Row from 'react-bootstrap/Row'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { SendBtn, EditBtn, ResetBtn } from '../formElements'
-import { UserApi } from '../../AppContext'
+import { UserApi } from '../../utils/appContext'
 import Select from 'react-select'
 import { selectJobsGroup } from '../../utils/jobs'
 import { styleRole } from '../../utils/styleRole'
 import Col from 'react-bootstrap/Col'
-import JobListDisplay from '../../utils/JobListDisplay'
-import BISForm from '../character/BISForm'
+import JobListDisplay from '../../utils/jobListDisplay'
+import BISForm from './bisForm'
 import { resetGearSet } from '../../utils/jobs'
 
-import './EditCharacter.scss'
+import './editCharacter.scss'
 
 const EditCharacter = () => {
     const history = useHistory()

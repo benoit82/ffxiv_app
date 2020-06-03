@@ -1,6 +1,15 @@
-import CharacterDetail from "./CharacterDetail";
-import CharacterDetailInline from "./CharacterDetailInline";
-import CharacterSearch from "./CharacterSearch";
-import BISForm from "./BISForm";
+import ChrOptionPage from "./chrOptionPage";
+import EditCharacter from "./editCharacter";
+import CharacterDetail from "./characterDetail";
+import CharacterDetailInline from "./characterDetailInline";
+import CharacterSearch from "./characterSearch";
+import BISForm from "./bisForm";
 
-export { CharacterDetail, CharacterDetailInline, CharacterSearch, BISForm };
+export {
+  ChrOptionPage,
+  EditCharacter,
+  CharacterDetail,
+  CharacterDetailInline,
+  CharacterSearch,
+  BISForm,
+};

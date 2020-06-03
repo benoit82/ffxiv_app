@@ -1,5 +1,5 @@
 import React from 'react'
-import Msg from '../../utils/Msg';
+import Msg from '../../utils/msg';
 
 
 const CharacterDetailInline = ({ character }) => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
-import Msg from '../../utils/Msg'
+import Msg from '../../utils/msg'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
 import Form from 'react-bootstrap/Form'

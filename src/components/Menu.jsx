@@ -9,14 +9,15 @@ const Menu = ({ user }) => {
   const { isLoggedIn, isAdmin, isRaidLeader } = user;
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" >
-      <Link className="navbar-brand" to="/">FFXIV-Roster Manager</Link>
+      <Link className="navbar-brand" to="/">FFXIV-Roster Helper</Link>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
           {/* si l'utilisateur est connecté */
             isLoggedIn && (<>
-              <NavLink className="nav-link" to="/itemSearch">Item</NavLink>
-              <NavLink className="nav-link" to="/user"><i className="fas fa-cog"></i>Mon profile</NavLink>
+              <NavLink className="nav-link" to="/item">Item</NavLink>
+              <NavLink className="nav-link" to="/chr"><i className="fas fa-cog"></i>Mes personnages</NavLink>
+              <NavLink className="nav-link" to="/roster"><i className="fas fa-users"></i>Mon roster</NavLink>
             </>)}
         </Nav>
         <Nav>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import Loading from "../Loading"
+import Loading from "../loading"
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -8,8 +8,8 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import pluralize from 'pluralize'
 
-import "./CharacterSearch.css"
-import { XIVApi } from '../../AppContext'
+import "./characterSearch.css"
+import { XIVApi } from '../../utils/appContext'
 
 const CharacterSearch = ({ handleAdd, userCharacters }) => {
   const [loading, setLoading] = useState(false)

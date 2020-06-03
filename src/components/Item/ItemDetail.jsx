@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "./ItemDetail.css";
+import "./itemDetail.css";
 
 const ItemDetail = ({ item }) => {
   const lang = "fr";

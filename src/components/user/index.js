@@ -1,5 +1,3 @@
-import AddCharacter from "./AddCharacter";
-import UserOptionPage from "./UserOptionPage";
-import EditCharacter from "./EditCharacter";
+import UserOptionPage from "./userOptionPage";
 
-export { AddCharacter, UserOptionPage, EditCharacter };
+export { UserOptionPage };

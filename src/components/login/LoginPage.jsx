@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react'
-import LoginForm from "./LoginForm"
+import LoginForm from "./loginForm"
 import Alert from 'react-bootstrap/Alert'
 import { Link, useLocation, useHistory } from 'react-router-dom'
 import checkStorage from '../../utils/checkStorage'
-import { UserApi } from '../../AppContext'
+import { UserApi } from '../../utils/appContext'
 import { FirebaseContext } from '../firebase'
 
 const LoginPage = () => {

@@ -1,22 +1,22 @@
 import React, { useState, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
-import Form from 'react-bootstrap/Form';
-import { SendBtn, ResetBtn } from "../formElements";
-import Alert from 'react-bootstrap/Alert';
-import { Formik } from 'formik';
+import Form from 'react-bootstrap/Form'
+import { SendBtn, ResetBtn } from '../formElements'
+import Alert from 'react-bootstrap/Alert'
+import { Formik } from 'formik'
 import * as Yup from 'yup'
 
 const SignupForm = () => {
-    const firebase = useContext(FirebaseContext);
-    const [errorMsg, setErrorMsg] = useState(null);
-    const history = useHistory();
+    const firebase = useContext(FirebaseContext)
+    const [errorMsg, setErrorMsg] = useState(null)
+    const history = useHistory()
 
     const signupToFirebase = async (values) => {
         setErrorMsg(null)
         try {
-            const newUser = await firebase.signUpUser(values.email.trim(), values.password.trim());
-            const uid = newUser.user.uid;
+            const newUser = await firebase.signUpUser(values.email.trim(), values.password.trim())
+            const uid = newUser.user.uid
             const configNewUser = {
                 uid,
                 pseudo: values.pseudo.trim(),
@@ -26,19 +26,19 @@ const SignupForm = () => {
                 isRaidLeader: false,
                 isCrafter: false,
                 isGatherer: false,
-            };
-            firebase.addUser(uid, configNewUser);
-            history.push("/");
+            }
+            firebase.addUser(uid, configNewUser)
+            history.push("/")
         } catch (error) {
-            setErrorMsg(<Alert variant="danger" className="mt-3">Erreur : <br /><strong>{error.message}</strong></Alert>);
+            setErrorMsg(<Alert variant="danger" className="mt-3">Erreur : <br /><strong>{error.message}</strong></Alert>)
         }
     }
     // gestion du formulaire avec Formik
     // schema de validation
-    const minPseudoCaractere = 3;
-    const maxPseudoCaractere = 15;
-    const minPasswordCaractere = 6;
-    const maxPasswordCaractere = 32;
+    const minPseudoCaractere = 3
+    const maxPseudoCaractere = 15
+    const minPasswordCaractere = 6
+    const maxPasswordCaractere = 32
     const signupSchema = Yup.object().shape({
         pseudo: Yup.string()
             .min(minPseudoCaractere, `Votre pseudo doit comporter entre ${minPseudoCaractere} et ${maxPseudoCaractere} lettres.`)
@@ -57,7 +57,7 @@ const SignupForm = () => {
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password'), null], 'Mot de passe non conforme.')
             .required("champs obligatoire")
-    });
+    })
 
     return (
         <>

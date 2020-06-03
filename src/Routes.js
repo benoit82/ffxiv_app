@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Route, Switch } from "react-router-dom";
-import { UserApi } from "./AppContext";
+import { UserApi } from "./utils/appContext";
 import {
   Welcome,
   ItemSearch,
@@ -8,12 +8,12 @@ import {
   LoginPage,
   ForgottenPasswordPage,
   AdminOptionPage,
-  UserOptionPage,
+  ChrOptionPage,
   EditCharacter,
   ViewRoster,
   RosterEdit,
 } from "./components";
-import ProtectedRoute from "./utils/ProtectedRoute";
+import ProtectedRoute from "./utils/protectedRoute";
 
 const Routes = () => {
   const User = useContext(UserApi);
@@ -26,7 +26,7 @@ const Routes = () => {
       <Route path="/signup" component={SignupPage} />
       <Route path="/login" component={LoginPage} />
       <Route path="/resetpassword" component={ForgottenPasswordPage} />
-      <Route path="/itemSearch" component={ItemSearch} />
+      <Route path="/item" component={ItemSearch} />
       <ProtectedRoute
         path="/admin"
         allowedUser={user.isAdmin || user.isRaidLeader}
@@ -39,9 +39,10 @@ const Routes = () => {
       />
       <Route path="/roster/:roster_id" component={ViewRoster} />
       <ProtectedRoute
-        path="/user"
+        exact
+        path="/chr"
         allowedUser={user.isLoggedIn}
-        component={UserOptionPage}
+        component={ChrOptionPage}
       />
       <ProtectedRoute
         path="/chr/:chr_id"

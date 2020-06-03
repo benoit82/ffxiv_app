@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Link, useHistory } from "react-router-dom";
 import FirebaseContext from '../firebase/context';
-import { UserApi } from '../../AppContext';
+import { UserApi } from '../../utils/appContext';
 
 const Disconnect = () => {
 

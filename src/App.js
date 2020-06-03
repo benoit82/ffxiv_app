@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserApi, XIVApi } from "./AppContext";
+import { UserApi, XIVApi } from "./utils/appContext";
 import { FirebaseContext } from "./components/firebase";
 import { BrowserRouter as Router } from "react-router-dom";
-import Routes from "./Routes";
+import Routes from "./routes";
 import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
 import { Menu, Footer } from "./components";

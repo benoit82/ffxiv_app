@@ -1,3 +1,3 @@
-import AdminOptionPage from "./AdminOptionPage";
+import AdminOptionPage from "./adminOptionPage";
 
 export { AdminOptionPage };

@@ -1,5 +1,5 @@
 import React from "react";
-import JobListDisplay from "./JobListDisplay";
+import JobListDisplay from "./jobListDisplay";
 
 const jobsTank = [
   {

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactLoading from "react-loading";
 
-import "./Loading.css";
+import "./loading.css";
 
 const Loading = (props) => {
   return (

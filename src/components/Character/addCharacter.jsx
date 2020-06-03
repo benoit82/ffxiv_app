@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-import { UserApi } from '../../AppContext'
+import { UserApi } from '../../utils/appContext'
 import { FirebaseContext } from '../firebase'
-import CharacterSearch from '../character/CharacterSearch'
+import CharacterSearch from './characterSearch'
 
 
 const AddCharacter = ({ characters, unmount }) => {

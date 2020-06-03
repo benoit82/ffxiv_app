@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
-import { UserApi } from '../../AppContext'
+import { UserApi } from '../../utils/appContext'
 import Form from 'react-bootstrap/Form'
 import { SendBtn } from "../formElements"
 import { Formik } from 'formik'
