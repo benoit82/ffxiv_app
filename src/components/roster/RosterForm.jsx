@@ -3,15 +3,11 @@ import Container from "react-bootstrap/Container";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Form from "react-bootstrap/Form";
-import Table from "react-bootstrap/Table";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { SendBtn } from "../formElements";
 import { FirebaseContext } from "../firebase";
 import Msg from "../../utils/msg";
-import CharacterDetailInline from "../character/characterDetailInline";
-import DeleteBtn from "../formElements/DeleteBtn";
-import { Link } from "react-router-dom";
 import RostersTable from "./rostersTable";
 
 const RosterForm = () => {
@@ -54,15 +50,6 @@ const RosterForm = () => {
         }
     };
 
-    const handleDelete = (roster) => {
-        const confirmation = window.confirm(
-            `êtes-vous certain de supprimer ${roster.name} de votre compte ?`
-        );
-        if (confirmation) {
-            firebase.deleteRoster(roster._id);
-        }
-    };
-
     const RosterSchema = Yup.object().shape({
         name: Yup.string()
             .min(3, "le nom doit comporter 3 lettres")
@@ -82,12 +69,6 @@ const RosterForm = () => {
         resetForm({})
     };
 
-    const findCharacter = (_id) => {
-        return characters.some((chr) => chr._id === _id)
-            ? characters.find((chr) => chr._id === _id)
-            : {};
-    };
-
 
     return (
         <>
@@ -97,7 +78,7 @@ const RosterForm = () => {
                 </Row>
                 <Row>
                     {rosters.length > 0 ? (
-                        <RostersTable rosters={rosters} findCharacter={findCharacter} handleDelete={findCharacter} />
+                        <RostersTable rosters={rosters} />
                     ) : (
                             <p>aucun roster créer</p>
                         )}

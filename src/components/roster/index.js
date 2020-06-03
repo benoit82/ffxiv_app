@@ -1,5 +1,5 @@
-import RosterForm from "./RosterForm";
-import RosterEdit from "./RosterEdit";
-import ViewRoster from "./ViewRoster";
+import RosterForm from "./rosterForm";
+import RosterEdit from "./rosterEdit";
+import ViewRoster from "./viewRoster";
 
 export { RosterForm, RosterEdit, ViewRoster };

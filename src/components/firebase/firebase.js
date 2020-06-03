@@ -64,7 +64,12 @@ class Firebase {
 
   // Roster management
   addRoster = (roster) => {
-    return this.db.collection("rosters").add(roster);
+    const refRaidLeader = this.db
+      .collection("characters")
+      .doc(roster.refRaidLeader);
+    return this.db
+      .collection("rosters")
+      .add({ name: roster.name, refRaidLeader });
   };
 
   deleteRoster = async (_id) => {
@@ -114,6 +119,10 @@ class Firebase {
     });
     if (chrsSetter) chrsSetter(resTab);
     return [resTab, docs];
+  };
+
+  getDocByRef = async (documentRef, docSetter) => {
+    docSetter((await documentRef.get()).data());
   };
 
   getCharacterByAccount = async (uid, chr_id, characterSetter, errorSetter) => {

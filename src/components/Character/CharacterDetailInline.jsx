@@ -8,7 +8,6 @@ const CharacterDetailInline = ({ character }) => {
 
     return (
         <>
-
             {id ? <p><img style={{ height: "50px" }} src={avatar} alt={`avatar de ${name}`} />{name}{" "}<a
                 className="ml-auto"
                 href={`https://fr.finalfantasyxiv.com/lodestone/character/${id}`}
