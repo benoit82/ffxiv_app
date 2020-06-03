@@ -1,10 +1,11 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button';
 
-const SearchBtn = () => {
+const SearchBtn = ({ label }) => {
+    const labelBtn = label || "rechercher"
     return (
-        <Button variant="primary" type="submit">
-            <i className="fas fa-binoculars"></i>rechercher
+        <Button className="m-1" variant="primary" type="submit">
+            <i className="fas fa-binoculars"></i>{labelBtn}
         </Button>
     )
 }

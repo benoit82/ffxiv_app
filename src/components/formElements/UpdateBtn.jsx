@@ -1,10 +1,11 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button'
 
-const UpdateBtn = () => {
+const UpdateBtn = ({ label }) => {
+    const labelBtn = label || "mettre à jour"
     return (
-        <Button variant="primary" type="submit" className="mr-3">
-            <i className="fas fa-sync"></i>mettre à jour
+        <Button className="m-1" variant="primary" type="submit">
+            <i className="fas fa-sync"></i>{labelBtn}
         </Button>
     )
 }

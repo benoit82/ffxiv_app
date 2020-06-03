@@ -1,10 +1,11 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button';
 
-const ResetBtn = ({ handleReset }) => {
+const ResetBtn = ({ label, handleReset }) => {
+    const labelBtn = label || "réinitialiser"
     return (
-        <Button variant="secondary" type="reset" onClick={handleReset}>
-            <i className="fas fa-recycle"></i>réinitialiser
+        <Button className="m-1" variant="secondary" type="reset" onClick={handleReset}>
+            <i className="fas fa-recycle"></i>{labelBtn}
         </Button >
     )
 }

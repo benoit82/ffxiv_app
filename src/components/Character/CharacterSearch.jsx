@@ -154,7 +154,7 @@ const CharacterSearch = ({ handleAdd, userCharacters }) => {
                     })}
                   </Form.Control>
                 </Form.Group>
-                <AddBtn label="ce personnage" handleClick={handleAddChr} />
+                <AddBtn label="ajouter ce personnage" handleClick={handleAddChr} />
               </Col>
             </Row>
           </>

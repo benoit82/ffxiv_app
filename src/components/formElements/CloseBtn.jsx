@@ -1,10 +1,11 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button';
 
-const CloseBtn = ({ handleClick }) => {
+const CloseBtn = ({ label, handleClick }) => {
+    const labelBtn = label || "fermer"
     return (
-        <Button variant="warning" onClick={handleClick}>
-            <i className="fas fa-window-close"></i>fermer
+        <Button className="m-1" variant="warning" onClick={handleClick}>
+            <i className="fas fa-window-close"></i>{labelBtn}
         </Button >
     )
 }

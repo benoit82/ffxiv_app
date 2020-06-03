@@ -1,10 +1,11 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button';
 
-const SendBtn = () => {
+const SendBtn = ({ label }) => {
+    const labelBtn = label || "envoyer"
     return (
-        <Button variant="primary" type="submit">
-            <i className="fas fa-paper-plane"></i>envoyer
+        <Button className="m-1" variant="primary" type="submit">
+            <i className="fas fa-paper-plane"></i>{labelBtn}
         </Button>
     )
 }

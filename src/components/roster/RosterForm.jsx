@@ -6,7 +6,7 @@ import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { SendBtn, AddBtn } from "../formElements";
+import { SendBtn } from "../formElements";
 import { FirebaseContext } from "../firebase";
 import Msg from "../../utils/Msg";
 import CharacterDetailInline from "../character/CharacterDetailInline";
