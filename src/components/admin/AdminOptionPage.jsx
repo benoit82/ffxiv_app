@@ -2,33 +2,38 @@ import React from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import { RosterForm } from '../roster'
+import { RosterForm, ViewRoster, RosterEdit } from '../roster'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { UserOptionPage } from '..'
+import UsersAdmin from './usersAdmin'
+import AdminWelcomePage from './adminWelcomePage'
 
 const AdminOptionPage = () => {
     return (
-        <Container>
-            <Row>
-                <Col lg={3}>
-                    <h2>Menu admin</h2>
-                    <ul>
-                        <li>Roster</li>
-                    </ul>
-                </Col>
-                <Col>
-                    <Row>
-                        <h1>Page admin</h1>
-                    </Row>
-                    <Row>
-                        <RosterForm />
-                        -> nom <br />
-                        -> raid leader (id du personnage) <br />
-                        -> ajouter des membres <br />
-
-                        Editer un nouveau patch (wish list, nouveaux boss) <br />
-                    </Row>
-                </Col>
-            </Row>
-        </Container>
+        <Router basename="/admin">
+            <Container>
+                <Row>
+                    <Col lg={3}>
+                        <h2>Menu</h2>
+                        <ul>
+                            <li><Link to="/users">Gestion des utilisateurs</Link></li>
+                            <li><Link to="/rosters">Gestion des rosters</Link></li>
+                        </ul>
+                    </Col>
+                    <Col>
+                        <h1>Administration du site</h1>
+                        <Switch>
+                            <Route exact path="/" component={AdminWelcomePage} />
+                            <Route exact path="/users" component={UsersAdmin} />
+                            <Route path="/users/:user_id" component={UserOptionPage} />
+                            <Route exact path="/rosters" component={RosterForm} />
+                            <Route path="/roster/edit/:roster_id" component={RosterEdit} />
+                            <Route path="/rosters/:roster_id" component={ViewRoster} />
+                        </Switch>
+                    </Col>
+                </Row>
+            </Container>
+        </Router>
     )
 }
 

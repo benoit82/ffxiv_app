@@ -39,8 +39,8 @@ const BISForm = ({ job, character, updateBis, resetBis }) => {
                                     .sort((gearPieceA, gearPieceB) => {
                                         return gearPieceA[1].order > gearPieceB[1].order ? 1 : -1
                                     })
-                                    .map((armorElement) => {
-                                        return <Row><GearPiece armorElement={armorElement} job={job} gearType={gearType} /></Row>
+                                    .map((armorElement, index) => {
+                                        return <Row key={index}><GearPiece armorElement={armorElement} job={job} gearType={gearType} /></Row>
                                     })
                             }
                         </div>

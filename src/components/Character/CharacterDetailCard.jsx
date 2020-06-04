@@ -12,9 +12,7 @@ const CharacterDetailCard = ({ character }) => {
 
     const firebase = useContext(FirebaseContext)
 
-    const { avatar, name, id, _id, mainJob, secondJob, thirdJob } = character
-
-    const portrait = avatar.replace("c0_96x96.jpg", "l0_640x873.jpg")
+    const { portrait, name, id, _id, mainJob, secondJob, thirdJob } = character
 
     const style = styleRole(character.mainJob)
 
@@ -38,8 +36,13 @@ const CharacterDetailCard = ({ character }) => {
                 </Card.Text>
             </Card.Body>
             {mainJob &&
-                <Card.Text className="d-flex justify-content-around">
+                <div className="d-flex justify-content-around">
                     <JobListDisplay job={mainJob} />{secondJob && <JobListDisplay job={secondJob} />}{thirdJob && <JobListDisplay job={thirdJob} />}
+                </div>
+            }
+            {!mainJob &&
+                <Card.Text className="d-flex justify-content-around">
+                    Jobs à définir (éditez-le !)
                 </Card.Text>
             }
             <Card.Footer className="d-flex justify-content-around">

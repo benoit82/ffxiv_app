@@ -9,6 +9,7 @@ import { SendBtn } from "../formElements";
 import { FirebaseContext } from "../firebase";
 import Msg from "../../utils/msg";
 import RostersTable from "./rostersTable";
+import { Roster } from "../../models";
 
 const RosterForm = () => {
     const firebase = useContext(FirebaseContext);
@@ -25,10 +26,7 @@ const RosterForm = () => {
             .orderBy("name", "asc")
             .onSnapshot(
                 (snapshot) => {
-                    const rostersList = snapshot.docs.map((roster, index) => ({
-                        ...roster.data(),
-                        _id: snapshot.docs[index].id,
-                    }));
+                    const rostersList = snapshot.docs.map(rosterRefDoc => (new Roster(rosterRefDoc)));
                     setRosters(rostersList);
                 },
                 (error) => {

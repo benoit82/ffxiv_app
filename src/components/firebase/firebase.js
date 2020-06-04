@@ -2,7 +2,7 @@ import app from "firebase/app";
 import config from "./firebase-config";
 import "firebase/auth";
 import "firebase/firestore";
-import { User } from "../../models";
+import { User, Character, Roster } from "../../models";
 
 class Firebase {
   constructor() {
@@ -87,7 +87,7 @@ class Firebase {
     let roster = null;
     try {
       const response = await this.db.collection("rosters").doc(roster_id).get();
-      roster = { ...response.data(), _id: roster_id };
+      roster = new Roster(response);
       if (roster.name !== undefined) {
         rosterSetter(roster);
       } else {
@@ -102,16 +102,8 @@ class Firebase {
   getAllCharacters = async (chrsSetter) => {
     let resTab = [];
     const docs = await this.db.collection("characters").get();
-    docs.forEach((snap) => {
-      resTab = [
-        ...resTab,
-        {
-          _id: snap.id,
-          ...snap.data(),
-          label: snap.data().name, // for react-select
-          value: snap.id, // for react-select
-        },
-      ];
+    docs.forEach((chrRef) => {
+      resTab = [...resTab, new Character(chrRef)];
     });
     // order by name, asc
     resTab.sort((a, b) => {
@@ -129,7 +121,7 @@ class Firebase {
     let chr = null;
     try {
       const response = await this.db.collection("characters").doc(chr_id).get();
-      chr = { ...response.data(), _id: chr_id };
+      chr = new Character(response);
       const userRef = await this.db.doc(chr.userRef).get();
       chr.id && (userRef.uid === uid || userRef.isAdmin)
         ? characterSetter(chr)

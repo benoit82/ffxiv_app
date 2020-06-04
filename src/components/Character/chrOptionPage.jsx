@@ -7,6 +7,7 @@ import Msg from '../../utils/msg'
 import { UserApi } from '../../utils/appContext'
 import { AddBtn, CloseBtn, } from '../formElements'
 import CharacterDetailCard from './characterDetailCard'
+import { Character } from '../../models'
 
 const ChrOptionPage = () => {
 
@@ -34,10 +35,7 @@ const ChrOptionPage = () => {
                 .orderBy("name", "asc")
                 .onSnapshot(
                     (snapshot) => {
-                        const cList = snapshot.docs.map((character, index) => ({
-                            ...character.data(),
-                            _id: snapshot.docs[index].id,
-                        }));
+                        const cList = snapshot.docs.map((characterRefDoc, index) => new Character(characterRefDoc));
                         setCharacters(cList);
                     },
                     (error) => {
@@ -48,13 +46,6 @@ const ChrOptionPage = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [uid, firebase]) // <-- avoid repeating request
-
-    const findCharacter = _id => {
-        return characters.some(chr => chr._id === _id)
-            ? characters.find(chr => chr._id === _id)
-            : {};
-
-    }
 
     return (
         <Container fluid className="ml-2 mr-2">
@@ -67,7 +58,7 @@ const ChrOptionPage = () => {
                         {characters.map((character, index) =>
                             < CharacterDetailCard
                                 key={index}
-                                character={findCharacter(character._id)} />
+                                character={character} />
                         )}
                     </Row>
                 </>
