@@ -41,7 +41,19 @@ const RosterEdit = () => {
     }, [characters, raidLeader])
 
     useEffect(() => {
-        setRosterMembers(roster.rosterMembers)
+        if (roster.rosterMembers) {
+            let initChrs = []
+            const convertRefMemberToChr = async () => {
+                for (const memberRef of roster.rosterMembers) {
+                    const res = (await memberRef.get())
+                    let chrData = res.data()
+                    chrData = { ...chrData, label: chrData.name, value: res.id }
+                    initChrs = [...initChrs, chrData]
+                }
+                setRosterMembers(initChrs)
+            }
+            convertRefMemberToChr()
+        }
         setName(roster.name)
     }, [roster])
 
