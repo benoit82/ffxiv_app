@@ -82,16 +82,16 @@ const RosterEdit = () => {
     const handleSubmit = (event) => {
         event.preventDefault()
         // convert characters to ref
-        let rosterMembersCopy = []
+        let rosterMembersTmp = []
         rosterMembers.forEach(member => {
-            rosterMembersCopy = [...rosterMembersCopy, { refMember: firebase.db.doc(`characters/${member._id}`) }]
+            rosterMembersTmp = [...rosterMembersTmp, firebase.db.doc(`characters/${member._id}`)]
         })
         if (raidLeader && name) {
             const newRosterSetup = {
                 ...roster,
                 name,
                 refRaidLeader: firebase.db.doc(`characters/${raidLeader._id}`),
-                rosterMembers: rosterMembersCopy
+                rosterMembers: rosterMembersTmp
             }
             firebase.setRoster(newRosterSetup)
             history.push("/admin")
@@ -104,9 +104,7 @@ const RosterEdit = () => {
     const handleChange = (tabValues) => {
         if (tabValues !== null) {
             if (tabValues.length <= MAX_MEMBERS_ALLOWED) {
-                tabValues.sort((a, b) => {
-                    return a.label > b.label ? 1 : -1
-                })
+                tabValues.sort((a, b) => a.label > b.label ? 1 : -1)
                 setRosterMembers(tabValues)
 
             }
