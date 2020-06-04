@@ -27,13 +27,14 @@ const BISForm = ({ job, character, updateBis, resetBis }) => {
             initialValues={initialGearSet}
         >
             {({ handleSubmit }) => (
-                <Container className="bg-light mt-3">
+                <Container className="mt-3">
                     <Row>
                         <h3>BIS : {job} - Cochez les équipements obtenu</h3>
                     </Row>
+                    <Row><UpdateBtn /> <ResetBtn handleReset={() => resetBis(job, resetGearSet)} /></Row>
                     <Form onSubmit={handleSubmit}>
 
-                        <div style={{ maxHeight: "400px", overflowY: "scroll", overflowX: "hidden" }} className="d-flex flex-column flex-lg-wrap">
+                        <div style={{ maxHeight: "400px" }} className="d-flex flex-column flex-lg-wrap">
                             {
                                 Object.entries(initialGearSet)
                                     .sort((gearPieceA, gearPieceB) => {
@@ -44,7 +45,7 @@ const BISForm = ({ job, character, updateBis, resetBis }) => {
                                     })
                             }
                         </div>
-                        <Row><UpdateBtn /> <ResetBtn handleReset={() => resetBis(job, resetGearSet)} /></Row>
+
                     </Form>
                 </Container>
             )

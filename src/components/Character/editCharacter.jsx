@@ -147,7 +147,6 @@ const EditCharacter = () => {
             </Row>
             <Row className="mt-2">
                 <Col>
-                    <h4>Jobs</h4>
                     <form onSubmit={handleSubmit}>
                         <ListGroup horizontal>
                             <ListGroup.Item className="selectJob">

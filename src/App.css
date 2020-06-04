@@ -1,36 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;1,400;1,700&display=swap");
-
-.App {
-  font-family: "Nunito", sans-serif !important;
-  height: 100vh;
-  background-image: linear-gradient(
-      90deg,
-      rgba(219, 214, 223, 0.596) 0%,
-      rgba(81, 90, 218, 0.253) 100%
-    ),
-    url("./img/bg-desktop.jpg");
-
-  background-size: cover;
-  background-position: center;
-}
-
 .fas {
   margin-right: 0.3rem;
 }
 
 .active {
   border: 1px solid #696969af;
-}
-
-@media screen and (max-width: 960px) {
-  .App {
-    background-image: linear-gradient(
-        90deg,
-        rgba(219, 214, 223, 0.596) 0%,
-        rgba(81, 90, 218, 0.253) 100%
-      ),
-      url("./img/bg-phone.jpg");
-    background-size: cover;
-    background-position: center;
-  }
 }

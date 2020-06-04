@@ -61,6 +61,9 @@ class Firebase {
     const user = (await this.db.doc(`users/${uid}`).get()).data();
     return new User(user);
   };
+  updateUser = (user, values) => {
+    this.db.doc(`users/${user.uid}`).update(values);
+  };
 
   // Roster management
   addRoster = (roster) => {

@@ -8,6 +8,7 @@ class User {
     isGatherer,
     isRaidLeader,
     createdAt,
+    characters,
   }) {
     this.uid = uid;
     this.pseudo = pseudo;
@@ -16,7 +17,8 @@ class User {
     this.isCrafter = isCrafter;
     this.isGatherer = isGatherer;
     this.isRaidLeader = isRaidLeader;
-    this.createdAt = createdAt;
+    this.createdAt = createdAt.toDate().toLocaleDateString();
+    this.characters = characters;
     this.isLoggedIn = true;
   }
 }
