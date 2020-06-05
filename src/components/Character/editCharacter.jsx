@@ -16,6 +16,7 @@ import BISForm from './bisForm'
 import { resetGearSet } from '../../utils/jobs'
 
 import './editCharacter.scss'
+import { Character } from '../../models'
 
 const EditCharacter = () => {
     const history = useHistory()
@@ -45,7 +46,7 @@ const EditCharacter = () => {
             .doc(chr_id)
             .onSnapshot(
                 (snapshot) => {
-                    const chr = { ...snapshot.data(), _id: snapshot.id }
+                    const chr = new Character(snapshot)
                     if (chr.userRef !== null) {
                         chr.userRef.get().then(
                             response => {

@@ -31,21 +31,21 @@ const BISForm = ({ job, character, updateBis, resetBis }) => {
                     <Row>
                         <h3>BIS : {job} - Cochez les équipements obtenu</h3>
                     </Row>
-                    <Row><UpdateBtn /> <ResetBtn handleReset={() => resetBis(job, resetGearSet)} /></Row>
                     <Form onSubmit={handleSubmit}>
-
-                        <div style={{ maxHeight: "400px" }} className="d-flex flex-column flex-lg-wrap">
-                            {
-                                Object.entries(initialGearSet)
-                                    .sort((gearPieceA, gearPieceB) => {
-                                        return gearPieceA[1].order > gearPieceB[1].order ? 1 : -1
-                                    })
-                                    .map((armorElement, index) => {
-                                        return <Row key={index}><GearPiece armorElement={armorElement} job={job} gearType={gearType} /></Row>
-                                    })
-                            }
-                        </div>
-
+                        <Row><UpdateBtn /> <ResetBtn handleReset={() => resetBis(job, resetGearSet)} /></Row>
+                        <Row>
+                            <div style={{ maxHeight: "400px" }} className="d-flex flex-column flex-lg-wrap">
+                                {
+                                    Object.entries(initialGearSet)
+                                        .sort((gearPieceA, gearPieceB) => {
+                                            return gearPieceA[1].order > gearPieceB[1].order ? 1 : -1
+                                        })
+                                        .map((armorElement, index) => {
+                                            return <Row key={index}><GearPiece armorElement={armorElement} job={job} gearType={gearType} /></Row>
+                                        })
+                                }
+                            </div>
+                        </Row>
                     </Form>
                 </Container>
             )
