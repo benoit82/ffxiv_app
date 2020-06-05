@@ -167,7 +167,7 @@ const EditCharacter = () => {
                                 <Select
                                     className="basic-single"
                                     placeholder={character.secondJob || "2eme Job"}
-                                    onChange={setJob2}
+                                    onChange={setJob2} // TODO : if job2 === job1 => job2 null
                                     value={job2}
                                     isSearchable
                                     name="job2"
@@ -180,7 +180,7 @@ const EditCharacter = () => {
                                 <Select
                                     className="basic-single"
                                     placeholder={character.thirdJob || "3eme Job"}
-                                    onChange={setJob3}
+                                    onChange={setJob3} // TODO : if job3 === job1 ou job2 => job3 null
                                     value={job3}
                                     isSearchable
                                     name="job3"
