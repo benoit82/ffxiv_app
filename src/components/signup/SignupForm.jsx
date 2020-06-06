@@ -6,6 +6,7 @@ import { SendBtn, ResetBtn } from '../formElements'
 import Alert from 'react-bootstrap/Alert'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import { PSEUDO_MIN, PSEUDO_ERR_MSG, PSEUDO_MAX, FIELD_REQUIRED, PASSWORD_CONF_ERR_MSG, PASSWORD_MIN, PASSWORD_ERR_MSG, EMAIL_ERR_MSG } from '../../utils/consts'
 
 const SignupForm = () => {
     const firebase = useContext(FirebaseContext)
@@ -36,28 +37,23 @@ const SignupForm = () => {
     }
     // gestion du formulaire avec Formik
     // schema de validation
-    const minPseudoCaractere = 3
-    const maxPseudoCaractere = 15
-    const minPasswordCaractere = 6
-    const maxPasswordCaractere = 32
     const signupSchema = Yup.object().shape({
         pseudo: Yup.string()
-            .min(minPseudoCaractere, `Votre pseudo doit comporter entre ${minPseudoCaractere} et ${maxPseudoCaractere} lettres.`)
-            .max(maxPseudoCaractere, `Votre pseudo doit comporter entre ${minPseudoCaractere} et ${maxPseudoCaractere} lettres.`)
-            .required("champs obligatoire")
+            .min(PSEUDO_MIN, PSEUDO_ERR_MSG)
+            .max(PSEUDO_MAX, PSEUDO_ERR_MSG)
+            .required(FIELD_REQUIRED)
         ,
         email: Yup.string()
-            .email("email invalide.")
-            .required("champs obligatoire")
+            .email(EMAIL_ERR_MSG)
+            .required(FIELD_REQUIRED)
         ,
         password: Yup.string()
-            .min(minPasswordCaractere, `Mot de passe trop petit (${minPasswordCaractere} caractères minimum).`)
-            .max(maxPasswordCaractere, `Mot de passe trop grand (${maxPasswordCaractere} caractères maximum).`)
-            .required("champs obligatoire")
+            .min(PASSWORD_MIN, PASSWORD_ERR_MSG)
+            .required(FIELD_REQUIRED)
         ,
         confirmPassword: Yup.string()
-            .oneOf([Yup.ref('password'), null], 'Mot de passe non conforme.')
-            .required("champs obligatoire")
+            .oneOf([Yup.ref('password'), null], PASSWORD_CONF_ERR_MSG)
+            .required(FIELD_REQUIRED)
     })
 
     return (

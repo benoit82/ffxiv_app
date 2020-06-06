@@ -10,6 +10,7 @@ import { FirebaseContext } from "../firebase";
 import Msg from "../../utils/msg";
 import RostersTable from "./rostersTable";
 import { Roster } from "../../models";
+import { ROSTER_NAME_MIN, ROSTER_NAME_MAX, ROSTER_NAME_ERR_MSG, FIELD_REQUIRED } from "../../utils/consts";
 
 const RosterForm = () => {
     const firebase = useContext(FirebaseContext);
@@ -50,10 +51,10 @@ const RosterForm = () => {
 
     const RosterSchema = Yup.object().shape({
         name: Yup.string()
-            .min(3, "le nom doit comporter 3 lettres")
-            .max(15, "le nom doit comporter un maximum de 15 lettres")
-            .required("champs obligatoire"),
-        refRaidLeader: Yup.string().required("champs obligatoire"),
+            .min(ROSTER_NAME_MIN, ROSTER_NAME_ERR_MSG)
+            .max(ROSTER_NAME_MAX, ROSTER_NAME_ERR_MSG)
+            .required(FIELD_REQUIRED),
+        refRaidLeader: Yup.string().required(FIELD_REQUIRED),
     });
 
     const optCharacters = characters.map((character) => (

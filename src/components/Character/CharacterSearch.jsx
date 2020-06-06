@@ -10,6 +10,7 @@ import pluralize from 'pluralize'
 
 import "./characterSearch.css"
 import { XIVApi } from '../../utils/appContext'
+import { CHARACTER_NAME_MIN, FIELD_REQUIRED, CHARACTER_NAME_ERR_MSG } from '../../utils/consts'
 
 const CharacterSearch = ({ handleAdd, userCharacters }) => {
   const [loading, setLoading] = useState(false)
@@ -61,8 +62,8 @@ const CharacterSearch = ({ handleAdd, userCharacters }) => {
 
   const ChrSearchSchema = Yup.object().shape({
     characterName: Yup.string()
-      .min(3, "Veuillez indiquer au moins 3 lettres")
-      .required("champs obligatoire")
+      .min(CHARACTER_NAME_MIN, CHARACTER_NAME_ERR_MSG)
+      .required(FIELD_REQUIRED)
     ,
     selectServer: Yup.string(),
   });

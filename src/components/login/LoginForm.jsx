@@ -8,6 +8,7 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import FormCheck from 'react-bootstrap/FormCheck'
 import Alert from 'react-bootstrap/Alert'
+import { EMAIL_ERR_MSG, FIELD_REQUIRED, PASSWORD_ERR_MSG, PASSWORD_MIN } from '../../utils/consts'
 
 const LoginForm = () => {
     const firebase = useContext(FirebaseContext)
@@ -37,12 +38,12 @@ const LoginForm = () => {
     // schema de validation
     const LoginSchema = Yup.object().shape({
         email: Yup.string()
-            .email("email invalide")
-            .required("champs obligatoire")
+            .email(EMAIL_ERR_MSG)
+            .required(FIELD_REQUIRED)
         ,
         password: Yup.string()
-            .min(6, "Entrez 6 caratères minimum")
-            .required("champs obligatoire")
+            .min(PASSWORD_MIN, PASSWORD_ERR_MSG)
+            .required(FIELD_REQUIRED)
         ,
         remindMe: Yup.boolean()
             .notRequired()

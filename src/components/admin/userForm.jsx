@@ -6,23 +6,22 @@ import * as Yup from 'yup'
 import { UpdateBtn } from '../formElements'
 import Col from 'react-bootstrap/Col'
 import { FirebaseContext } from '../firebase'
+import { FIELD_REQUIRED, EMAIL_ERR_MSG, PSEUDO_MIN, PSEUDO_MAX, PSEUDO_ERR_MSG } from '../../utils/consts'
 
 const UserForm = ({ user }) => {
     const firebase = useContext(FirebaseContext)
 
     const { pseudo, email, isAdmin, isCrafter, isGatherer } = user
 
-    const minPseudoCaractere = 3
-    const maxPseudoCaractere = 15
     const userSchema = Yup.object().shape({
         pseudo: Yup.string()
-            .min(minPseudoCaractere, `Votre pseudo doit comporter entre ${minPseudoCaractere} et ${maxPseudoCaractere} lettres.`)
-            .max(maxPseudoCaractere, `Votre pseudo doit comporter entre ${minPseudoCaractere} et ${maxPseudoCaractere} lettres.`)
-            .required("champs obligatoire")
+            .min(PSEUDO_MIN, PSEUDO_ERR_MSG)
+            .max(PSEUDO_MAX, PSEUDO_ERR_MSG)
+            .required(FIELD_REQUIRED)
         ,
         email: Yup.string()
-            .email("email invalide.")
-            .required("champs obligatoire")
+            .email(EMAIL_ERR_MSG)
+            .required(FIELD_REQUIRED)
         ,
 
     })

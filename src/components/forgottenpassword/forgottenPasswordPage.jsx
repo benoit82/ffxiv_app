@@ -7,13 +7,14 @@ import Form from "react-bootstrap/Form";
 import { SendBtn } from "../formElements";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { EMAIL_ERR_MSG, FIELD_REQUIRED } from "../../utils/consts";
 
 const ForgottenPasswordPage = () => {
     const [status, setStatus] = useState(null);
     const firebase = useContext(FirebaseContext);
     const history = useHistory();
     const ForgottenPasswordSchema = Yup.object().shape({
-        email: Yup.string().email("email invalide.").required("champs obligatoire"),
+        email: Yup.string().email(EMAIL_ERR_MSG).required(FIELD_REQUIRED),
     });
 
     const submitPasswordReset = (email) => {
