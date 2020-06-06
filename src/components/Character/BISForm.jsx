@@ -32,20 +32,22 @@ const BISForm = ({ job, character, updateBis, resetBis }) => {
                         <h3>BIS : {job} - Cochez les équipements obtenu</h3>
                     </Row>
                     <Form onSubmit={handleSubmit}>
-                        <Row><UpdateBtn /> <ResetBtn handleReset={() => resetBis(job, resetGearSet)} /></Row>
-                        <Row>
-                            <div style={{ maxHeight: "400px" }} className="d-flex flex-column flex-lg-wrap">
-                                {
-                                    Object.entries(initialGearSet)
-                                        .sort((gearPieceA, gearPieceB) => {
-                                            return gearPieceA[1].order > gearPieceB[1].order ? 1 : -1
-                                        })
-                                        .map((armorElement, index) => {
-                                            return <Row key={index}><GearPiece armorElement={armorElement} job={job} gearType={gearType} /></Row>
-                                        })
-                                }
-                            </div>
-                        </Row>
+                        <div className="bg-light pl-4">
+                            <Row><UpdateBtn /> <ResetBtn handleReset={() => resetBis(job)} /></Row>
+                            <Row>
+                                <div style={{ maxHeight: "400px" }} className="d-flex flex-column flex-lg-wrap">
+                                    {
+                                        Object.entries(initialGearSet)
+                                            .sort((gearPieceA, gearPieceB) => {
+                                                return gearPieceA[1].order > gearPieceB[1].order ? 1 : -1
+                                            })
+                                            .map((armorElement, index) => {
+                                                return <Row key={index} className="mr-5"><GearPiece armorElement={armorElement} job={job} gearType={gearType} /></Row>
+                                            })
+                                    }
+                                </div>
+                            </Row>
+                        </div>
                     </Form>
                 </Container>
             )

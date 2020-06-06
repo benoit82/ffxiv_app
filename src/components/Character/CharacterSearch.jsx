@@ -67,10 +67,6 @@ const CharacterSearch = ({ handleAdd, userCharacters }) => {
     selectServer: Yup.string(),
   });
 
-  /*
-  * ! TODO handleClick à gerer pour ajouter un personnage au compte / au roster
-  * voir si le personnage selectionné n'est pas déjà dans la liste sauvegardé
-  */
   const handleAddChr = () => {
     handleAdd(characterSelected)
     setCharacters(null)

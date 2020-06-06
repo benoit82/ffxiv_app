@@ -1,5 +1,7 @@
 .selectJob {
-  width: 200px;
+  display: flex !important;
+  flex-direction: column;
+  align-content: center;
 }
 
 .title_name {

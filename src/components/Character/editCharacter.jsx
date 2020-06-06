@@ -73,11 +73,11 @@ const EditCharacter = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        let chrToUpdate = { ...character }
-        if (job1.value) chrToUpdate = { ...chrToUpdate, mainJob: job1.value }
-        if (job2.value) chrToUpdate = { ...chrToUpdate, secondJob: job2.value }
-        if (job3.value) chrToUpdate = { ...chrToUpdate, thirdJob: job3.value }
-        firebase.updateCharacter(chrToUpdate)
+        let jobFields = {}
+        if (job1.value) jobFields = { ...jobFields, mainJob: job1.value }
+        if (job2.value && job2.value !== job1.value && job2.value !== job3.value) jobFields = { ...jobFields, secondJob: job2.value }
+        if (job3.value && job3.value !== job1.value && job2.value !== job3.value) jobFields = { ...jobFields, thirdJob: job3.value }
+        firebase.updateCharacter(character._id, jobFields)
     }
 
     const editBis = (job) => {
@@ -85,14 +85,8 @@ const EditCharacter = () => {
     }
 
     const updateBis = (val, job) => {
-        let bis = { ...character.bis }
-        let chrToUpdate = {
-            ...character, bis: {
-                ...bis,
-                [job]: val
-            }
-        }
-        firebase.updateCharacter(chrToUpdate)
+        const bis = { ...character.bis, [job]: val }
+        firebase.updateCharacter(character._id, { bis })
         setMsgUpdate(<Alert variant="info">BIS pour {job} mis à jour !</Alert>)
         setTimeout(() => {
             setMsgUpdate("")
@@ -101,21 +95,18 @@ const EditCharacter = () => {
 
     const resetBis = (job) => {
         if (window.confirm(`Êtes-vous certain de remettre à zero la liste B.I.S. pour le job ${job} ?`)) {
-            let bis = { ...character.bis }
-            let chrToUpdate = { ...character, bis: { ...bis, [job]: resetGearSet } }
-            firebase.updateCharacter(chrToUpdate)
+            const bis = { ...character.bis, [job]: resetGearSet }
+            firebase.updateCharacter(character._id, { bis })
         }
     }
 
     const resetAllBis = () => {
         if (window.confirm(`Êtes-vous certain de remettre à zero les listes B.I.S. ?`)) {
-            let chrToUpdate = { ...character }
-            let bis = {}
-            if (character.mainJob) bis = { ...bis, [mainJob]: resetGearSet }
-            if (character.secondJob) bis = { ...bis, [secondJob]: resetGearSet }
-            if (character.thirdJob) bis = { ...bis, [thirdJob]: resetGearSet }
-            chrToUpdate.bis = { bis }
-            firebase.updateCharacter(chrToUpdate)
+            let bis = { ...character.bis }
+            if (mainJob) bis = { ...bis, [mainJob]: resetGearSet }
+            if (secondJob) bis = { ...bis, [secondJob]: resetGearSet }
+            if (thirdJob) bis = { ...bis, [thirdJob]: resetGearSet }
+            firebase.updateCharacter(character._id, { bis })
             setJobForBis("")
         }
     }
@@ -146,11 +137,12 @@ const EditCharacter = () => {
                     </div>
                 </div>
             </Row>
-            <Row className="mt-2">
-                <Col>
+            <Row className="mt-3">
+                <Col lg={3} className="mr-2">
+                    <h3>Jobs</h3>
                     <form onSubmit={handleSubmit}>
-                        <ListGroup horizontal>
-                            <ListGroup.Item className="selectJob">
+                        <ul className="list-group list-group-flush">
+                            <li className="list-group-item selectJob">
                                 <Select
                                     className="basic-single"
                                     placeholder={character.mainJob || "Main job"}
@@ -162,12 +154,12 @@ const EditCharacter = () => {
                                     formatGroupLabel={formatGroupLabel}
                                 />
                                 {character.mainJob && <EditBtn label={`édit. BIS ${character.mainJob}`} handleClick={() => editBis(character.mainJob)} />}
-                            </ListGroup.Item>
+                            </li>
                             {job1 && <ListGroup.Item className="selectJob">
                                 <Select
                                     className="basic-single"
                                     placeholder={character.secondJob || "2eme Job"}
-                                    onChange={setJob2} // TODO : if job2 === job1 => job2 null
+                                    onChange={setJob2}
                                     value={job2}
                                     isSearchable
                                     name="job2"
@@ -180,7 +172,7 @@ const EditCharacter = () => {
                                 <Select
                                     className="basic-single"
                                     placeholder={character.thirdJob || "3eme Job"}
-                                    onChange={setJob3} // TODO : if job3 === job1 ou job2 => job3 null
+                                    onChange={setJob3}
                                     value={job3}
                                     isSearchable
                                     name="job3"
@@ -190,20 +182,18 @@ const EditCharacter = () => {
                                 {character.thirdJob && <EditBtn label={`édit. BIS ${character.thirdJob}`} handleClick={() => editBis(character.thirdJob)} />}
                             </ListGroup.Item>}
                             <ListGroup.Item>
-                                <SendBtn label="mettre à jour les jobs" /> <br />
-                                {character.bis && <ResetBtn label="réinitialiser tous les BIS" handleReset={resetAllBis} />}
+                                <SendBtn label="mettre à jour les jobs" />
+                                {character.bis && <ResetBtn label="reset tous les BIS" handleReset={resetAllBis} />}
                             </ListGroup.Item>
-                        </ListGroup>
+                        </ul>
 
                     </form>
                 </Col>
-            </Row>
-            {jobForBis && <Row className="mt-2">
                 <Col>
                     {msgUpdate}
                     {jobForBis}
                 </Col>
-            </Row>}
+            </Row>
         </Container>
     )
 }

@@ -158,11 +158,8 @@ class Firebase {
     return deletedChr;
   };
 
-  updateCharacter = (character) => {
-    const { _id } = character;
-    delete character._id;
-    if (character.bis === undefined) delete character.bis;
-    this.db.collection("characters").doc(_id).set(character);
+  updateCharacter = (_id, characterFields) => {
+    this.db.collection("characters").doc(_id).update(characterFields);
   };
 
   /**

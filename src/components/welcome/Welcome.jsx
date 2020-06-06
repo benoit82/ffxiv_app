@@ -21,8 +21,6 @@ const Welcome = () => {
                     <>
                         <Link to="/login" className="btn btn-primary fas fa-sign-in-alt mr-2"> login</Link>
                         <Link to="/signup" className="btn btn-success fas fa-user-plus"> s'inscrire</Link>
-                        {/* TODO to be remove ? <Button variant="primary" className="mr-2" onClick={() => history.push("/login")}><i className="fas fa-sign-in-alt"></i></Button>
-                        <Button variant="success" onClick={() => history.push("/signup")}><i className="fas fa-user-plus"></i>S'inscrire</Button> */}
                     </>
                 )
             }
