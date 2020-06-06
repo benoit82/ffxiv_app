@@ -6,7 +6,7 @@ class User {
     isAdmin,
     isCrafter,
     isGatherer,
-    isRaidLeader,
+    refRosterRaidLeader,
     createdAt,
     characters,
   }) {
@@ -16,7 +16,7 @@ class User {
     this.isAdmin = isAdmin;
     this.isCrafter = isCrafter;
     this.isGatherer = isGatherer;
-    this.isRaidLeader = isRaidLeader;
+    this.refRosterRaidLeader = refRosterRaidLeader || null;
     this.createdAt = createdAt.toDate().toLocaleDateString();
     this.characters = characters;
     this.isLoggedIn = true;

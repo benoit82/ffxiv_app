@@ -8,10 +8,9 @@ import {
   LoginPage,
   ForgottenPasswordPage,
   AdminOptionPage,
-  ChrOptionPage,
-  EditCharacter,
   ViewRoster,
   RosterEdit,
+  UserParamPage,
 } from "./components";
 import ProtectedRoute from "./utils/protectedRoute";
 
@@ -29,25 +28,19 @@ const Routes = () => {
       <Route path="/item" component={ItemSearch} />
       <ProtectedRoute
         path="/admin"
-        allowedUser={user.isAdmin || user.isRaidLeader}
+        allowedUser={user.isAdmin}
         component={AdminOptionPage}
       />
       <ProtectedRoute
         path="/roster/edit/:roster_id"
-        allowedUser={user.isAdmin || user.isRaidLeader}
+        allowedUser={user.isAdmin || user.refRosterRaidLeader !== null}
         component={RosterEdit}
       />
       <Route path="/roster/:roster_id" component={ViewRoster} />
       <ProtectedRoute
-        exact
-        path="/chr"
+        path="/param"
         allowedUser={user.isLoggedIn}
-        component={ChrOptionPage}
-      />
-      <ProtectedRoute
-        path="/chr/:chr_id"
-        allowedUser={user.isLoggedIn}
-        component={EditCharacter}
+        component={UserParamPage}
       />
     </Switch>
   );

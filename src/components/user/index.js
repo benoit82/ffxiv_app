@@ -1,3 +1,4 @@
+import UserParamPage from "./userParamPage";
 import UserOptionPage from "./userOptionPage";
 
-export { UserOptionPage };
+export { UserParamPage, UserOptionPage };

@@ -10,7 +10,7 @@ import { FirebaseContext } from '../firebase'
 const UserForm = ({ user }) => {
     const firebase = useContext(FirebaseContext)
 
-    const { pseudo, email, isAdmin, isRaidLeader, isCrafter, isGatherer } = user
+    const { pseudo, email, isAdmin, isCrafter, isGatherer } = user
 
     const minPseudoCaractere = 3
     const maxPseudoCaractere = 15
@@ -41,7 +41,6 @@ const UserForm = ({ user }) => {
                     pseudo,
                     email,
                     isAdmin,
-                    isRaidLeader,
                     isCrafter,
                     isGatherer
                 }}
@@ -93,17 +92,6 @@ const UserForm = ({ user }) => {
                                         type="checkbox"
                                         checked={values.isAdmin}
                                         value={values.isAdmin}
-                                        onChange={handleChange}
-                                    />
-                                </Form.Group>
-                                <Form.Group controlId="isRaidLeader">
-                                    <Form.Label>Raid Leader</Form.Label>
-                                    <Field
-                                        custom
-                                        as={Form.Control}
-                                        type="checkbox"
-                                        checked={values.isRaidLeader}
-                                        value={values.isRaidLeader}
                                         onChange={handleChange}
                                     />
                                 </Form.Group>

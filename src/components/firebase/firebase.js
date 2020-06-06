@@ -26,12 +26,12 @@ class Firebase {
    * @param {string} password
    */
   signInUser = async (email, password) => {
-    const authUser = await this.auth.signInWithEmailAndPassword(
+    const userCredential = await this.auth.signInWithEmailAndPassword(
       email,
       password
     );
     // fetch userDetail to be return
-    return this.getUser(authUser.user.uid);
+    return this.getUser(userCredential.user.uid);
   };
 
   /**
@@ -63,6 +63,14 @@ class Firebase {
   };
   updateUser = (user, values) => {
     this.db.doc(`users/${user.uid}`).update(values);
+  };
+
+  updateAuthUserEmail = async (currentEmail, password, newEmail) => {
+    const userCredential = await this.auth.signInWithEmailAndPassword(
+      currentEmail,
+      password
+    );
+    userCredential.user.updateEmail(newEmail);
   };
 
   // Roster management

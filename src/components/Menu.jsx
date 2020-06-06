@@ -6,7 +6,7 @@ import { Disconnect } from "./index"
 
 
 const Menu = ({ user }) => {
-  const { isLoggedIn, isAdmin, isRaidLeader } = user;
+  const { isLoggedIn, isAdmin, refRosterRaidLeader } = user;
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" >
       <Link className="navbar-brand" to="/">FFXIV-Roster Helper</Link>
@@ -16,8 +16,7 @@ const Menu = ({ user }) => {
           {/* si l'utilisateur est connecté */
             isLoggedIn && (<>
               <NavLink className="nav-link" to="/item">Item</NavLink>
-              <NavLink className="nav-link" to="/chr"><i className="fas fa-cog"></i>Mes personnages</NavLink>
-              <NavLink className="nav-link" to="/roster"><i className="fas fa-users"></i>Mon roster</NavLink>
+              <NavLink className="nav-link" to="/param"><i className="fas fa-cog"></i>Paramètrage</NavLink>
             </>)}
         </Nav>
         <Nav>
@@ -27,7 +26,7 @@ const Menu = ({ user }) => {
               <NavLink className="nav-link" to="/signup"><i className="fas fa-user-plus"></i>Inscription</NavLink>
             </>)}
           {/* si l'utilisateur est admin */
-            (isAdmin || isRaidLeader) && (<>
+            (isAdmin || refRosterRaidLeader) && (<>
               <NavLink className="nav-link" to="/admin"><i className="fas fa-meteor"></i>Admin</NavLink>
             </>)
           }

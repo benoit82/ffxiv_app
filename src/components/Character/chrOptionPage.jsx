@@ -9,6 +9,9 @@ import { AddBtn, CloseBtn, } from '../formElements'
 import CharacterDetailCard from './characterDetailCard'
 import { Character } from '../../models'
 
+/**
+ * @route /chr
+ */
 const ChrOptionPage = () => {
 
     // créer un useEffect pour charger le personnage, sinon, proposer de chercher le personnage et 

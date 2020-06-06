@@ -23,9 +23,10 @@ const SignupForm = () => {
                 email: values.email.trim(),
                 createdAt: new Date(),
                 isAdmin: false,
-                isRaidLeader: false,
+                refRosterRaidLeader: null,
                 isCrafter: false,
                 isGatherer: false,
+                rosterRefs: null
             }
             firebase.addUser(uid, configNewUser)
             history.push("/")

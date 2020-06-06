@@ -14,7 +14,7 @@ import { Disconnect } from "./disconnect";
 import { Welcome } from "./welcome";
 import { AdminOptionPage } from "./admin";
 import { RosterEdit, ViewRoster } from "./roster";
-import { UserOptionPage } from "./user";
+import { UserParamPage, UserOptionPage } from "./user";
 import { ForgottenPasswordPage } from "./forgottenpassword";
 import { Footer } from "./footer";
 
@@ -35,6 +35,7 @@ export {
   AdminOptionPage,
   ViewRoster,
   RosterEdit,
+  UserParamPage,
   UserOptionPage,
   BISForm,
   Footer,

@@ -57,7 +57,7 @@ const UsersAdmin = () => {
                             <th>Pseudo</th>
                             <th>Email</th>
                             <th>Admin</th>
-                            <th>RaidLeader</th>
+                            <th>Raid Leader</th>
                             <th>Crafteur</th>
                             <th>Récolteur</th>
                             <th>Date création</th>
@@ -69,7 +69,7 @@ const UsersAdmin = () => {
                                 <td><Button variant="info" onClick={() => editUser(user)}>{user.pseudo}</Button></td>
                                 <td>{user.email}</td>
                                 <td>{user.isAdmin && <i className="fas fa-check"></i>}</td>
-                                <td>{user.isRaidLeader && <i className="fas fa-check"></i>}</td>
+                                <td>{user.refRosterRaidLeader && <i className="fas fa-check"></i>}</td>
                                 <td>{user.isCrafter && <i className="fas fa-check"></i>}</td>
                                 <td>{user.isGatherer && <i className="fas fa-check"></i>}</td>
                                 <td>{user.createdAt}</td>

@@ -14,7 +14,7 @@ const Disconnect = () => {
         await firebase.signOutUser();
         sessionStorage.removeItem("user");
         localStorage.removeItem("user");
-        User.setUser({ ...User.user, isLoggedIn: false, isAdmin: false, isRaidLeader: false });
+        User.setUser({ ...User.user, isLoggedIn: false, isAdmin: false, refRosterRaidLeader: null });
         history.push("/");
     }
 
