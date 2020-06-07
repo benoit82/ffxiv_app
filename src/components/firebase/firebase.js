@@ -94,6 +94,7 @@ class Firebase {
 
   deleteRoster = async (_id) => {
     const deletedRoster = await this.db.collection("rosters").doc(_id).delete();
+    // TODO : delete as well on users table (refRosterRaidLeader) + each characters ()
     return deletedRoster;
   };
 
@@ -162,16 +163,33 @@ class Firebase {
     }
   };
 
-  addCharacter = (uid, character) => {
+  addCharacter = async (uid, character) => {
     character.userRef = this.db.collection("users").doc(uid);
-    return this.db.collection("characters").add(character);
+    //update user for chr reference
+    const refChr = await this.db.collection("characters").add(character);
+    let user = (await this.db.collection("users").doc(uid).get()).data();
+    let characters = [];
+    if (user.characters && user.characters.length > 0) {
+      characters = [...user.characters, refChr];
+      this.db.collection("users").doc(uid).update({ characters });
+    } else {
+      characters = [refChr];
+      user = { ...user, characters };
+      this.db.collection("users").doc(uid).set(user);
+    }
   };
 
   deleteCharacter = async (character) => {
     const deletedChr = await this.db
       .collection("characters")
-      .doc(character._id)
-      .delete();
+      .doc(character._id);
+    // delete chr ref on rosters and users
+    let characters = (await character.userRef.get()).data().characters;
+    characters = characters.filter((ref) => ref.path !== deletedChr.path);
+    character.userRef.update({ characters });
+    // TODO : for roster
+    //finally deleting chr
+    deletedChr.delete();
     return deletedChr;
   };
 

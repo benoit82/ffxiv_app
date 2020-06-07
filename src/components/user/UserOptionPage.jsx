@@ -9,7 +9,7 @@ import { FirebaseContext } from '../firebase'
 import { UserApi } from '../../utils/appContext'
 import Msg from '../../utils/msg'
 import { EMAIL_UPDATE, ROSTER_CREATE } from '../../utils/consts'
-import { User } from '../../models'
+import { User, Character } from '../../models'
 import RosterCreate from '../roster/rosterCreate'
 
 
@@ -19,6 +19,7 @@ import RosterCreate from '../roster/rosterCreate'
 const UserOptionPage = () => {
 
     const [userFromDb, setUserFromDb] = useState(null)
+    const [userCharacters, setUserCharacters] = useState([])
     const [msgInfo, setMsgInfo] = useState(null)
     const [showActiveForm, setShowActiveForm] = useState(null)
     const firebase = useContext(FirebaseContext)
@@ -32,6 +33,17 @@ const UserOptionPage = () => {
                 (snapshot) => {
                     const usr = new User(snapshot.docs[0].data())
                     setUserFromDb(usr)
+                    if (usr.characters.length > 0) {
+                        let chrList = []
+                        for (const chrRef of usr.characters) {
+                            chrRef.get()
+                                .then(res => {
+                                    chrList.push(new Character(res))
+                                })
+                                .catch(error => setMsgInfo(<Msg error={error.message} />))
+                        }
+                        setUserCharacters(chrList)
+                    }
                 },
                 (error) => {
                     throw setMsgInfo(<Msg error={error.message} />)
@@ -79,6 +91,7 @@ const UserOptionPage = () => {
             <Row>
                 <ul>
                     <li>Créer un roster (proposer liste de ses persos comme RL)</li>
+                    {userCharacters && userCharacters.map(chr => <p>{chr.id}</p>)}
                 </ul>
             </Row>
             <Row>
