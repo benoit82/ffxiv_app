@@ -1,41 +1,26 @@
-import React, { useState, useEffect, useContext } from "react";
-import Container from "react-bootstrap/Container";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { SendBtn } from "../formElements";
-import { FirebaseContext } from "../firebase";
-import Msg from "../../utils/msg";
-import RostersTable from "./rostersTable";
-import { Roster } from "../../models";
+import React, { useState, useEffect, useContext } from 'react'
+import Container from 'react-bootstrap/Container'
+import Form from 'react-bootstrap/Form'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
+import * as Yup from 'yup'
 import { ROSTER_NAME_MIN, ROSTER_NAME_MAX, ROSTER_NAME_ERR_MSG, FIELD_REQUIRED } from "../../utils/consts";
+import { Formik } from 'formik'
+import { SendBtn } from '../formElements'
+import Msg from '../../utils/msg'
+import { FirebaseContext } from '../firebase'
 
-const RosterForm = () => {
+
+const RosterCreate = (
+    // userChrList // TODO : to be developed , if null => getAllCharacters (witch is not raidleader yet)
+) => {
     const firebase = useContext(FirebaseContext);
     const [characters, setCharacters] = useState([]);
-    const [rosters, setRosters] = useState([]);
     const [infoMsg, setInfoMsg] = useState(null);
 
     useEffect(() => {
         // get characters list
         firebase.getAllCharacters(setCharacters);
-        // load the roster
-        const unsubcribe = firebase.db
-            .collection("rosters")
-            .orderBy("name", "asc")
-            .onSnapshot(
-                (snapshot) => {
-                    const rostersList = snapshot.docs.map(rosterRefDoc => (new Roster(rosterRefDoc)));
-                    setRosters(rostersList);
-                },
-                (error) => {
-                    throw setInfoMsg(<Msg error={error.message} />);
-                }
-            );
-
-        return () => unsubcribe();
     }, [firebase]);
 
 
@@ -45,7 +30,7 @@ const RosterForm = () => {
         try {
             firebase.addRoster({ name, refRaidLeader });
         } catch (error) {
-            setInfoMsg(<Msg error={{ message: error.message }} />);
+            setInfoMsg(<Row><Msg error={{ message: error.message }} /></Row>);
         }
     };
 
@@ -68,24 +53,11 @@ const RosterForm = () => {
         resetForm({})
     };
 
-
     return (
-        <>
-            <Container>
-                <Row>
-                    <h2>Liste des rosters existants</h2>
-                </Row>
-                <Row>
-                    {rosters.length > 0 ? (
-                        <RostersTable rosters={rosters} />
-                    ) : (
-                            <p>aucun roster créer</p>
-                        )}
-                </Row>
-            </Container>
-            <Container>
-                <h2>Créer un roster</h2>
-                {infoMsg}
+        <Container>
+            {infoMsg}
+            <Row><h2>Créer un roster</h2></Row>
+            <Row>
                 <Formik
                     enableReinitialize
                     validationSchema={RosterSchema}
@@ -132,9 +104,9 @@ const RosterForm = () => {
                         </Form>
                     )}
                 </Formik>
-            </Container>
-        </>
-    );
-};
+            </Row>
+        </Container>
+    )
+}
 
-export default RosterForm;
+export default RosterCreate

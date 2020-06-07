@@ -61,16 +61,25 @@ class Firebase {
     const user = (await this.db.doc(`users/${uid}`).get()).data();
     return new User(user);
   };
+
   updateUser = (user, values) => {
     this.db.doc(`users/${user.uid}`).update(values);
   };
 
+  /**
+   * ! doesn't propage the error 😢
+   * @deprecated
+   */
   updateAuthUserEmail = async (currentEmail, password, newEmail) => {
-    const userCredential = await this.auth.signInWithEmailAndPassword(
-      currentEmail,
-      password
-    );
-    userCredential.user.updateEmail(newEmail);
+    try {
+      const userCredential = await this.auth.signInWithEmailAndPassword(
+        currentEmail,
+        password
+      );
+      userCredential.user.updateEmail(newEmail);
+    } catch (error) {
+      throw error;
+    }
   };
 
   // Roster management
@@ -172,6 +181,7 @@ class Firebase {
 
   /**
    * not used : do not return the unsubscribe function... 😢 => useEffect on user/AddCharacter.jsx
+   * @deprecated
    */
   userListCharacters = async (uid, listSetter, handleError) => {
     let unsubscribe = await this.db
