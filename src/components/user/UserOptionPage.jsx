@@ -57,10 +57,7 @@ const UserOptionPage = () => {
                 setShowActiveForm(<EmailUpdateFrom />)
                 break
             case ROSTER_CREATE:
-                setShowActiveForm(<RosterCreate
-                //userChrList={characters}
-                // TODO : option : userChrList={characters}  => to be developped
-                />)
+                setShowActiveForm(<RosterCreate userChrList={userCharacters} />)
                 break
             default:
                 setShowActiveForm(null)
