@@ -7,6 +7,7 @@ import { UpdateBtn } from '../formElements'
 import Col from 'react-bootstrap/Col'
 import { FirebaseContext } from '../firebase'
 import { FIELD_REQUIRED, EMAIL_ERR_MSG, PSEUDO_MIN, PSEUDO_MAX, PSEUDO_ERR_MSG } from '../../utils/consts'
+import FormCheck from 'react-bootstrap/FormCheck'
 
 const UserForm = ({ user }) => {
     const firebase = useContext(FirebaseContext)
@@ -84,36 +85,33 @@ const UserForm = ({ user }) => {
                                     </Form.Control.Feedback>
                                 </Form.Group>
                                 <Form.Group controlId="isAdmin">
-                                    <Form.Label>Admin</Form.Label>
-                                    <Field
-                                        custom
-                                        as={Form.Control}
+                                    <FormCheck
                                         type="checkbox"
                                         checked={values.isAdmin}
                                         value={values.isAdmin}
                                         onChange={handleChange}
+                                        label="Admin"
+                                        custom
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="isCrafter">
-                                    <Form.Label>Crafteur</Form.Label>
-                                    <Field
-                                        custom
-                                        as={Form.Control}
+                                    <FormCheck
                                         type="checkbox"
                                         checked={values.isCrafter}
                                         value={values.isCrafter}
                                         onChange={handleChange}
+                                        label="Crafteur"
+                                        custom
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="isGatherer">
-                                    <Form.Label>Récolteur</Form.Label>
-                                    <Field
-                                        custom
-                                        as={Form.Control}
+                                    <FormCheck
                                         type="checkbox"
                                         checked={values.isGatherer}
                                         value={values.isGatherer}
                                         onChange={handleChange}
+                                        label="Récolteur"
+                                        custom
                                     />
                                 </Form.Group>
                                 <UpdateBtn />

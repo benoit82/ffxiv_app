@@ -8,6 +8,7 @@ import { UpdateBtn } from '../formElements'
 import Container from 'react-bootstrap/Container'
 import { FirebaseContext } from '../firebase'
 import Msg from '../../utils/msg'
+import Col from 'react-bootstrap/Col'
 
 const EmailUpdateFrom = () => {
     const User = useContext(UserApi)
@@ -54,41 +55,44 @@ const EmailUpdateFrom = () => {
             >
                 {
                     ({ handleSubmit, handleChange, values, errors, touched }) => (
-                        <Form onSubmit={handleSubmit}>
-                            <Form.Group>
-                                <Form.Label>Nouvel email</Form.Label>
-                                <Field
-                                    as={Form.Control}
-                                    type="email"
-                                    name="newEmail"
-                                    value={values.newEmail}
-                                    isValid={touched.newEmail && !errors.newEmail}
-                                    isInvalid={!!errors.newEmail}
-                                    custom
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    {errors.newEmail}
-                                </Form.Control.Feedback>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Mot de passe</Form.Label>
-                                <Field
-                                    as={Form.Control}
-                                    custom
-                                    type="password"
-                                    name="password"
-                                    isValid={touched.password && !errors.password}
-                                    isInvalid={!!errors.password}
-                                    value={values.password}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    {errors.password}
-                                </Form.Control.Feedback>
-                            </Form.Group>
-                            <Form.Group>
-                                <UpdateBtn />
-                            </Form.Group>
-                        </Form>
+                        <Col lg={4}>
+                            <Form onSubmit={handleSubmit}>
+                                <Form.Group controlId="newEmail">
+                                    <Form.Label>Mon nouvel email</Form.Label>
+                                    <Field
+                                        as={Form.Control}
+                                        type="email"
+                                        name="newEmail"
+                                        value={values.newEmail}
+                                        onChange={handleChange}
+                                        isValid={touched.newEmail && !errors.newEmail}
+                                        isInvalid={errors.newEmail}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.newEmail}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+
+                                <Form.Group>
+                                    <Form.Label>Mot de passe</Form.Label>
+                                    <Field
+                                        as={Form.Control}
+                                        type="password"
+                                        name="password"
+                                        isValid={touched.password && !errors.password}
+                                        isInvalid={!!errors.password}
+                                        value={values.password}
+                                        onChange={handleChange}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.password}
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                                <Form.Group>
+                                    <UpdateBtn />
+                                </Form.Group>
+                            </Form>
+                        </Col>
                     )
                 }
             </Formik>

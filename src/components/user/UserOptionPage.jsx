@@ -1,9 +1,8 @@
-import React, { useState, useContext, useEffect, useReducer } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import ListGroup from 'react-bootstrap/ListGroup'
 import EmailUpdateFrom from './emailUpdateFrom'
-import { CloseBtn } from '../formElements'
 import Button from 'react-bootstrap/Button'
 import { FirebaseContext } from '../firebase'
 import { UserApi } from '../../utils/appContext'
@@ -80,10 +79,16 @@ const UserOptionPage = () => {
                             <i className="fas fa-edit"></i>modifier
                         </Button>
                     </ListGroup.Item>
-                    <ListGroup.Item>RaidLeader :
-                        <Button variant="primary" className="m-1" onClick={() => activeForm(ROSTER_CREATE)}>
-                            <i className="fas fa-edit"></i>créer
+                    <ListGroup.Item>{userFromDb.refRosterRaidLeader
+                        ?
+                        <Button variant="primary" className="m-1" onClick={(e) => console.log(e)}>
+                            <i className="fas fa-edit">Ajouter des membres</i>
                         </Button>
+                        :
+                        <Button variant="primary" className="m-1" onClick={() => activeForm(ROSTER_CREATE)}>
+                            <i className="fas fa-edit"></i>créer un nouveau roster
+                        </Button>
+                    }
                     </ListGroup.Item>
                 </ListGroup>
             </Row>}

@@ -26,6 +26,7 @@ class Firebase {
    * @param {string} password
    */
   signInUser = async (email, password) => {
+    this.signOutUser();
     const userCredential = await this.auth.signInWithEmailAndPassword(
       email,
       password

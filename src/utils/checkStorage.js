@@ -1,9 +1,8 @@
 const checkStorage = async (databaseObject, userSetter) => {
-  if (localStorage.getItem("user") !== null) {
-    const user = JSON.parse(localStorage.getItem("user"));
+  if (localStorage.getItem("uid")) {
+    const uid = localStorage.getItem("uid");
     try {
-      userSetter(user);
-      const userFromDB = await databaseObject.getUser(user.uid); // new User()
+      const userFromDB = await databaseObject.getUser(uid);
       userSetter(userFromDB); // instance of User
       return true;
     } catch (error) {

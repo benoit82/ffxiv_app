@@ -20,9 +20,9 @@ const LoginForm = () => {
     const loginWithFirebase = async (values) => {
         setErrorMsg(null)
         try {
-            const response = await firebase.signInUser(values.email.trim(), values.password.trim())
+            const response = await firebase.signInUser(values.email, values.password)
             User.setUser(response)
-            values.remindMe ? localStorage.setItem("user", JSON.stringify(response)) : localStorage.removeItem("user")
+            values.remindMe ? localStorage.setItem("uid", response.uid) : localStorage.removeItem("uid")
             if (location.state && location.state.from.pathname === "/admin"
                 && !response.isAdmin) {
                 setErrorMsg(<Alert variant="danger" className="mt-3">Erreur : <br /><strong>Accès insuffisant pour accèder à la page demandée, redirection dans 2 secondes vers la page d'acceuil</strong></Alert>)
