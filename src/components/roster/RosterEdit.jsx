@@ -31,7 +31,7 @@ const RosterEdit = () => {
 
     useEffect(() => {
         firebase.getRoster(roster_id, setRoster, setErrorMsg)
-        firebase.getAllCharacters(setCharacters)
+        firebase.getAllCharacters(setCharacters, { filter: null })
     }, [])
 
     const modifRL = useCallback(
