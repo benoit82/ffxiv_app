@@ -2,7 +2,7 @@ import app from "firebase/app";
 import config from "./firebase-config";
 import "firebase/auth";
 import "firebase/firestore";
-import { User, Character, Roster } from "../../models";
+import { User, Character } from "../../models";
 
 class Firebase {
   constructor() {
@@ -101,35 +101,31 @@ class Firebase {
   };
 
   deleteRoster = async (_id, deleteChr = null) => {
-    const refDeletedRoster = await this.db.collection("rosters").doc(_id);
-    // TODO : delete as well on users table (refRosterRaidLeader) + each characters ()
+    const refDeletedRoster = this.db.collection("rosters").doc(_id);
+    const dataRoster = (await refDeletedRoster.get()).data();
     if (!deleteChr) {
-      const dataRoster = (await refDeletedRoster.get()).data();
       dataRoster.refRaidLeader.update({
         rosterRaidLeader: null,
+      });
+    }
+    if (dataRoster.rosterMembers && dataRoster.rosterMembers.length > 0) {
+      dataRoster.rosterMembers.forEach((refMember) => {
+        refMember.update({ rosterMember: null });
       });
     }
     refDeletedRoster.delete();
   };
 
-  setRoster = async (roster) => {
-    const { _id } = roster;
+  updateRoster = async (roster) => {
+    const { _id, rosterMembers } = roster;
     delete roster._id;
-    this.db.collection("rosters").doc(_id).set(roster);
-  };
-
-  getRoster = async (roster_id, rosterSetter, errorSetter) => {
-    let roster = null;
-    try {
-      const response = await this.db.collection("rosters").doc(roster_id).get();
-      roster = new Roster(response);
-      if (roster.name !== undefined) {
-        rosterSetter(roster);
-      } else {
-        throw new Error("Roster non trouvé");
-      }
-    } catch (error) {
-      errorSetter(error.message);
+    const rosterDocRef = this.db.collection("rosters").doc(_id);
+    rosterDocRef.update(roster);
+    //for each member : add a reference
+    if (rosterMembers.length > 0) {
+      rosterMembers.forEach((refMember) => {
+        refMember.update({ rosterMember: rosterDocRef });
+      });
     }
   };
 
@@ -204,13 +200,21 @@ class Firebase {
     const deletedChr = await this.db
       .collection("characters")
       .doc(character._id);
-    // delete chr ref on rosters and users
+    // delete chr ref on users
     let characters = (await character.userRef.get()).data().characters;
-    characters = characters.filter((ref) => ref.path !== deletedChr.path);
+    characters = characters.filter((ref) => !ref.isEqual(deletedChr));
     character.userRef.update({ characters });
-    // TODO : for roster
     if (character.rosterRaidLeader)
       this.deleteRoster(character.rosterRaidLeader.id, deletedChr);
+    // delete chrRef on roster
+    if (character.rosterMember) {
+      let rosterMembers = (await character.rosterMember.get()).data()
+        .rosterMembers;
+      rosterMembers = rosterMembers.filter(
+        (chrRef) => !chrRef.isEqual(deletedChr)
+      );
+      character.rosterMember.update({ rosterMembers });
+    }
     //finally deleting chr
     deletedChr.delete();
     return deletedChr;
