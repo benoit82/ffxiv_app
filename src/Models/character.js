@@ -16,6 +16,7 @@ class Character {
       this.server = data.server;
       this.userRef = data.userRef;
       this.rosterRaidLeader = data.rosterRaidLeader || null;
+      this.rosterMember = data.rosterMember || null;
       // label + value for react-select
       this.label = data.mainJob
         ? `${data.name} - ${data.mainJob}`

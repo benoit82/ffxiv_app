@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useCallback } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Msg from '../../utils/msg'
@@ -10,6 +10,7 @@ import Col from 'react-bootstrap/Col'
 import * as pluralize from 'pluralize'
 import { UpdateBtn } from '../formElements'
 import { Character, Roster } from '../../models'
+import { MAX_MEMBERS_ALLOWED } from '../../utils/consts'
 
 
 
@@ -17,35 +18,47 @@ const RosterEdit = () => {
     const { roster_id } = useParams()
     const firebase = useContext(FirebaseContext)
 
-    const MAX_MEMBERS_ALLOWED = 7
-
     const [roster, setRoster] = useState(new Roster(null))
-    const [errorMsg, setErrorMsg] = useState(null)
     const [infoMsg, setInfoMsg] = useState(null)
     const [characters, setCharacters] = useState([])
+    const [raidLeader, setRaidLeader] = useState(null)
     //--- select
     const [name, setName] = useState("")
-    const [raidLeader, setRaidLeader] = useState({})
-    const [charactersFiltered, setCharactersFiltered] = useState([])
     const [rosterMembers, setRosterMembers] = useState([])
 
     useEffect(() => {
-        firebase.getRoster(roster_id, setRoster, setErrorMsg)
-        firebase.getAllCharacters(setCharacters, { filter: null })
+        firebase.getAllCharacters(setCharacters, { filter: "rosterRaidLeader" })
     }, [])
 
-    const modifRL = useCallback(
-        () => {
-            findRaidLeader()
-            setCharactersFiltered(characters.filter(chr => chr._id !== raidLeader._id))
-            setRosterMembers(rosterMembers.filter(chr => chr._id !== raidLeader._id))
-        },
-        [raidLeader],
-    )
-
     useEffect(() => {
-        modifRL()
-    }, [raidLeader])
+        // load the roster
+        const unsubcribe = firebase.db
+            .collection("rosters")
+            .doc(roster_id)
+            .onSnapshot(
+                (snapshot) => {
+                    const rosterData = snapshot.data()
+                    setRoster(new Roster(snapshot))
+                    if (rosterData.refRaidLeader) {
+                        rosterData.refRaidLeader.get().then(data => setRaidLeader(new Character(data)))
+                    }
+                    if (rosterData.rosterMembers) {
+                        let rosterMembers = []
+                        rosterData.rosterMembers.forEach(chrRef => {
+                            chrRef.get().then(data => {
+                                rosterMembers = [...rosterMembers, new Character(data)]
+                            })
+                        })
+                        setRosterMembers(rosterMembers)
+                    }
+                },
+                (error) => {
+                    throw setInfoMsg(<Msg error={error.message} />);
+                }
+            );
+
+        return () => unsubcribe();
+    }, [firebase]);
 
     useEffect(() => {
         if (roster.rosterMembers) {
@@ -64,26 +77,6 @@ const RosterEdit = () => {
         setName(roster.name)
     }, [roster])
 
-    const findRaidLeader = async () => {
-        let rl = {}
-        if (roster.refRaidLeader) {
-            const rlDoc = (await roster.refRaidLeader.get())
-            if (rlDoc) rl = new Character(rlDoc)
-        }
-        if (!raidLeader.value) {
-            // on load
-            if (characters.some(chr => chr._id === rl._id)) {
-                rl = characters.find(chr => chr._id === rl._id)
-            }
-        } else {
-            // on change for raid leader list selected
-            if (characters.some(chr => chr._id === raidLeader._id)) {
-                rl = characters.find(chr => chr._id === raidLeader._id)
-            }
-        }
-        setRaidLeader(rl)
-    }
-
     const handleSubmit = (event) => {
         event.preventDefault()
         // record characters to refs
@@ -91,34 +84,26 @@ const RosterEdit = () => {
         rosterMembers.forEach(member => {
             rosterMembersTmp = [...rosterMembersTmp, firebase.db.doc(`characters/${member._id}`)]
         })
-        if (raidLeader && name) {
+        if (name) {
             const rosterPayload = {
-                ...roster,
+                _id: roster._id,
                 name,
-                refRaidLeader: firebase.db.doc(`characters/${raidLeader._id}`),
                 rosterMembers: rosterMembersTmp
             }
-            delete rosterPayload.value
-            delete rosterPayload.label
             try {
-                firebase.setRoster(rosterPayload)
-                setInfoMsg("Roster mis à jour !")
+                firebase.updateRoster(rosterPayload)
+                // TODO : update each characterMembers a rosterReference
+                setInfoMsg(<Msg info={"Roster mis à jour !"} />)
                 setTimeout(() => {
                     setInfoMsg(null)
                 }, 1500);
             } catch (error) {
-                setErrorMsg(error.message)
+                setInfoMsg(<Msg error={error.message} />)
             }
         } else {
-            setErrorMsg("champs invalides ou non completé")
+            setInfoMsg(<Msg error={"champs invalides ou non completé"} />)
         }
     }
-
-    // const handleChangeRL = (value) => {
-    //     setRaidLeader(value)
-    //     // update member option (charactersFiltered) and MembersList (characters) => delete the value
-
-    // }
 
     const handleChangeMembers = (tabValues) => {
         if (tabValues !== null) {
@@ -133,8 +118,7 @@ const RosterEdit = () => {
 
     return (
         <Container>
-            {errorMsg && <Msg error={errorMsg} />}
-            {infoMsg && <Msg info={infoMsg} />}
+            {infoMsg && <Row>{infoMsg}</Row>}
             <Row>
                 <Col>
                     <Form onSubmit={handleSubmit}>
@@ -150,26 +134,21 @@ const RosterEdit = () => {
                                 value={name}
                             />
                         </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Raid leader</Form.Label>
-                            <Select
-                                id="refRaidLeader"
-                                options={characters}
-                                onChange={setRaidLeader}
-                                value={raidLeader}
-                            />
-                        </Form.Group>
+
+                        {raidLeader && <h2>Raid Leader : {raidLeader.name}</h2>}
+
                         <Form.Group>
                             <Form.Label>{rosterMembers && `${pluralize("membre", rosterMembers.length, true)} / ${MAX_MEMBERS_ALLOWED}`}</Form.Label>
                             <Select
                                 id="refRosterMembers"
                                 isMulti
                                 placeholder="Selection des membres..."
-                                options={charactersFiltered}
+                                options={characters}
                                 onChange={(optionSelected) => handleChangeMembers(optionSelected)}
                                 value={rosterMembers}
                             />
                         </Form.Group>
+
                         <UpdateBtn />
                     </Form>
                 </Col>

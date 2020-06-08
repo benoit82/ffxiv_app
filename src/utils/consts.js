@@ -23,6 +23,7 @@ export const CHARACTER_NAME_ERR_MSG = `Au moins ${CHARACTER_NAME_MIN} caractère
 
 // ROSTER
 // name
+export const MAX_MEMBERS_ALLOWED = 7;
 export const ROSTER_NAME_MIN = 3;
 export const ROSTER_NAME_MAX = 20;
 export const ROSTER_NAME_ERR_MSG = `Le pseudo doit avoir entre ${ROSTER_NAME_MIN} et ${ROSTER_NAME_MAX} lettres.`;
