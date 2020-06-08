@@ -89,13 +89,6 @@ const UserOptionPage = () => {
                     </ListGroup.Item>
                 </ListGroup>
             </Row>}
-
-            <Row>
-                <ul>
-                    <li>Créer un roster (proposer liste de ses persos comme RL)</li>
-                    {userCharacters && userCharacters.map(chr => <p>{chr.id}</p>)}
-                </ul>
-            </Row>
             <Row>
                 {showActiveForm}
             </Row>

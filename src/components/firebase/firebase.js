@@ -38,7 +38,10 @@ class Firebase {
   /**
    * Deconnection
    */
-  signOutUser = () => this.auth.signOut();
+  signOutUser = () => {
+    localStorage.removeItem("uid");
+    this.auth.signOut();
+  };
 
   /**
    * Reset password
@@ -84,19 +87,29 @@ class Firebase {
   };
 
   // Roster management
-  addRoster = (roster) => {
+  addRoster = async (roster) => {
     const refRaidLeader = this.db
       .collection("characters")
       .doc(roster.refRaidLeader);
-    return this.db
+
+    const refDocRoster = await this.db
       .collection("rosters")
       .add({ name: roster.name, refRaidLeader });
+
+    // Adding the refDocRoster to character Raid Leader
+    refRaidLeader.update({ rosterRaidLeader: refDocRoster });
   };
 
-  deleteRoster = async (_id) => {
-    const deletedRoster = await this.db.collection("rosters").doc(_id).delete();
+  deleteRoster = async (_id, deleteChr = null) => {
+    const refDeletedRoster = await this.db.collection("rosters").doc(_id);
     // TODO : delete as well on users table (refRosterRaidLeader) + each characters ()
-    return deletedRoster;
+    if (!deleteChr) {
+      const dataRoster = (await refDeletedRoster.get()).data();
+      dataRoster.refRaidLeader.update({
+        rosterRaidLeader: null,
+      });
+    }
+    refDeletedRoster.delete();
   };
 
   setRoster = async (roster) => {
@@ -121,7 +134,7 @@ class Firebase {
   };
 
   // Character management
-  getAllCharacters = async (chrsSetter) => {
+  getAllCharacters = async (chrsSetter, { filter } = null) => {
     let resTab = [];
     const docs = await this.db.collection("characters").get();
     docs.forEach((chrRef) => {
@@ -131,6 +144,13 @@ class Firebase {
     resTab.sort((a, b) => {
       return a.name > b.name ? 1 : -1;
     });
+    switch (filter) {
+      case "rosterRaidLeader":
+        resTab = resTab.filter((chr) => chr.rosterRaidLeader === null);
+        break;
+      default:
+        break;
+    }
     if (chrsSetter) chrsSetter(resTab);
     return [resTab, docs];
   };
@@ -189,6 +209,8 @@ class Firebase {
     characters = characters.filter((ref) => ref.path !== deletedChr.path);
     character.userRef.update({ characters });
     // TODO : for roster
+    if (character.rosterRaidLeader)
+      this.deleteRoster(character.rosterRaidLeader.id, deletedChr);
     //finally deleting chr
     deletedChr.delete();
     return deletedChr;

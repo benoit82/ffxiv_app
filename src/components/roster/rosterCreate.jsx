@@ -19,8 +19,8 @@ const RosterCreate = ({ userChrList }) => {
 
     useEffect(() => {
         // get characters list
-        userChrList !== undefined ? setCharacters(userChrList)
-            : firebase.getAllCharacters(setCharacters);
+        userChrList !== undefined ? setCharacters(userChrList.filter(chr => chr.rosterRaidLeader === null))
+            : firebase.getAllCharacters(setCharacters, { filter: "rosterRaidLeader" });
     }, [firebase]);
 
 
@@ -29,6 +29,8 @@ const RosterCreate = ({ userChrList }) => {
         //enregistrement DB
         try {
             firebase.addRoster({ name, refRaidLeader });
+            let chrsCopy = [...characters].filter(chr => chr.rosterRaidLeader === null)
+            setCharacters(chrsCopy)
         } catch (error) {
             setInfoMsg(<Row><Msg error={{ message: error.message }} /></Row>);
         }

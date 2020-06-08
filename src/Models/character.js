@@ -2,6 +2,7 @@ class Character {
   constructor(characterDocRef = null) {
     if (characterDocRef) {
       const data = characterDocRef.data();
+
       this._id = characterDocRef.id;
       this.avatar = data.avatar;
       this.portrait = this.avatar.replace("c0_96x96.jpg", "l0_640x873.jpg");
@@ -14,6 +15,7 @@ class Character {
       this.name = data.name;
       this.server = data.server;
       this.userRef = data.userRef;
+      this.rosterRaidLeader = data.rosterRaidLeader || null;
       // label + value for react-select
       this.label = data.mainJob
         ? `${data.name} - ${data.mainJob}`
