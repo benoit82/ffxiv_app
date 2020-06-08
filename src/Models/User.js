@@ -17,7 +17,8 @@ class User {
     this.isCrafter = isCrafter;
     this.isGatherer = isGatherer;
     this.refRosterRaidLeader = refRosterRaidLeader || null;
-    this.createdAt = createdAt.toDate().toLocaleDateString();
+    this.createdAt =
+      createdAt !== undefined ? createdAt.toDate().toLocaleDateString() : null;
     this.characters = characters || [];
     this.isLoggedIn = true;
   }
