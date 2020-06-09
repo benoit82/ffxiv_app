@@ -3,11 +3,9 @@ import { useParams, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Table from 'react-bootstrap/Table'
 import { Roster, Character } from '../../models'
 import { getCategory } from '../../utils/jobs'
-import Msg from '../../utils/msg'
 import CharacterTRRoster from '../character/characterTRRoster'
 import Button from 'react-bootstrap/Button'
 
@@ -23,9 +21,6 @@ const RosterView = () => {
     const [members, setMembers] = useState([])
     const [raidLeader, setRaidLeader] = useState(null)
     const [infoMsg, setInfoMsg] = useState("")
-    // get the roster : - list members (+RL) => wish list
-
-    //open listeners on every wish list
 
     useEffect(() => {
         let unsubscribe = firebase.db
@@ -67,7 +62,11 @@ const RosterView = () => {
 
     return (
         <Container>
-            <Row><h2 className="mr-auto">Table des besoins, roster {roster && roster.name}</h2><Button variant="info" onClick={() => history.goBack()}><i className="fas fa-long-arrow-alt-left"></i>Retour à la page précèdente</Button></Row>
+            <Row>
+                <h2 className="mr-auto">Table des besoins, roster {roster && roster.name}</h2>
+                <Button variant="info" onClick={() => history.goBack()}>
+                    <i className="fas fa-long-arrow-alt-left"></i>Retour à la page précèdente</Button>
+            </Row>
 
             <Row className="mt-1">
                 <Table striped bordered hover variant="dark">
