@@ -1,6 +1,6 @@
 import RosterCreate from "./rosterCreate";
 import RosterEdit from "./rosterEdit";
-import ViewRoster from "./viewRoster";
+import RosterView from "./rosterView";
 import RostersTable from "./rostersTable";
 
-export { RosterCreate, RosterEdit, ViewRoster, RostersTable };
+export { RosterCreate, RosterEdit, RosterView, RostersTable };

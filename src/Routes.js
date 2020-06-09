@@ -8,7 +8,7 @@ import {
   LoginPage,
   ForgottenPasswordPage,
   AdminOptionPage,
-  ViewRoster,
+  RosterView,
   RosterEdit,
   UserParamPage,
 } from "./components";
@@ -36,7 +36,7 @@ const Routes = () => {
         allowedUser={user.isAdmin || user.refRosterRaidLeader !== null}
         component={RosterEdit}
       />
-      <Route path="/roster/:roster_id" component={ViewRoster} />
+      <Route path="/roster/:roster_id" component={RosterView} />
       <ProtectedRoute
         path="/param"
         allowedUser={user.isLoggedIn}

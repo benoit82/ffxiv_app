@@ -4,7 +4,7 @@ import { FirebaseContext } from '../firebase'
 import Container from 'react-bootstrap/Container'
 import Table from 'react-bootstrap/Table'
 
-const ViewRoster = () => {
+const RosterView = () => {
     const { roster_id } = useParams()
     const firebase = useContext(FirebaseContext)
 
@@ -49,4 +49,4 @@ const ViewRoster = () => {
     )
 }
 
-export default ViewRoster
+export default RosterView

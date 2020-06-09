@@ -70,22 +70,6 @@ class Firebase {
     this.db.doc(`users/${user.uid}`).update(values);
   };
 
-  /**
-   * ! doesn't propage the error 😢
-   * @deprecated
-   */
-  updateAuthUserEmail = async (currentEmail, password, newEmail) => {
-    try {
-      const userCredential = await this.auth.signInWithEmailAndPassword(
-        currentEmail,
-        password
-      );
-      userCredential.user.updateEmail(newEmail);
-    } catch (error) {
-      throw error;
-    }
-  };
-
   // Roster management
   addRoster = async (roster) => {
     const refRaidLeader = this.db
@@ -120,12 +104,23 @@ class Firebase {
     const { _id, rosterMembers } = roster;
     delete roster._id;
     const rosterDocRef = this.db.collection("rosters").doc(_id);
-    rosterDocRef.update(roster);
-    //for each member : add a reference
-    if (rosterMembers.length > 0) {
-      rosterMembers.forEach((refMember) => {
-        refMember.update({ rosterMember: rosterDocRef });
+    // update old rostermember and remove the reference
+    let oldMembersRef = (await rosterDocRef.get()).data().rosterMembers;
+    oldMembersRef = oldMembersRef.filter((chrRef) => {
+      return rosterMembers.some((memberRef) => !memberRef.isEqual(chrRef));
+    });
+    if (oldMembersRef.length > 0) {
+      oldMembersRef.forEach((refMember) => {
+        refMember.update({ rosterMember: null });
       });
+      // then we update the roster document
+      rosterDocRef.update(roster);
+      //for each member : add a reference
+      if (rosterMembers.length > 0) {
+        rosterMembers.forEach((refMember) => {
+          refMember.update({ rosterMember: rosterDocRef });
+        });
+      }
     }
   };
 
@@ -149,35 +144,6 @@ class Firebase {
     }
     if (chrsSetter) chrsSetter(resTab);
     return [resTab, docs];
-  };
-
-  getDocByRef = async (documentRef, docSetter) => {
-    docSetter((await documentRef.get()).data());
-  };
-
-  getCharacterByAccount = async (uid, chr_id, characterSetter, errorSetter) => {
-    let chr = null;
-    try {
-      const response = await this.db.collection("characters").doc(chr_id).get();
-      chr = new Character(response);
-      const userRef = await this.db.doc(chr.userRef).get();
-      chr.id && (userRef.uid === uid || userRef.isAdmin)
-        ? characterSetter(chr)
-        : errorSetter(
-            new Error("personnage non trouvé ou non lié à votre compte")
-          );
-    } catch (error) {
-      errorSetter(error.message);
-    }
-  };
-
-  getCharacterByAdmin = async (chr_id, characterSetter) => {
-    const chrsList = await this.getAllCharacters();
-    if (chrsList[0].some((chr) => chr._id === chr_id)) {
-      characterSetter(chrsList[0].find((chr) => chr._id === chr_id));
-    } else {
-      characterSetter({});
-    }
   };
 
   addCharacter = async (uid, character) => {
@@ -224,28 +190,8 @@ class Firebase {
     this.db.collection("characters").doc(_id).update(characterFields);
   };
 
-  /**
-   * not used : do not return the unsubscribe function... 😢 => useEffect on user/AddCharacter.jsx
-   * @deprecated
-   */
-  userListCharacters = async (uid, listSetter, handleError) => {
-    let unsubscribe = await this.db
-      .collection("characters")
-      .where("uid", "==", uid)
-      .orderBy("name", "asc")
-      .onSnapshot(
-        (snapshot) => {
-          const cList = snapshot.docs.map((character, index) => ({
-            _id: snapshot.docs[index].id,
-            ...character.data(),
-          }));
-          listSetter(cList);
-        },
-        (error) => {
-          handleError(error.message);
-        }
-      );
-    return unsubscribe;
+  getDocByRef = async (documentRef, docSetter) => {
+    docSetter((await documentRef.get()).data());
   };
 }
 export default Firebase;

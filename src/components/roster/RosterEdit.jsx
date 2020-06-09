@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Msg from '../../utils/msg'
 import Row from 'react-bootstrap/Row'
@@ -11,12 +11,16 @@ import * as pluralize from 'pluralize'
 import { UpdateBtn } from '../formElements'
 import { Character, Roster } from '../../models'
 import { MAX_MEMBERS_ALLOWED } from '../../utils/consts'
+import { UserApi } from '../../utils/appContext'
 
 
 
 const RosterEdit = () => {
     const { roster_id } = useParams()
+    const history = useHistory()
     const firebase = useContext(FirebaseContext)
+    const User = useContext(UserApi)
+    const { user } = User
 
     const [roster, setRoster] = useState(new Roster(null))
     const [infoMsg, setInfoMsg] = useState(null)
@@ -40,7 +44,14 @@ const RosterEdit = () => {
                     const rosterData = snapshot.data()
                     setRoster(new Roster(snapshot))
                     if (rosterData.refRaidLeader) {
-                        rosterData.refRaidLeader.get().then(data => setRaidLeader(new Character(data)))
+                        rosterData.refRaidLeader.get().then(resp => {
+                            // check if  the user is allowed to access to roster edit
+                            if (user.isAdmin || (user.uid === resp.data().userRef.id)) {
+                                setRaidLeader(new Character(resp))
+                            } else {
+                                history.replace("/")
+                            }
+                        })
                     }
                     if (rosterData.rosterMembers) {
                         let rosterMembers = []

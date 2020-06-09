@@ -13,7 +13,7 @@ import { LoginPage } from "./login";
 import { Disconnect } from "./disconnect";
 import { Welcome } from "./welcome";
 import { AdminOptionPage } from "./admin";
-import { RosterEdit, ViewRoster } from "./roster";
+import { RosterEdit, RosterView } from "./roster";
 import { UserParamPage, UserOptionPage } from "./user";
 import { ForgottenPasswordPage } from "./forgottenpassword";
 import { Footer } from "./footer";
@@ -33,7 +33,7 @@ export {
   Disconnect,
   Welcome,
   AdminOptionPage,
-  ViewRoster,
+  RosterView,
   RosterEdit,
   UserParamPage,
   UserOptionPage,
