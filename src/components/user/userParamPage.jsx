@@ -8,7 +8,7 @@ import ProtectedRoute from '../../utils/protectedRoute'
 import { UserApi } from '../../utils/appContext'
 import UserOptionPage from './userOptionPage'
 import RosterEdit from '../roster/rosterEdit'
-import { RosterView } from '../roster'
+import { RosterView, RosterCreate } from '../roster'
 
 /**
  * @route /param
@@ -47,15 +47,24 @@ const UserParamPage = () => {
                             component={EditCharacter}
                         />
                         <ProtectedRoute
+                            path="/roster/create/:character_id"
+                            allowedUser={user.isLoggedIn}
+                        >
+                            <RosterCreate
+                                userChrList={user.characters} />
+                        </ProtectedRoute>
+                        <ProtectedRoute
                             path="/roster/edit/:roster_id"
                             allowedUser={user.isLoggedIn}
                             component={RosterEdit}
                         />
+
                         <ProtectedRoute
                             path="/roster/:roster_id"
                             allowedUser={user.isLoggedIn}
                             component={RosterView}
                         />
+
                     </Switch>
                 </Row>
             </Container>
