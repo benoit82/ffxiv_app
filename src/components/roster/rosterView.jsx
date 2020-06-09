@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -9,6 +9,7 @@ import { Roster, Character } from '../../models'
 import { getCategory } from '../../utils/jobs'
 import Msg from '../../utils/msg'
 import CharacterTRRoster from '../character/characterTRRoster'
+import Button from 'react-bootstrap/Button'
 
 /**
  * @route /param /roster/:roster_id
@@ -16,6 +17,7 @@ import CharacterTRRoster from '../character/characterTRRoster'
  */
 const RosterView = () => {
     const { roster_id } = useParams()
+    const history = useHistory()
     const firebase = useContext(FirebaseContext)
     const [roster, setRoster] = useState(null)
     const [members, setMembers] = useState([])
@@ -65,9 +67,9 @@ const RosterView = () => {
 
     return (
         <Container>
-            <Row><h2>Table des besoins</h2></Row>
-            <Row><h3>Roster : {roster && roster.name}</h3></Row>
-            <Row>
+            <Row><h2 className="mr-auto">Table des besoins, roster {roster && roster.name}</h2><Button variant="info" onClick={() => history.goBack()}><i className="fas fa-long-arrow-alt-left"></i>Retour à la page précèdente</Button></Row>
+
+            <Row className="mt-1">
                 <Table striped bordered hover variant="dark">
                     <thead>
                         <tr>
@@ -81,7 +83,7 @@ const RosterView = () => {
                             <th>Jambière</th>
                             <th>Bottes</th>
                             <th>Oreilles</th>
-                            <th>Ras de cou</th>
+                            <th>Cou</th>
                             <th>Poignet</th>
                             <th>Bague Memo</th>
                             <th>Bague Loot</th>
@@ -92,7 +94,6 @@ const RosterView = () => {
                             members && members.length > 0 &&
                             members.map(member => <CharacterTRRoster character={member} />)
                         }
-
                     </tbody>
                 </Table>
             </Row>

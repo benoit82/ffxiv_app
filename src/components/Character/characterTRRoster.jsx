@@ -1,12 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { FirebaseContext } from '../firebase'
 import { Character } from '../../models'
+import { styleRole } from '../../utils/styleRole'
+import { getJobIcon } from '../../utils/jobs'
+
+import './characterTRRoster.scss'
 
 const CharacterTRRoster = ({ character }) => {
     const firebase = useContext(FirebaseContext)
     const { _id } = character
     const [chrDB, setChrDB] = useState(character)
     const { bis } = chrDB
+    const style = styleRole(chrDB.mainJob)
 
     useEffect(() => {
         let unsubscribe = firebase.db
@@ -25,8 +30,8 @@ const CharacterTRRoster = ({ character }) => {
 
     return (
         <tr>
-            <td>{chrDB.name}</td>
-            {bis && <>
+            <td style={style}><span>{chrDB.name}</span><div className="avatar_job"><img src={chrDB.avatar} alt={"img"} />{getJobIcon(chrDB.mainJob)}</div></td>
+            {bis && bis[chrDB.mainJob] && <>
                 <td>{bis[chrDB.mainJob].weapon1.type}</td>
                 <td>{bis[chrDB.mainJob].weapon2.type}</td>
                 <td>{bis[chrDB.mainJob].head.type}</td>

@@ -1,0 +1,14 @@
+td:nth-child(1) {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: wrap;
+  .avatar_job {
+    display: flex;
+  }
+  img {
+    width: 40px;
+    height: 40px;
+  }
+}

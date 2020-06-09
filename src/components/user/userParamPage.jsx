@@ -22,46 +22,41 @@ const UserParamPage = () => {
         <Router basename="/param">
             <Container>
                 <Row>
-                    <Col lg={2}>Menu
-                        <ul>
-                            <li><Link to={"/"}>mon compte</Link></li>
-                            <li><Link to={"/chr"}>mes persos</Link></li>
-                            {user.refRosterRaidLeader && <li><Link to={`/roster/edit/${user.refRosterRaidLeader}`}>mon roster (RL)</Link></li>}
-                        </ul>
-                    </Col>
-                    <Col>
-                        <Row>
-                            <Switch>
-                                <ProtectedRoute
-                                    exact
-                                    path="/"
-                                    allowedUser={user.isLoggedIn}
-                                    component={UserOptionPage}
-                                />
-                                <ProtectedRoute
-                                    exact
-                                    path="/chr"
-                                    allowedUser={user.isLoggedIn}
-                                    component={ChrOptionPage}
-                                />
-                                <ProtectedRoute
-                                    path="/chr/:chr_id"
-                                    allowedUser={user.isLoggedIn}
-                                    component={EditCharacter}
-                                />
-                                <ProtectedRoute
-                                    path="/roster/edit/:roster_id"
-                                    allowedUser={user.isLoggedIn}
-                                    component={RosterEdit}
-                                />
-                                <ProtectedRoute
-                                    path="/roster/:roster_id"
-                                    allowedUser={user.isLoggedIn}
-                                    component={RosterView}
-                                />
-                            </Switch>
-                        </Row>
-                    </Col>
+                    <ul className="p-0 ml-0" style={{ display: "flex", listStyle: "none" }}>
+                        <li><Link to={"/"} className="btn btn-primary mr-3">mon compte</Link></li>
+                        <li><Link to={"/chr"} className="btn btn-success mr-3">mes persos</Link></li>
+                    </ul>
+                </Row>
+                <Row>
+                    <Switch>
+                        <ProtectedRoute
+                            exact
+                            path="/"
+                            allowedUser={user.isLoggedIn}
+                            component={UserOptionPage}
+                        />
+                        <ProtectedRoute
+                            exact
+                            path="/chr"
+                            allowedUser={user.isLoggedIn}
+                            component={ChrOptionPage}
+                        />
+                        <ProtectedRoute
+                            path="/chr/:chr_id"
+                            allowedUser={user.isLoggedIn}
+                            component={EditCharacter}
+                        />
+                        <ProtectedRoute
+                            path="/roster/edit/:roster_id"
+                            allowedUser={user.isLoggedIn}
+                            component={RosterEdit}
+                        />
+                        <ProtectedRoute
+                            path="/roster/:roster_id"
+                            allowedUser={user.isLoggedIn}
+                            component={RosterView}
+                        />
+                    </Switch>
                 </Row>
             </Container>
         </Router >

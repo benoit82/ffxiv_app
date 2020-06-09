@@ -34,6 +34,7 @@ const RosterTableRow = ({ roster }) => {
                 />}
             </td>
             <td>
+                {/* TODO : liens a faire fonctionner */}
                 <Link to={`/roster/edit/${roster._id}`} className="btn btn-success"><i className="fas fa-edit"></i>Editer</Link>
                 {" "}<Link to={`/roster/view/${roster._id}`} className="btn btn-primary"><i className="fas fa-eye"></i>Voir</Link>
                 {" "}<DeleteBtn handleClick={() => handleDelete(roster)} />

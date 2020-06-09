@@ -109,6 +109,17 @@ export const getCategory = (job) => {
     : 0;
   return cat;
 };
+/**
+ *
+ * @param {String} job
+ * @return {Number} category (0 = unknow, 1 = tank, 2 = healer, 3 = dps)
+ */
+export const getJobIcon = (job) => {
+  let icon = null;
+  const allJobs = [...jobsDPS, ...jobsHealer, ...jobsTank];
+  icon = allJobs.find((jobObject) => jobObject.value === job);
+  return icon.label;
+};
 
 /**
  * element choice : Memo (0) or Loot (1)

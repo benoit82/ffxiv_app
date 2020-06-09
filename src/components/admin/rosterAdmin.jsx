@@ -44,6 +44,7 @@ const RosterAdmin = () => {
                     )}
             </Row>
             <Row>
+                {/* TODO : a faire fonctionner */}
                 <Router basename="/">
                     <Switch>
                         <Route exact path="/" component={RosterCreate} />
