@@ -26,7 +26,7 @@ const UserOptionPage = () => {
             .doc(user.uid)
             .onSnapshot(
                 (snapshot) => {
-                    const usr = new User(snapshot.data())
+                    const usr = new User(snapshot)
                     setUserFromDb(usr)
                 },
                 (error) => {

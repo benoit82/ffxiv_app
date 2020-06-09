@@ -22,7 +22,7 @@ const UsersAdmin = () => {
             .orderBy("pseudo", "asc")
             .onSnapshot(
                 (snapshot) => {
-                    const uList = snapshot.docs.map(userRefDoc => new User(userRefDoc.data()));
+                    const uList = snapshot.docs.map(userRefDoc => new User(userRefDoc));
                     setUsers(uList);
                 },
                 (error) => {

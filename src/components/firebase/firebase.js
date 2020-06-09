@@ -62,7 +62,7 @@ class Firebase {
   };
 
   getUser = async (uid) => {
-    const user = (await this.db.doc(`users/${uid}`).get()).data();
+    const user = await this.db.doc(`users/${uid}`).get();
     return new User(user);
   };
 

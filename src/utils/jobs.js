@@ -94,6 +94,23 @@ export const selectJobsGroup = [
 ];
 
 /**
+ *
+ * @param {String} job
+ * @return {Number} category (0 = unknow, 1 = tank, 2 = healer, 3 = dps)
+ */
+export const getCategory = (job) => {
+  let cat = 0;
+  cat = jobsTank.some((obj) => obj.value === job)
+    ? 1
+    : jobsHealer.some((obj) => obj.value === job)
+    ? 2
+    : jobsDPS.some((obj) => obj.value === job)
+    ? 3
+    : 0;
+  return cat;
+};
+
+/**
  * element choice : Memo (0) or Loot (1)
  */
 export const gearType = ["Memo", "Loot"];

@@ -1,40 +1,101 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import Table from 'react-bootstrap/Table'
+import { Roster, Character } from '../../models'
+import { getCategory } from '../../utils/jobs'
+import Msg from '../../utils/msg'
+import CharacterTRRoster from '../character/characterTRRoster'
 
+/**
+ * @route /param /roster/:roster_id
+ * @route /admin /roster/:roster_id
+ */
 const RosterView = () => {
     const { roster_id } = useParams()
     const firebase = useContext(FirebaseContext)
+    const [roster, setRoster] = useState(null)
+    const [members, setMembers] = useState([])
+    const [raidLeader, setRaidLeader] = useState(null)
+    const [infoMsg, setInfoMsg] = useState("")
+    // get the roster : - list members (+RL) => wish list
+
+    //open listeners on every wish list
 
     useEffect(() => {
-        // get the roster : - list members (+RL) => wish list
-
-        //open listeners on every wish list
-
+        let unsubscribe = firebase.db
+            .collection("rosters")
+            .doc(roster_id)
+            .onSnapshot(snap => {
+                setRoster(new Roster(snap))
+                const rosterData = snap.data()
+                let membersBuilder = []
+                // manage RL
+                rosterData.refRaidLeader.get().then(resp => {
+                    const chrRL = new Character(resp)
+                    setRaidLeader(chrRL)
+                    membersBuilder.push(chrRL)
+                }).then(
+                    // manage each members
+                    rosterData.rosterMembers.forEach(refMember => {
+                        refMember.get().then(resp => {
+                            const chr = new Character(resp)
+                            membersBuilder.push(chr)
+                        }).then(() => {
+                            if (membersBuilder.length === rosterData.rosterMembers.length + 1) {
+                                membersBuilder.sort((chr_a, chr_b) => {
+                                    const cat_a = getCategory(chr_a.mainJob)
+                                    const cat_b = getCategory(chr_b.mainJob)
+                                    return cat_a > cat_b ? 1 : -1
+                                })
+                                setMembers(membersBuilder)
+                            }
+                        })
+                    })
+                )
+            }
+            )
+        return () => {
+            unsubscribe()
+        }
     }, [firebase])
 
     return (
         <Container>
-            coucou view roster {roster_id}
-            <Table striped bordered hover variant="dark">
-                <thead>
-                    <tr>
-                        <th>Membres</th>
-                        <th>tête</th>
-                        <th>gants</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>ihre</td>
-                        <td>Raid</td>
-                        <td>Memo+</td>
-                    </tr>
+            <Row><h2>Table des besoins</h2></Row>
+            <Row><h3>Roster : {roster && roster.name}</h3></Row>
+            <Row>
+                <Table striped bordered hover variant="dark">
+                    <thead>
+                        <tr>
+                            <th>Membres</th>
+                            <th>Arme Loot</th>
+                            <th>Arme Memo</th>
+                            <th>Tête</th>
+                            <th>Torse</th>
+                            <th>Mains</th>
+                            <th>Ceinture</th>
+                            <th>Jambière</th>
+                            <th>Bottes</th>
+                            <th>Oreilles</th>
+                            <th>Ras de cou</th>
+                            <th>Poignet</th>
+                            <th>Bague Memo</th>
+                            <th>Bague Loot</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            members && members.length > 0 &&
+                            members.map(member => <CharacterTRRoster character={member} />)
+                        }
 
-                </tbody>
-            </Table>
+                    </tbody>
+                </Table>
+            </Row>
             {/* check if User is RL => give option to manage loot 
 
             - get number of missing loot per item

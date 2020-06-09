@@ -4,7 +4,8 @@ import Row from "react-bootstrap/Row";
 import { FirebaseContext } from "../firebase";
 import Msg from "../../utils/msg";
 import { Roster } from "../../models";
-import { RostersTable, RosterCreate } from "../roster";
+import { RostersTable, RosterCreate, RosterEdit, RosterView } from "../roster";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const RosterAdmin = () => {
     const firebase = useContext(FirebaseContext);
@@ -43,7 +44,13 @@ const RosterAdmin = () => {
                     )}
             </Row>
             <Row>
-                <RosterCreate />
+                <Router basename="/">
+                    <Switch>
+                        <Route exact path="/" component={RosterCreate} />
+                        <Route path="/edit/:roster_id" component={RosterEdit} />
+                        <Route path="/view/:roster_id" component={RosterView} />
+                    </Switch>
+                </Router>
             </Row>
         </Container>
     );

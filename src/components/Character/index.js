@@ -3,6 +3,7 @@ import EditCharacter from "./editCharacter";
 import CharacterDetail from "./characterDetail";
 import CharacterDetailInline from "./characterDetailInline";
 import CharacterSearch from "./characterSearch";
+import CharacterTRRoster from "./characterTRRoster";
 import BISForm from "./bisForm";
 
 export {
@@ -11,5 +12,6 @@ export {
   CharacterDetail,
   CharacterDetailInline,
   CharacterSearch,
+  CharacterTRRoster,
   BISForm,
 };

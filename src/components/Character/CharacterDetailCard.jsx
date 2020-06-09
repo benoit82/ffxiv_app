@@ -68,7 +68,9 @@ const CharacterDetailCard = ({ character }) => {
                     href={`https://fr.finalfantasyxiv.com/lodestone/character/${id}`}
                     target={"_blanck"}
                 >lodestone</a>
-                    {rosterRL && <Link to={`roster/edit/${rosterRL._id}`}>Administer mon roster</Link>}
+                    {rosterRL && <><Link to={`roster/edit/${rosterRL._id}`}>Administer mon roster</Link>
+                        <Link to={`/roster/${rosterRL._id}`}>Voir mon roster</Link></>
+                    }
                     {rosterMember && <Link to={`/roster/${rosterMember._id}`}>Voir mon roster</Link>}
                 </Card.Text>
                 <DeleteBtn handleClick={() => { handleDelete(character) }} />

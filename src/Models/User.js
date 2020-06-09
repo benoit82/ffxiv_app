@@ -1,15 +1,16 @@
 class User {
-  constructor({
-    uid,
-    pseudo,
-    email,
-    isAdmin,
-    isCrafter,
-    isGatherer,
-    refRosterRaidLeader,
-    createdAt,
-    characters,
-  }) {
+  constructor(docRef) {
+    const {
+      uid,
+      pseudo,
+      email,
+      isAdmin,
+      isCrafter,
+      isGatherer,
+      refRosterRaidLeader,
+      createdAt,
+      characters,
+    } = docRef.data();
     this.uid = uid;
     this.pseudo = pseudo;
     this.email = email;
