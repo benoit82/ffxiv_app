@@ -6,11 +6,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-family: "Nunito", sans-serif !important;
   height: 100vh;
-  background-image: linear-gradient(
-    90deg,
-    rgba(219, 214, 223, 0.596) 0%,
-    rgba(81, 90, 218, 0.253) 100%
-  );
+  background-color: #332855;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 1000'%3E%3Cg %3E%3Ccircle fill='%23332855' cx='50' cy='0' r='50'/%3E%3Cg fill='%23363260' %3E%3Ccircle cx='0' cy='50' r='50'/%3E%3Ccircle cx='100' cy='50' r='50'/%3E%3C/g%3E%3Ccircle fill='%23383d6a' cx='50' cy='100' r='50'/%3E%3Cg fill='%233b4774' %3E%3Ccircle cx='0' cy='150' r='50'/%3E%3Ccircle cx='100' cy='150' r='50'/%3E%3C/g%3E%3Ccircle fill='%233f527d' cx='50' cy='200' r='50'/%3E%3Cg fill='%23435c87' %3E%3Ccircle cx='0' cy='250' r='50'/%3E%3Ccircle cx='100' cy='250' r='50'/%3E%3C/g%3E%3Ccircle fill='%23476790' cx='50' cy='300' r='50'/%3E%3Cg fill='%234c7298' %3E%3Ccircle cx='0' cy='350' r='50'/%3E%3Ccircle cx='100' cy='350' r='50'/%3E%3C/g%3E%3Ccircle fill='%23537ca1' cx='50' cy='400' r='50'/%3E%3Cg fill='%235a87a9' %3E%3Ccircle cx='0' cy='450' r='50'/%3E%3Ccircle cx='100' cy='450' r='50'/%3E%3C/g%3E%3Ccircle fill='%236292b1' cx='50' cy='500' r='50'/%3E%3Cg fill='%236a9db8' %3E%3Ccircle cx='0' cy='550' r='50'/%3E%3Ccircle cx='100' cy='550' r='50'/%3E%3C/g%3E%3Ccircle fill='%2374a8c0' cx='50' cy='600' r='50'/%3E%3Cg fill='%237eb3c7' %3E%3Ccircle cx='0' cy='650' r='50'/%3E%3Ccircle cx='100' cy='650' r='50'/%3E%3C/g%3E%3Ccircle fill='%2389becf' cx='50' cy='700' r='50'/%3E%3Cg fill='%2394c9d6' %3E%3Ccircle cx='0' cy='750' r='50'/%3E%3Ccircle cx='100' cy='750' r='50'/%3E%3C/g%3E%3Ccircle fill='%23a0d3de' cx='50' cy='800' r='50'/%3E%3Cg fill='%23addee5' %3E%3Ccircle cx='0' cy='850' r='50'/%3E%3Ccircle cx='100' cy='850' r='50'/%3E%3C/g%3E%3Ccircle fill='%23bae9ed' cx='50' cy='900' r='50'/%3E%3Cg fill='%23c7f4f5' %3E%3Ccircle cx='0' cy='950' r='50'/%3E%3Ccircle cx='100' cy='950' r='50'/%3E%3C/g%3E%3Ccircle fill='%23d5fffd' cx='50' cy='1000' r='50'/%3E%3C/g%3E%3C/svg%3E");
+  background-attachment: fixed;
+  background-size: contain;
 }
 
 code {

@@ -8,6 +8,7 @@ import { Roster, Character } from '../../models'
 import { getCategory } from '../../utils/jobs'
 import CharacterTRRoster from '../character/characterTRRoster'
 import Button from 'react-bootstrap/Button'
+import { resetGearSet } from '../../utils/jobs'
 
 /**
  * @route /param /roster/:roster_id
@@ -73,25 +74,17 @@ const RosterView = () => {
                     <thead>
                         <tr>
                             <th>Membres</th>
-                            <th>Arme Loot</th>
-                            <th>Arme Memo</th>
-                            <th>Tête</th>
-                            <th>Torse</th>
-                            <th>Mains</th>
-                            <th>Ceinture</th>
-                            <th>Jambière</th>
-                            <th>Bottes</th>
-                            <th>Oreilles</th>
-                            <th>Cou</th>
-                            <th>Poignet</th>
-                            <th>Bague Memo</th>
-                            <th>Bague Loot</th>
+                            {Object.entries(resetGearSet)
+                                .sort((gearElement_a, gearElement_b) => gearElement_a[1].order > gearElement_b[1].order ? 1 : -1)
+                                .map(gearElement => {
+                                    return <th key={gearElement[1].order}>{gearElement[1].name}</th>
+                                })}
                         </tr>
                     </thead>
                     <tbody>
                         {
                             members && members.length > 0 &&
-                            members.map(member => <CharacterTRRoster character={member} />)
+                            members.map(member => <CharacterTRRoster character={member} job={member.mainJob} />)
                         }
                     </tbody>
                 </Table>

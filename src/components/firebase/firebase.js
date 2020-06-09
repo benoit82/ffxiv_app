@@ -106,21 +106,21 @@ class Firebase {
     const rosterDocRef = this.db.collection("rosters").doc(_id);
     // update old rostermember and remove the reference
     let oldMembersRef = (await rosterDocRef.get()).data().rosterMembers;
-    oldMembersRef = oldMembersRef.filter((chrRef) => {
-      return rosterMembers.some((memberRef) => !memberRef.isEqual(chrRef));
-    });
     if (oldMembersRef.length > 0) {
+      oldMembersRef = oldMembersRef.filter((chrRef) => {
+        return rosterMembers.some((memberRef) => !memberRef.isEqual(chrRef));
+      });
       oldMembersRef.forEach((refMember) => {
         refMember.update({ rosterMember: null });
       });
-      // then we update the roster document
-      rosterDocRef.update(roster);
-      //for each member : add a reference
-      if (rosterMembers.length > 0) {
-        rosterMembers.forEach((refMember) => {
-          refMember.update({ rosterMember: rosterDocRef });
-        });
-      }
+    }
+    // then we update the roster document
+    rosterDocRef.update(roster);
+    //for each member : add a reference
+    if (rosterMembers.length > 0) {
+      rosterMembers.forEach((refMember) => {
+        refMember.update({ rosterMember: rosterDocRef });
+      });
     }
   };
 

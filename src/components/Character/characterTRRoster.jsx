@@ -3,16 +3,20 @@ import { FirebaseContext } from '../firebase'
 import { Character } from '../../models'
 import { styleRole } from '../../utils/styleRole'
 import { getJobIcon } from '../../utils/jobs'
-
-import './characterTRRoster.scss'
+import { OBTAINED } from '../../utils/consts'
 import ShowGearInfo from '../gear/showGearInfo'
+import classNames from 'classnames'
 
-const CharacterTRRoster = ({ character }) => {
+import styles from './characterTRRoster.scss'
+
+let cx = classNames.bind(styles)
+
+const CharacterTRRoster = ({ character, job }) => {
     const firebase = useContext(FirebaseContext)
     const { _id } = character
     const [chrDB, setChrDB] = useState(character)
     const { bis } = chrDB
-    const style = styleRole(chrDB.mainJob)
+    const style = styleRole(job)
 
     useEffect(() => {
         let unsubscribe = firebase.db
@@ -25,25 +29,32 @@ const CharacterTRRoster = ({ character }) => {
         }
     }, [firebase])
 
-
+    const obtainedGear = (gearNameElement) => {
+        const [element, propElement] = gearNameElement
+        if (propElement.type === "Memo" && propElement.upgrade) {
+            propElement.upgrade.needed = !propElement.upgrade.needed
+        }
+        let jobBis = { [job]: { ...bis[job], [element]: { ...propElement, obtained: !propElement.obtained } } }
+        firebase.updateCharacter(_id, { bis: jobBis })
+    }
 
     return (
         <tr>
             <td style={style}><span>{chrDB.name}</span><div className="avatar_job"><img src={chrDB.avatar} alt={"img"} />{getJobIcon(chrDB.mainJob)}</div></td>
-            {bis && bis[chrDB.mainJob] && <>
-                <td><ShowGearInfo type={bis[chrDB.mainJob].weapon1.type} /></td>
-                <td><ShowGearInfo type={bis[chrDB.mainJob].weapon2.type} /></td>
-                <td><ShowGearInfo type={bis[chrDB.mainJob].head.type} /></td>
-                <td><ShowGearInfo type={bis[chrDB.mainJob].body.type} /></td>
-                <td><ShowGearInfo type={bis[chrDB.mainJob].hands.type} /></td>
-                <td><ShowGearInfo type={bis[chrDB.mainJob].belt.type} /></td>
-                <td><ShowGearInfo type={bis[chrDB.mainJob].leg.type} /></td>
-                <td><ShowGearInfo type={bis[chrDB.mainJob].boots.type} /></td>
-                <td><ShowGearInfo type={bis[chrDB.mainJob].earring.type} /></td>
-                <td><ShowGearInfo type={bis[chrDB.mainJob].neck.type} /></td>
-                <td><ShowGearInfo type={bis[chrDB.mainJob].wrist.type} /></td>
-                <td><ShowGearInfo type={bis[chrDB.mainJob].ring1.type} /></td>
-                <td><ShowGearInfo type={bis[chrDB.mainJob].ring2.type} /></td>
+            {bis && bis[job] && <>
+                {Object.entries(bis[job])
+                    .sort((gearElement_a, gearElement_b) => gearElement_a[1].order > gearElement_b[1].order ? 1 : -1)
+                    .map(gearElement => {
+                        const toolTipInfo = `${chrDB.name} - ${gearElement[1].name}`
+                        return <td
+                            key={gearElement[1].order}
+                            onClick={() => obtainedGear(gearElement)}
+                            className={cx({ bg_obtained: gearElement[1].obtained })}
+                        >
+                            {!gearElement[1].obtained && <ShowGearInfo type={gearElement[1].type} tooltipInfo={toolTipInfo} />}
+                            {gearElement[1].obtained && <ShowGearInfo type={OBTAINED} tooltipInfo={toolTipInfo} />}
+                        </td>
+                    })}
             </>}
         </tr>
     )
