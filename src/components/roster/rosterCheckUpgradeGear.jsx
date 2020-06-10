@@ -82,7 +82,7 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
 
     //TODO : display tooltips + Check BIS update on the component => just 1 job is updated ! (the mainJob)
     return (
-        <p>Besoin restant en améliorant :
+        <p className="mr-2">Besoin restant en améliorant :
             <RosterInfoBadget color={"primary"} info={"Agent Renforçant (arme)"} count={upgradeWeapon} tooltipContent={membersNamesForUpgradeWeapon} />
             <RosterInfoBadget color={"success"} info={"Fibre renforcée (armure)"} count={upgradeArmor} tooltipContent={membersNamesForUpgradeArmor} />
             <RosterInfoBadget color={"info"} info={"Agent solidifiant (accessoire)"} count={upgradeAccessory} tooltipContent={membersNamesForUpgradeAccessory} />
