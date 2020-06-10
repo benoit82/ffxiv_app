@@ -29,7 +29,7 @@ const CharacterTRRoster = ({ character, job, rl }) => {
         return () => {
             unsubscribe()
         }
-    }, [firebase])
+    }, [])
 
     const obtainedGear = (gearNameElement) => {
         // check if the user is admin or rl or user's character owner

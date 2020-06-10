@@ -57,8 +57,6 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
                 })
             }
         })
-
-
         setUpgradeWeapon(namesMissingUpgradeWeapon.length)
         setUpgradeArmor(namesMissingUpgradeArmor.length)
         setUpgradeAccessory(namesMissingUpgradeAccessory.length)
@@ -78,7 +76,7 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
         setMembersNamesForUpgradeWeapon(Object.entries(objWeapon))
         setMembersNamesForUpgradeArmor(Object.entries(objArmor))
         setMembersNamesForUpgradeAccessory(Object.entries(objAcces))
-    })
+    }, [members, priorityJob])
 
     //TODO : display tooltips + Check BIS update on the component => just 1 job is updated ! (the mainJob)
     return (

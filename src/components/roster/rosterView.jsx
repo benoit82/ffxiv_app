@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams, Link, useHistory } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -72,7 +72,7 @@ const RosterView = () => {
             unsubscribe()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [jobPriority])
+    }, [])
 
     return (
         loading ? <Loading />
