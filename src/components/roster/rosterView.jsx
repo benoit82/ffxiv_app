@@ -94,7 +94,7 @@ const RosterView = () => {
                     <tbody onClick={rerender}>
                         {
                             members && members.length > 0 &&
-                            members.map(member => <CharacterTRRoster key={member._id} character={member} job={member.mainJob} />)
+                            members.map(member => <CharacterTRRoster key={member._id} character={member} job={member.mainJob} rl={raidLeader} />)
                         }
                     </tbody>
                 </Table>

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { FirebaseContext } from '../firebase'
+import { UserApi } from '../../utils/appContext'
 import { Character } from '../../models'
 import { styleRole } from '../../utils/styleRole'
 import { getJobIcon } from '../../utils/jobs'
@@ -11,8 +12,10 @@ import styles from './characterTRRoster.scss'
 
 let cx = classNames.bind(styles)
 
-const CharacterTRRoster = ({ character, job }) => {
+const CharacterTRRoster = ({ character, job, rl }) => {
+
     const firebase = useContext(FirebaseContext)
+    const { user } = useContext(UserApi)
     const { _id } = character
     const [chrDB, setChrDB] = useState(character)
     const { bis } = chrDB
@@ -29,12 +32,15 @@ const CharacterTRRoster = ({ character, job }) => {
     }, [firebase])
 
     const obtainedGear = (gearNameElement) => {
-        const [element, propElement] = gearNameElement
-        if (propElement.type === "Memo" && propElement.upgrade) {
-            propElement.upgrade.needed = !propElement.upgrade.needed
+        // check if the user is admin or rl or user's character owner
+        if (user.isAdmin || user.characters.some(chrRef => chrRef.id === rl._id) || chrDB.userRef.id === user.uid) {
+            const [element, propElement] = gearNameElement
+            if (propElement.type === "Memo" && propElement.upgrade) {
+                propElement.upgrade.needed = !propElement.upgrade.needed
+            }
+            let jobBis = { ...character.bis, [job]: { ...bis[job], [element]: { ...propElement, obtained: !propElement.obtained } } }
+            firebase.updateCharacter(_id, { bis: jobBis })
         }
-        let jobBis = { ...character.bis, [job]: { ...bis[job], [element]: { ...propElement, obtained: !propElement.obtained } } }
-        firebase.updateCharacter(_id, { bis: jobBis })
     }
 
     return (
