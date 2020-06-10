@@ -8,7 +8,7 @@ import Tooltip from 'react-bootstrap/Tooltip'
 import { OBTAINED } from '../../utils/consts'
 
 const ShowGearInfo = ({ type, tooltipInfo }) => {
-    const style = { height: "40px", width: "40px" }
+    const style = { height: "40px", width: "40px", margin: "0 auto" }
 
     function renderTooltip(props) {
         return (

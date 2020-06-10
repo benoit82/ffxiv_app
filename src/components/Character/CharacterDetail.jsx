@@ -5,7 +5,7 @@ import "./characterDetail.css";
 const CharacterDetail = ({ chr, handleDelete }) => {
 
 
-  const { name, avatar, server, id } = chr;
+  const { name, avatar, server } = chr;
   return (
     <div
       className="character_main_container"

@@ -68,9 +68,8 @@ const ChrOptionPage = () => {
                     {characters.length > 0 &&
                         <Row className="justify-content-around">
                             {characters.map((character, index) =>
-                                <Col>
+                                <Col key={index}>
                                     < CharacterDetailCard
-                                        key={index}
                                         character={character} />
                                 </Col>
                             )}

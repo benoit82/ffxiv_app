@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -7,8 +7,10 @@ import Table from 'react-bootstrap/Table'
 import { Roster, Character } from '../../models'
 import { getCategory } from '../../utils/jobs'
 import CharacterTRRoster from '../character/characterTRRoster'
-import Button from 'react-bootstrap/Button'
+import RosterCheckUpgradeGear from './rosterCheckUpgradeGear'
 import { resetGearSet } from '../../utils/jobs'
+
+import './rosterView.scss'
 
 /**
  * @route /param /roster/:roster_id
@@ -16,12 +18,11 @@ import { resetGearSet } from '../../utils/jobs'
  */
 const RosterView = () => {
     const { roster_id } = useParams()
-    const history = useHistory()
     const firebase = useContext(FirebaseContext)
     const [roster, setRoster] = useState(null)
     const [members, setMembers] = useState([])
     const [raidLeader, setRaidLeader] = useState(null)
-    const [infoMsg, setInfoMsg] = useState("")
+    const [value, setValue] = useState(0);
 
     useEffect(() => {
         let unsubscribe = firebase.db
@@ -36,69 +37,71 @@ const RosterView = () => {
                     const chrRL = new Character(resp)
                     setRaidLeader(chrRL)
                     membersBuilder.push(chrRL)
-                }).then(
-                    // manage each members
-                    rosterData.rosterMembers.forEach(refMember => {
-                        refMember.get().then(resp => {
-                            const chr = new Character(resp)
-                            membersBuilder.push(chr)
-                        }).then(() => {
-                            if (membersBuilder.length === rosterData.rosterMembers.length + 1) {
-                                membersBuilder.sort((chr_a, chr_b) => {
-                                    const cat_a = getCategory(chr_a.mainJob)
-                                    const cat_b = getCategory(chr_b.mainJob)
-                                    return cat_a > cat_b ? 1 : -1
-                                })
-                                setMembers(membersBuilder)
-                            }
+                }).then(() => {
+                    if (rosterData && rosterData.rosterMembers.length > 0) {
+                        // manage each members
+                        rosterData.rosterMembers.forEach(refMember => {
+                            refMember.get().then(resp => {
+                                const chr = new Character(resp)
+                                membersBuilder.push(chr)
+                            }).then(() => {
+                                if (membersBuilder.length === rosterData.rosterMembers.length + 1) {
+                                    membersBuilder.sort((chr_a, chr_b) => {
+                                        const cat_a = getCategory(chr_a.mainJob)
+                                        const cat_b = getCategory(chr_b.mainJob)
+                                        return cat_a > cat_b ? 1 : -1
+                                    })
+                                    setMembers(membersBuilder)
+                                }
+                            })
                         })
-                    })
+                    } else {
+                        setMembers(membersBuilder)
+                    }
+
+                }
+
                 )
             }
             )
         return () => {
             unsubscribe()
         }
-    }, [firebase])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value])
+
+    const rerender = (e) => {
+        if (e.target.nodeName === "IMG" || e.target.nodeName === "TD") {
+            setValue(value => ++value); // force rerender for upgrade component
+        }
+    }
 
     return (
         <Container>
-            <Row>
-                <h2 className="mr-auto">Table des besoins, roster {roster && roster.name}</h2>
-                <Button variant="info" onClick={() => history.goBack()}>
-                    <i className="fas fa-long-arrow-alt-left"></i>Retour à la page précèdente</Button>
-            </Row>
-
             <Row className="mt-1">
-                <Table striped bordered hover variant="dark">
+                <Table striped bordered hover variant="dark" className="table_roster">
                     <thead>
                         <tr>
-                            <th>Membres</th>
+                            <th>Membres : {roster && roster.name}</th>
                             {Object.entries(resetGearSet)
                                 .sort((gearElement_a, gearElement_b) => gearElement_a[1].order > gearElement_b[1].order ? 1 : -1)
                                 .map(gearElement => {
-                                    return <th key={gearElement[1].order}>{gearElement[1].name}</th>
+                                    const thGearName = gearElement[1].name.replace("Loot", "L.").replace("Memo", "M.").replace("Ras de cou", "Cou")
+                                    return <th key={gearElement[1].order}>{thGearName}</th>
                                 })}
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody onClick={rerender}>
                         {
                             members && members.length > 0 &&
-                            members.map(member => <CharacterTRRoster character={member} job={member.mainJob} />)
+                            members.map(member => <CharacterTRRoster key={member._id} character={member} job={member.mainJob} />)
                         }
                     </tbody>
                 </Table>
             </Row>
-            {/* check if User is RL => give option to manage loot 
-
-            - get number of missing loot per item
-            
-            - boss list
-            - depending boss down : loot list (add)
-            - depending loot won : member list needed on job1 and job 2
-            - validate > update member wish list as "getted"
-            
-            */}
+            {members && members.length > 0 && <Row>
+                <RosterCheckUpgradeGear members={members} priorityJob={1} />
+            </Row>}
         </Container>
     )
 }

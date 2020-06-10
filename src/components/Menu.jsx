@@ -15,7 +15,7 @@ const Menu = ({ user }) => {
         <Nav className="mr-auto">
           {/* si l'utilisateur est connecté */
             isLoggedIn && (<>
-              <NavLink className="nav-link" to="/item">Item</NavLink>
+              {/* <NavLink className="nav-link" to="/item">Item</NavLink> NOT USED */}
               <NavLink className="nav-link" to="/param"><i className="fas fa-cog"></i>Paramètrage</NavLink>
             </>)}
         </Nav>

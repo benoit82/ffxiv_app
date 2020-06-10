@@ -30,3 +30,5 @@ export const ROSTER_NAME_ERR_MSG = `Le pseudo doit avoir entre ${ROSTER_NAME_MIN
 
 // obtained ?
 export const OBTAINED = "OBTAINED";
+
+export const JOB_PRIORITY_ERR = "job priority undefined";
