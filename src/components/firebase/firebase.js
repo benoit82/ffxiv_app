@@ -72,16 +72,10 @@ class Firebase {
 
   // Roster management
   addRoster = async (roster) => {
-    const refRaidLeader = this.db
-      .collection("characters")
-      .doc(roster.refRaidLeader);
-
-    const refDocRoster = await this.db
-      .collection("rosters")
-      .add({ name: roster.name, refRaidLeader });
+    const refDocRoster = await this.db.collection("rosters").add(roster);
 
     // Adding the refDocRoster to character Raid Leader
-    refRaidLeader.update({ rosterRaidLeader: refDocRoster });
+    roster.refRaidLeader.update({ rosterRaidLeader: refDocRoster });
   };
 
   deleteRoster = async (_id, deleteChr = null) => {

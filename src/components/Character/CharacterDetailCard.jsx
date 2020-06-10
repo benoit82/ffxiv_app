@@ -26,8 +26,8 @@ const CharacterDetailCard = ({ character }) => {
             .collection("characters")
             .doc(character._id)
             .onSnapshot(snap => {
-                if (snap.data().rosterRaidLeader) snap.data().rosterRaidLeader.get().then(data => setRosterRL(new Roster(data)))
-                if (snap.data().rosterMember) snap.data().rosterMember.get().then(data => setRosterMember(new Roster(data)))
+                if (snap.data() && snap.data().rosterRaidLeader) snap.data().rosterRaidLeader.get().then(data => setRosterRL(new Roster(data)))
+                if (snap.data() && snap.data().rosterMember) snap.data().rosterMember.get().then(data => setRosterMember(new Roster(data)))
             }
             )
         return () => {
@@ -63,13 +63,14 @@ const CharacterDetailCard = ({ character }) => {
             </div>
 
             <Card.Body>
-                {rosterRL && <><Link to={`roster/edit/${rosterRL._id}`} className="btn btn-primary">Administer son roster</Link>
-                    <Link to={`/roster/${rosterRL._id}`}>Voir mon roster</Link></>
+                {!rosterRL && !rosterMember && <Link to={`/roster/create/${character._id}`} className="btn btn-primary"><i className="fas fa-edit"></i>créer un roster</Link>
+                }
+                {rosterRL && <>
+                    <Link to={`/roster/${rosterRL._id}`} className="btn btn-success mb-1"><i className="fas fa-eye"></i>roster</Link>
+                    <Link to={`roster/edit/${rosterRL._id}`} className="btn btn-primary"><i className="fas fa-edit"></i>administer son roster</Link></>
                 }
                 {rosterMember &&
-                    <Link to={`/roster/${rosterMember._id}`} className="btn btn-warning">Voir mon roster</Link>
-                }
-                {!rosterRL && !rosterMember && <Link to={`/roster/create/${character._id}`} className="btn btn-primary">créer un roster</Link>
+                    <Link to={`/roster/${rosterMember._id}`} className="btn btn-success"><i className="fas fa-eye"></i>roster</Link>
                 }
             </Card.Body>
 

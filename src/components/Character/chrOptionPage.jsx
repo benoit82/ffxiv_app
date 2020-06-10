@@ -8,6 +8,7 @@ import { UserApi } from '../../utils/appContext'
 import { AddBtn, CloseBtn, } from '../formElements'
 import CharacterDetailCard from './characterDetailCard'
 import { Character } from '../../models'
+import Col from 'react-bootstrap/Col'
 
 /**
  * @route /chr
@@ -52,33 +53,31 @@ const ChrOptionPage = () => {
 
     return (
         <Container fluid className="ml-2 mr-2">
-
-            {msgInfo}
-            {characters.length > 0
-                ? (<>
-                    <h3>Vos personnages ({`${characters.length}/${MAX_CHR_ALLOWED}`})</h3>
-                    <Row className="justify-content-around">
-                        {characters.map((character, index) =>
-                            < CharacterDetailCard
-                                key={index}
-                                character={character} />
-                        )}
-                    </Row>
-                </>
-                )
-                : (
-                    <h3>aucun personnage lié à votre compte.</h3>
-                )}
-
-            {characters.length < MAX_CHR_ALLOWED &&
-                <>
-                    <Row className="mt-3">
-                        {!addShow ? <AddBtn handleClick={() => setAddShow(true)} /> : <CloseBtn handleClick={() => setAddShow(false)} />}
-                    </Row>
-                    <Row>
-                        {addShow && <AddCharacter characters={characters} unmount={() => setAddShow(false)} />}
-                    </Row>
-                </>}
+            <Row><h3>Vos personnages ({`${characters.length}/${MAX_CHR_ALLOWED}`})</h3></Row>
+            <Row>
+                {characters.length < MAX_CHR_ALLOWED &&
+                    <Col lg={3}>
+                        <Row>
+                            {!addShow ? <AddBtn handleClick={() => setAddShow(true)} /> : <CloseBtn handleClick={() => setAddShow(false)} />}
+                            {addShow && <AddCharacter characters={characters} unmount={() => setAddShow(false)} />}
+                        </Row>
+                    </Col>
+                }
+                <Col>
+                    <Row>{msgInfo}</Row>
+                    {characters.length > 0 &&
+                        <Row className="justify-content-around">
+                            {characters.map((character, index) =>
+                                <Col>
+                                    < CharacterDetailCard
+                                        key={index}
+                                        character={character} />
+                                </Col>
+                            )}
+                        </Row>
+                    }
+                </Col>
+            </Row>
         </Container>
     )
 }
