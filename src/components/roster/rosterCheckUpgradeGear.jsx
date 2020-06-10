@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { JOB_PRIORITY_ERR } from '../../utils/consts'
-import { FirebaseContext } from '../firebase'
+import RosterInfoBadget from './rosterInfoBadget'
+
 
 const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
 
@@ -10,7 +11,6 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
     const [membersNamesForUpgradeWeapon, setMembersNamesForUpgradeWeapon] = useState([])
     const [membersNamesForUpgradeArmor, setMembersNamesForUpgradeArmor] = useState([])
     const [membersNamesForUpgradeAccessory, setMembersNamesForUpgradeAccessory] = useState([])
-
 
     useEffect(() => {
         let namesMissingUpgradeWeapon = []
@@ -57,6 +57,8 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
                 })
             }
         })
+
+
         setUpgradeWeapon(namesMissingUpgradeWeapon.length)
         setUpgradeArmor(namesMissingUpgradeArmor.length)
         setUpgradeAccessory(namesMissingUpgradeAccessory.length)
@@ -81,9 +83,9 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
     //TODO : display tooltips + Check BIS update on the component => just 1 job is updated ! (the mainJob)
     return (
         <p>Besoin restant en améliorant :
-            <span>Agent Renforçant (arme): {upgradeWeapon}</span>
-            <span>Fibre renforcée (armure): {upgradeArmor}</span>
-            <span>Agent solidifiant (accessoire): {upgradeAccessory}</span>
+            <RosterInfoBadget color={"primary"} info={"Agent Renforçant (arme)"} count={upgradeWeapon} tooltipContent={membersNamesForUpgradeWeapon} />
+            <RosterInfoBadget color={"success"} info={"Fibre renforcée (armure)"} count={upgradeArmor} tooltipContent={membersNamesForUpgradeArmor} />
+            <RosterInfoBadget color={"info"} info={"Agent solidifiant (accessoire)"} count={upgradeAccessory} tooltipContent={membersNamesForUpgradeAccessory} />
         </p>
     )
 }

@@ -23,7 +23,6 @@ const CharacterTRRoster = ({ character, job }) => {
             .collection("characters")
             .doc(_id)
             .onSnapshot(snap => setChrDB(new Character(snap)))
-
         return () => {
             unsubscribe()
         }
@@ -34,7 +33,7 @@ const CharacterTRRoster = ({ character, job }) => {
         if (propElement.type === "Memo" && propElement.upgrade) {
             propElement.upgrade.needed = !propElement.upgrade.needed
         }
-        let jobBis = { [job]: { ...bis[job], [element]: { ...propElement, obtained: !propElement.obtained } } }
+        let jobBis = { ...character.bis, [job]: { ...bis[job], [element]: { ...propElement, obtained: !propElement.obtained } } }
         firebase.updateCharacter(_id, { bis: jobBis })
     }
 

@@ -72,7 +72,7 @@ const RosterView = () => {
 
     const rerender = (e) => {
         if (e.target.nodeName === "IMG" || e.target.nodeName === "TD") {
-            setValue(value => ++value); // force rerender for upgrade component
+            //setValue(value => ++value); // force rerender for upgrade component
         }
     }
 
