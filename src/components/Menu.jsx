@@ -6,7 +6,7 @@ import { Disconnect } from "./index"
 
 
 const Menu = ({ user }) => {
-  const { isLoggedIn, isAdmin, refRosterRaidLeader } = user;
+  const { isLoggedIn, isAdmin, pseudo } = user;
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" >
       <Link className="navbar-brand" to="/">FFXIV-Roster Helper</Link>
@@ -14,21 +14,21 @@ const Menu = ({ user }) => {
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
           {/* si l'utilisateur est connecté */
-            isLoggedIn && (<>
+            isLoggedIn && <>
               {/* <NavLink className="nav-link" to="/item">Item</NavLink> NOT USED */}
-              <NavLink className="nav-link" to="/param"><i className="fas fa-cog"></i>Paramètrage</NavLink>
-            </>)}
+              <NavLink className="nav-link" to="/param"><i className="fas fa-cog"></i>[{pseudo}] Paramètrage</NavLink>
+            </>}
         </Nav>
         <Nav>
           {/* si l'utilisateur n'est pas connecté */
-            !isLoggedIn && (<>
+            !isLoggedIn && <>
               <NavLink className="nav-link login" to="/login"><i className="fas fa-sign-in-alt"></i>Login</NavLink>
               <NavLink className="nav-link" to="/signup"><i className="fas fa-user-plus"></i>Inscription</NavLink>
-            </>)}
+            </>}
           {/* si l'utilisateur est admin */
-            (isAdmin || refRosterRaidLeader) && (<>
+            isAdmin && <>
               <NavLink className="nav-link" to="/admin"><i className="fas fa-meteor"></i>Admin</NavLink>
-            </>)
+            </>
           }
           {/* Si l'utilisateur est connecté */
             isLoggedIn && <Disconnect />
