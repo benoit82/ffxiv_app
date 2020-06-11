@@ -1,7 +1,8 @@
 import React, { useContext } from 'react'
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import FirebaseContext from '../firebase/context';
 import { UserApi } from '../../utils/appContext';
+import Button from 'react-bootstrap/Button';
 
 const Disconnect = () => {
 
@@ -20,7 +21,7 @@ const Disconnect = () => {
     }
 
     return (
-        <Link className="nav-link" onClick={handleClick} to="/"><i className="fas fa-sign-out-alt"></i>[{pseudo}] - Logout</Link>
+        <div className="nav-link" onClick={handleClick} style={{ cursor: "pointer" }}><i className="fas fa-sign-out-alt"></i>[{pseudo}] - Logout</div>
     )
 }
 
