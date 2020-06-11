@@ -31,18 +31,19 @@ const ChrOptionPage = () => {
         if (uid) {
             unsubcribe = firebase.db
                 .collection("users")
-                // .where("userRef", "==", userDocRef)
-                // .orderBy("name", "asc")
                 .doc(uid)
                 .onSnapshot(
                     (snapshot) => {
                         let cList = []
-                        const chrFromDB = snapshot.data().characters
-                        chrFromDB.forEach(characterRefDoc => {
-                            characterRefDoc.get()
-                                .then(data => { cList.push(new Character(data)) })
-                                .then(() => { if (chrFromDB.length === cList.length) setCharacters(cList) })
-                        })
+                        if (snapshot.data().characters) {
+                            const chrFromDB = snapshot.data().characters
+                            chrFromDB.forEach(characterRefDoc => {
+                                characterRefDoc.get()
+                                    .then(data => { cList.push(new Character(data)) })
+                                    .then(() => { if (chrFromDB.length === cList.length) setCharacters(cList) })
+                            })
+                        }
+
                     },
                     (error) => {
                         throw setMsgInfo(<Msg error={error.message} />);
