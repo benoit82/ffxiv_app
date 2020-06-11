@@ -71,8 +71,7 @@ const RosterView = () => {
         return () => {
             unsubscribe()
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [firebase.db, roster_id])
 
     return (
         loading ? <Loading />

@@ -34,7 +34,7 @@ const UserOptionPage = () => {
                 }
             );
         return () => unsubcribe()
-    }, [firebase])
+    }, [user.uid, firebase.db])
 
     return (
         <Container>

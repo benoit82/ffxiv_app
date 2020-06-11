@@ -33,8 +33,7 @@ const CharacterDetailCard = ({ character }) => {
         return () => {
             unsubscribe()
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [firebase])
+    }, [firebase.db, character._id])
 
 
     const handleDelete = character => {

@@ -4,12 +4,13 @@ import { FirebaseContext } from "./components/firebase";
 import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "./routes";
 import Container from "react-bootstrap/Container";
-import Alert from "react-bootstrap/Alert";
 import { Menu, Footer } from "./components";
 import XIVAPI from "xivapi-js";
 import checkStorage from "./utils/checkStorage";
 
 import "./App.css";
+import Row from "react-bootstrap/Row";
+import Msg from "./utils/msg";
 
 function App() {
   const firebase = useContext(FirebaseContext);
@@ -28,9 +29,9 @@ function App() {
       checkStorage(firebase, setUser);
     } catch (error) {
       setInfoMsg(
-        <Alert variant="danger">
-          Une érreur est survenu :<br /> {error.message}
-        </Alert>
+        <Row>
+          <Msg error={error.message}></Msg>
+        </Row>
       );
     }
   }, [firebase]);

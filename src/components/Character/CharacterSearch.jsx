@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react'
 import Loading from "../loading"
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import { SearchBtn, AddBtn } from '../formElements'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -26,7 +25,7 @@ const CharacterSearch = ({ handleAdd, userCharacters }) => {
       const datacenters = await xiv.data.datacenters()
       setServerList([["Choisir un serveur", ["Tous"]], ...Object.entries(datacenters)])
     })()
-  }, [])
+  }, [xiv.data])
 
   const fetchCharacters = async (values, { resetForm }) => {
     setCharacterSelected(null)

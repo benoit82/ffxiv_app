@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { BrowserRouter as Router, Link, Switch } from 'react-router-dom'
 import { ChrOptionPage, EditCharacter } from '../character'
 import Container from 'react-bootstrap/Container'
-import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import ProtectedRoute from '../../utils/protectedRoute'
 import { UserApi } from '../../utils/appContext'
@@ -16,7 +15,7 @@ import { RosterView, RosterCreate } from '../roster'
 const UserParamPage = () => {
     const User = useContext(UserApi)
 
-    const { user } = User
+    const { user, } = User
 
     return (
         <Router basename="/param">

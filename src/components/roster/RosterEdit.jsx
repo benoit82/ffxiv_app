@@ -32,7 +32,7 @@ const RosterEdit = () => {
 
     useEffect(() => {
         firebase.getAllCharacters(setCharacters, { filter: "rosterRaidLeader" })
-    }, [])
+    }, [firebase])
 
     useEffect(() => {
         // load the roster
@@ -69,7 +69,7 @@ const RosterEdit = () => {
             );
 
         return () => unsubcribe();
-    }, [firebase]);
+    }, [history, roster_id, user.isAdmin, user.uid, firebase.db]);
 
     useEffect(() => {
         if (roster.rosterMembers) {

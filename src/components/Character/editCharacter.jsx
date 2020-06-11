@@ -39,6 +39,7 @@ const EditCharacter = () => {
             <span>{data.label}</span>
         </div>
     );
+
     useEffect(() => {
         // load the roster
         const unsubcribe = firebase.db
@@ -68,7 +69,7 @@ const EditCharacter = () => {
             );
 
         return () => unsubcribe();
-    }, [chr_id]);
+    }, [chr_id, firebase.db, history, user.uid]);
 
 
     const handleSubmit = (event) => {
@@ -97,6 +98,7 @@ const EditCharacter = () => {
         if (window.confirm(`Êtes-vous certain de remettre à zero la liste B.I.S. pour le job ${job} ?`)) {
             const bis = { ...character.bis, [job]: resetGearSet }
             firebase.updateCharacter(character._id, { bis })
+            setJobForBis(null)
         }
     }
 

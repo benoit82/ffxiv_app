@@ -25,22 +25,24 @@ const ChrOptionPage = () => {
 
     const { uid } = User.user
 
-    const userDocRef = firebase.db.collection("users").doc(uid)
-
-
-
     useEffect(() => {
         // load the character list from DB linked to the uid
         let unsubcribe;
         if (uid) {
             unsubcribe = firebase.db
-                .collection("characters")
-                .where("userRef", "==", userDocRef)
-                .orderBy("name", "asc")
+                .collection("users")
+                // .where("userRef", "==", userDocRef)
+                // .orderBy("name", "asc")
+                .doc(uid)
                 .onSnapshot(
                     (snapshot) => {
-                        const cList = snapshot.docs.map((characterRefDoc, index) => new Character(characterRefDoc));
-                        setCharacters(cList);
+                        let cList = []
+                        const chrFromDB = snapshot.data().characters
+                        chrFromDB.forEach(characterRefDoc => {
+                            characterRefDoc.get()
+                                .then(data => { cList.push(new Character(data)) })
+                                .then(() => { if (chrFromDB.length === cList.length) setCharacters(cList) })
+                        })
                     },
                     (error) => {
                         throw setMsgInfo(<Msg error={error.message} />);
@@ -48,8 +50,7 @@ const ChrOptionPage = () => {
                 );
             return () => unsubcribe()
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [uid, firebase]) // <-- avoid repeating request
+    }, [firebase.db, uid])
 
     return (
         <Container fluid className="ml-2 mr-2">

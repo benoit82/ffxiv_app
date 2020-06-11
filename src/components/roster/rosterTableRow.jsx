@@ -12,7 +12,7 @@ const RosterTableRow = ({ roster }) => {
     useEffect(() => {
         const setRL = async () => firebase.getDocByRef(refRaidLeader, setRaidLeader)
         setRL()
-    }, [refRaidLeader])
+    }, [firebase, refRaidLeader])
 
     const handleDelete = (roster) => {
         const confirmation = window.confirm(

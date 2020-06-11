@@ -13,11 +13,16 @@ import {
   UserParamPage,
 } from "./components";
 import ProtectedRoute from "./utils/protectedRoute";
+import checkStorage from "./utils/checkStorage";
+import { FirebaseContext } from "./components/firebase";
 
 const Routes = () => {
   const User = useContext(UserApi);
+  const firebase = useContext(FirebaseContext);
 
-  const { user } = User;
+  const { user, setUser } = User;
+
+  checkStorage(firebase, setUser);
 
   return (
     <Switch>
@@ -38,6 +43,7 @@ const Routes = () => {
       />
       <Route path="/roster/:roster_id" component={RosterView} />
       <ProtectedRoute
+        exact
         path="/param"
         allowedUser={user.isLoggedIn}
         component={UserParamPage}

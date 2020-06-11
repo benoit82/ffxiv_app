@@ -32,7 +32,8 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
                     throw new Error(JOB_PRIORITY_ERR)
             }
             if (bisJob) {
-                Object.entries(bisJob).forEach(gearElement => {
+                let bj = Object.entries(bisJob)
+                bj.forEach(gearElement => {
                     if (gearElement[1].upgrade) {
                         switch (gearElement[1].upgrade.type) {
                             case "Weapon":

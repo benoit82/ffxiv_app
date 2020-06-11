@@ -17,6 +17,9 @@ const BISForm = ({ job, character, updateBis, resetBis }) => {
             if (armorElement[1].upgrade && type === gearType[0]) {
                 armorElement[1].upgrade.needed = !obtained;
             }
+            if (armorElement[1].upgrade && type === gearType[1]) {
+                armorElement[1].upgrade.needed = false;
+            }
         })
         updateBis(values, job)
     }
