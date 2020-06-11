@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { useHistory } from "react-router-dom";
 import FirebaseContext from '../firebase/context';
 import { UserApi } from '../../utils/appContext';
-import Button from 'react-bootstrap/Button';
 
 const Disconnect = () => {
 

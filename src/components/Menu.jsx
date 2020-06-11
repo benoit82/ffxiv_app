@@ -6,7 +6,7 @@ import { Disconnect } from "./index"
 
 
 const Menu = ({ user }) => {
-  const { isLoggedIn, isAdmin, pseudo } = user;
+  const { isLoggedIn, isAdmin } = user;
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" >
       <Link className="navbar-brand" to="/">FFXIV-Roster Helper</Link>
