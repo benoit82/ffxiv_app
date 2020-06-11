@@ -14,9 +14,10 @@ import Col from 'react-bootstrap/Col'
 import JobListDisplay from '../../utils/jobListDisplay'
 import BISForm from './bisForm'
 import { resetGearSet } from '../../utils/jobs'
+import Msg from '../../utils/msg'
+import { Character } from '../../models'
 
 import './editCharacter.scss'
-import { Character } from '../../models'
 
 /**
  * @route /chr/:chr_id
@@ -28,6 +29,7 @@ const EditCharacter = () => {
     const User = useContext(UserApi)
     const [character, setCharacter] = useState({})
     const [msgUpdate, setMsgUpdate] = useState("")
+    const [msgInfo, setMsgInfo] = useState(null)
 
     // select state
     const [job1, setJob1] = useState("")
@@ -67,7 +69,7 @@ const EditCharacter = () => {
                     if (chr.thirdJob) setJob3(chr.thirdJob)
                 },
                 (error) => {
-                    console.log(error.message)
+                    setMsgInfo(<Msg error={error.message} />)
                 }
             );
 
@@ -104,22 +106,13 @@ const EditCharacter = () => {
         }
     }
 
-    const resetAllBis = () => {
-        if (window.confirm(`Êtes-vous certain de remettre à zero les listes B.I.S. ?`)) {
-            let bis = { ...character.bis }
-            if (mainJob) bis = { ...bis, [mainJob]: resetGearSet }
-            if (secondJob) bis = { ...bis, [secondJob]: resetGearSet }
-            if (thirdJob) bis = { ...bis, [thirdJob]: resetGearSet }
-            firebase.updateCharacter(character._id, { bis })
-        }
-    }
-
     const { avatar, name, id, mainJob, secondJob, thirdJob } = character
 
     const style_role = styleRole(character.mainJob)
 
     return (
         <Container>
+            {msgInfo && <Row>{msgInfo}</Row>}
             <Row className="d-flex justify-content-center">
                 {/* cadre avatar */}
                 <div className="d-flex rounded p-2 w-auto align-items-center"
@@ -186,7 +179,6 @@ const EditCharacter = () => {
                             </ListGroup.Item>}
                             <ListGroup.Item>
                                 <SendBtn label="mettre à jour les jobs" />
-                                {character.bis && <ResetBtn label="reset tous les BIS" handleReset={resetAllBis} />}
                             </ListGroup.Item>
                         </ul>
 

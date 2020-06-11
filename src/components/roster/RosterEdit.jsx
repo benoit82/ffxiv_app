@@ -103,7 +103,6 @@ const RosterEdit = () => {
             }
             try {
                 firebase.updateRoster(rosterPayload)
-                // TODO : update each characterMembers a rosterReference
                 setInfoMsg(<Msg info={"Roster mis à jour !"} />)
                 setTimeout(() => {
                     setInfoMsg(null)

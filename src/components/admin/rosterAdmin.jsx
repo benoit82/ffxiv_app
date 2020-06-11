@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import { FirebaseContext } from "../firebase";
 import Msg from "../../utils/msg";
 import { Roster } from "../../models";
-import { RostersTable, RosterCreate, RosterEdit, RosterView } from "../roster";
+import { RostersTable, RosterEdit, RosterView } from "../roster";
 import { Switch, Route } from "react-router-dom";
 
 
@@ -45,9 +45,7 @@ const RosterAdmin = () => {
                     )}
             </Row>
             <Row>
-                {/* TODO : a faire fonctionner */}
                 <Switch>
-                    <Route exact path="/admin/roster/" component={RosterCreate} />
                     <Route path="/admin/roster/edit/:roster_id" component={RosterEdit} />
                     <Route path="/admin/roster/view/:roster_id/:jPriority" component={RosterView} />
                 </Switch>
