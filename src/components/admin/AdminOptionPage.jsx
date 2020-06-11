@@ -16,11 +16,8 @@ const AdminOptionPage = () => {
         <Container>
             <Row>
                 <Col lg={3}>
-                    <h2>Menu</h2>
-                    <ul>
-                        <li><Link to="/admin/users">Gestion des utilisateurs</Link></li>
-                        <li><Link to="/admin/roster">Gestion des rosters</Link></li>
-                    </ul>
+                    <Row><Link to="/admin/users" className="btn btn-primary mb-2">Gestion des utilisateurs</Link></Row>
+                    <Row><Link to="/admin/roster" className="btn btn-info mb-2">Gestion des rosters</Link></Row>
                 </Col>
                 <Col>
                     <h1>Administration du site</h1>

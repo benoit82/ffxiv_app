@@ -16,7 +16,8 @@ const Menu = ({ user }) => {
           {/* si l'utilisateur est connecté */
             isLoggedIn && <>
               {/* <NavLink className="nav-link" to="/item">Item</NavLink> NOT USED */}
-              <NavLink className="nav-link" to="/param"><i className="fas fa-cog"></i>[{pseudo}] Paramètrage</NavLink>
+              <NavLink className="nav-link" to="/chr"><i className="fas fa-gamepad"></i>Mes persos - roster</NavLink>
+              <NavLink className="nav-link" to="/param"><i className="fas fa-cog"></i>Mes paramètres</NavLink>
             </>}
         </Nav>
         <Nav>

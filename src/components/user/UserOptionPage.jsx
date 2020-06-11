@@ -39,7 +39,7 @@ const UserOptionPage = () => {
     return (
         <Container>
             {msgInfo && <Row>{msgInfo}</Row>}
-            {userFromDb && <Row>
+            {userFromDb && <Row className="mt-1 mb-5">
                 <ListGroup>
                     <ListGroup.Item>Pseudo : {userFromDb.pseudo}</ListGroup.Item>
                     <ListGroup.Item>Email : {userFromDb.email}</ListGroup.Item>

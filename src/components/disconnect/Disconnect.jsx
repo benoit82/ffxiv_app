@@ -7,6 +7,7 @@ const Disconnect = () => {
 
     const firebase = useContext(FirebaseContext);
     const User = useContext(UserApi);
+    const { user: { pseudo } } = User;
     const history = useHistory();
 
     const handleClick = async (e) => {
@@ -19,7 +20,7 @@ const Disconnect = () => {
     }
 
     return (
-        <Link className="nav-link" onClick={handleClick} to="/"><i className="fas fa-sign-out-alt"></i>Logout</Link>
+        <Link className="nav-link" onClick={handleClick} to="/"><i className="fas fa-sign-out-alt"></i>[{pseudo}] - Logout</Link>
     )
 }
 

@@ -10,9 +10,9 @@ import {
   AdminOptionPage,
   RosterView,
   RosterEdit,
-  UserParamPage,
   ChrOptionPage,
   EditCharacter,
+  UserOptionPage,
 } from "./components";
 import ProtectedRoute from "./utils/protectedRoute";
 import checkStorage from "./utils/checkStorage";
@@ -58,10 +58,11 @@ const Routes = () => {
         exact
         path="/param"
         allowedUser={user.isLoggedIn}
-        component={UserParamPage}
+        component={UserOptionPage}
       />
       <ProtectedRoute
-        path="/param/chr"
+        exact
+        path="/chr"
         allowedUser={user.isLoggedIn}
         component={ChrOptionPage}
       />

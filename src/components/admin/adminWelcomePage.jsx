@@ -3,7 +3,7 @@ import React from 'react'
 const AdminWelcomePage = () => {
     return (
         <div>
-            Welcome !
+            Choisissez une option sur le coté gauche
         </div>
     )
 }
