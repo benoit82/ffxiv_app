@@ -47,10 +47,8 @@ const UserParamPage = () => {
                     <ProtectedRoute
                         path="/roster/create/:character_id"
                         allowedUser={user.isLoggedIn}
-                    >
-                        <RosterCreate
-                            userChrList={user.characters} />
-                    </ProtectedRoute>
+                        component={RosterCreate}
+                    />
                     <ProtectedRoute
                         path="/roster/edit/:roster_id"
                         allowedUser={user.isLoggedIn}
