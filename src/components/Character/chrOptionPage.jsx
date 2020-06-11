@@ -30,20 +30,13 @@ const ChrOptionPage = () => {
         let unsubcribe;
         if (uid) {
             unsubcribe = firebase.db
-                .collection("users")
-                .doc(uid)
+                .collection("characters")
+                .where("userRef", "==", firebase.db.collection("users").doc(uid))
+                .orderBy("name", "asc")
                 .onSnapshot(
                     (snapshot) => {
-                        let cList = []
-                        if (snapshot.data().characters) {
-                            const chrFromDB = snapshot.data().characters
-                            chrFromDB.forEach(characterRefDoc => {
-                                characterRefDoc.get()
-                                    .then(data => { cList.push(new Character(data)) })
-                                    .then(() => { if (chrFromDB.length === cList.length) setCharacters(cList) })
-                            })
-                        }
-
+                        const cList = snapshot.docs.map((characterRefDoc, index) => new Character(characterRefDoc));
+                        setCharacters(cList);
                     },
                     (error) => {
                         throw setMsgInfo(<Msg error={error.message} />);

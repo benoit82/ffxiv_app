@@ -39,7 +39,7 @@ const CharacterDetailCard = ({ character }) => {
     const handleDelete = character => {
         const confirmation = window.confirm(`êtes-vous certain de supprimer ${name} de votre compte ?\nSi ce personnage était un raid lead, cela supprimera également son roster`)
         if (confirmation) {
-            firebase.deleteCharacter(character);
+            firebase.deleteCharacter(character)
         }
     }
 

@@ -25,7 +25,8 @@ const CharacterSearch = ({ handleAdd, userCharacters }) => {
       const datacenters = await xiv.data.datacenters()
       setServerList([["Choisir un serveur", ["Tous"]], ...Object.entries(datacenters)])
     })()
-  }, [xiv.data])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const fetchCharacters = async (values, { resetForm }) => {
     setCharacterSelected(null)
