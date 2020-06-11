@@ -20,6 +20,7 @@ function App() {
     isLoggedIn: false,
   });
   const xivapi = new XIVAPI({
+    private_key: process.env.REACT_APP_XIV_API_KEY,
     language: "fr",
     snake_case: true,
   });
