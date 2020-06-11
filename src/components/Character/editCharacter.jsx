@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container'
 import Alert from 'react-bootstrap/Alert'
 import Row from 'react-bootstrap/Row'
 import ListGroup from 'react-bootstrap/ListGroup'
-import { SendBtn, EditBtn } from '../formElements'
+import { SendBtn, EditBtn, ResetBtn } from '../formElements'
 import { UserApi } from '../../utils/appContext'
 import Select from 'react-select'
 import { selectJobsGroup } from '../../utils/jobs'
@@ -13,7 +13,6 @@ import { styleRole } from '../../utils/styleRole'
 import Col from 'react-bootstrap/Col'
 import JobListDisplay from '../../utils/jobListDisplay'
 import BISForm from './bisForm'
-import { resetGearSet } from '../../utils/jobs'
 import Msg from '../../utils/msg'
 import { Character } from '../../models'
 
@@ -101,8 +100,14 @@ const EditCharacter = () => {
 
     const resetBis = (job) => {
         if (window.confirm(`Êtes-vous certain de remettre à zero la liste B.I.S. pour le job ${job} ?`)) {
-            const bis = { ...character.bis, [job]: resetGearSet }
+            const bis = { ...character.bis, [job]: {} }
             firebase.updateCharacter(character._id, { bis })
+        }
+    }
+    const resetAllBis = () => {
+        if (window.confirm("Êtes-vous certain de remettre à zero tous les B.I.S. ?")) {
+            firebase.updateCharacter(character._id, { bis: {} })
+            setJobForBis("")
         }
     }
 
@@ -179,6 +184,7 @@ const EditCharacter = () => {
                             </ListGroup.Item>}
                             <ListGroup.Item>
                                 <SendBtn label="mettre à jour les jobs" />
+                                <ResetBtn label="reset tous les BIS" handleReset={resetAllBis} />
                             </ListGroup.Item>
                         </ul>
 
