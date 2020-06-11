@@ -27,12 +27,12 @@ const RosterCreate = () => {
             .required(FIELD_REQUIRED),
     });
 
-    const onSubmit = (values) => {
+    const onSubmit = async (values) => {
         const { name } = values;
         //enregistrement DB
         try {
-            firebase.addRoster({ name, refRaidLeader: chrCreator, rosterMembers: [] });
-            history.goBack()
+            const roster_id = await firebase.addRoster({ name, refRaidLeader: chrCreator, rosterMembers: [] });
+            history.replace(`/roster/edit/${roster_id}`)
         } catch (error) {
             setInfoMsg(<Row><Msg error={{ message: error.message }} /></Row>);
         }

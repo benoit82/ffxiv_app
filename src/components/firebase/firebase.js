@@ -76,6 +76,8 @@ class Firebase {
 
     // Adding the refDocRoster to character Raid Leader
     roster.refRaidLeader.update({ rosterRaidLeader: refDocRoster });
+
+    return refDocRoster.id;
   };
 
   deleteRoster = async (_id, deleteChr = null) => {
