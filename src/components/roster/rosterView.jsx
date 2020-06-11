@@ -16,7 +16,6 @@ import Button from 'react-bootstrap/Button'
 
 /**
  * @route /param /roster/:roster_id/:jPriority
- * @route /admin /roster/:roster_id/:jPriority
  */
 const RosterView = () => {
     const { roster_id, jPriority } = useParams()
@@ -105,6 +104,7 @@ const RosterView = () => {
                                             job = member.thirdJob
                                             break
                                         default:
+                                            job = member.mainJob
                                             break
                                     }
                                     return <CharacterTRRoster key={member._id} character={member} job={job} rl={raidLeader} />

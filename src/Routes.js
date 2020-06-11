@@ -11,6 +11,8 @@ import {
   RosterView,
   RosterEdit,
   UserParamPage,
+  ChrOptionPage,
+  EditCharacter,
 } from "./components";
 import ProtectedRoute from "./utils/protectedRoute";
 import checkStorage from "./utils/checkStorage";
@@ -41,12 +43,26 @@ const Routes = () => {
         allowedUser={user.isAdmin || user.refRosterRaidLeader !== null}
         component={RosterEdit}
       />
-      <Route path="/roster/:roster_id" component={RosterView} />
+      <ProtectedRoute
+        path="/roster/:roster_id/:jPriority"
+        allowedUser={user.isLoggedIn}
+        component={RosterView}
+      />
       <ProtectedRoute
         exact
         path="/param"
         allowedUser={user.isLoggedIn}
         component={UserParamPage}
+      />
+      <ProtectedRoute
+        path="/param/chr"
+        allowedUser={user.isLoggedIn}
+        component={ChrOptionPage}
+      />
+      <ProtectedRoute
+        path="/chr/:chr_id"
+        allowedUser={user.isLoggedIn}
+        component={EditCharacter}
       />
     </Switch>
   );

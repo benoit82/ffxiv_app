@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { JOB_PRIORITY_ERR } from '../../utils/consts'
 import RosterInfoBadget from './rosterInfoBadget'
 
 
@@ -29,7 +28,7 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
                     bisJob = member.bis[member.thirdJob]
                     break
                 default:
-                    throw new Error(JOB_PRIORITY_ERR)
+                    bisJob = member.bis[member.mainJob]
             }
             if (bisJob) {
                 let bj = Object.entries(bisJob)

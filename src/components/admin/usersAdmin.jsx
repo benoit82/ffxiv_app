@@ -9,6 +9,9 @@ import Button from 'react-bootstrap/Button';
 import UserForm from './userForm';
 import { CloseBtn } from '../formElements'
 
+/**
+ * @routes /admin/users
+ */
 const UsersAdmin = () => {
 
     const firebase = useContext(FirebaseContext)

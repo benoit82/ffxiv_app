@@ -67,7 +67,7 @@ const CharacterDetailCard = ({ character }) => {
                 }
                 {rosterRL && <>
                     <Link to={`/roster/${rosterRL._id}/1`} className="btn btn-success mb-1"><i className="fas fa-eye"></i>roster</Link>
-                    <Link to={`roster/edit/${rosterRL._id}`} className="btn btn-primary"><i className="fas fa-edit"></i>administer son roster</Link></>
+                    <Link to={`/roster/edit/${rosterRL._id}`} className="btn btn-primary"><i className="fas fa-edit"></i>administer son roster</Link></>
                 }
                 {rosterMember &&
                     <Link to={`/roster/${rosterMember._id}/1`} className="btn btn-success"><i className="fas fa-eye"></i>roster</Link>
@@ -80,7 +80,6 @@ const CharacterDetailCard = ({ character }) => {
                     href={`https://fr.finalfantasyxiv.com/lodestone/character/${id}`}
                     target={"_blanck"}
                 >lodestone</a>
-
                 </Card.Text>
                 <DeleteBtn handleClick={() => { handleDelete(character) }} label="supprimer le personnage" />
             </Card.Footer>

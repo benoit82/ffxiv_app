@@ -5,7 +5,8 @@ import { FirebaseContext } from "../firebase";
 import Msg from "../../utils/msg";
 import { Roster } from "../../models";
 import { RostersTable, RosterCreate, RosterEdit, RosterView } from "../roster";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
+
 
 const RosterAdmin = () => {
     const firebase = useContext(FirebaseContext);
@@ -45,13 +46,11 @@ const RosterAdmin = () => {
             </Row>
             <Row>
                 {/* TODO : a faire fonctionner */}
-                <Router basename="/">
-                    <Switch>
-                        <Route exact path="/" component={RosterCreate} />
-                        <Route path="/edit/:roster_id" component={RosterEdit} />
-                        <Route path="/view/:roster_id" component={RosterView} />
-                    </Switch>
-                </Router>
+                <Switch>
+                    <Route exact path="/admin/roster/" component={RosterCreate} />
+                    <Route path="/admin/roster/edit/:roster_id" component={RosterEdit} />
+                    <Route path="/admin/roster/view/:roster_id/:jPriority" component={RosterView} />
+                </Switch>
             </Row>
         </Container>
     );

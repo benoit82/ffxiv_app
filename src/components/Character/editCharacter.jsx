@@ -18,6 +18,9 @@ import { resetGearSet } from '../../utils/jobs'
 import './editCharacter.scss'
 import { Character } from '../../models'
 
+/**
+ * @route /param/chr/:chr_id
+ */
 const EditCharacter = () => {
     const history = useHistory()
     const { chr_id } = useParams()
