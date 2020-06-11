@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form'
 import Select from 'react-select'
 import Col from 'react-bootstrap/Col'
 import * as pluralize from 'pluralize'
-import { UpdateBtn } from '../formElements'
+import { UpdateBtn, DeleteBtn } from '../formElements'
 import { Character, Roster } from '../../models'
 import { MAX_MEMBERS_ALLOWED } from '../../utils/consts'
 import { UserApi } from '../../utils/appContext'
@@ -127,6 +127,11 @@ const RosterEdit = () => {
         }
     }
 
+    const deleteRoster = () => {
+        firebase.deleteRoster(roster_id)
+        history.replace("/param/chr")
+    }
+
     return (
         <Container>
             {infoMsg && <Row>{infoMsg}</Row>}
@@ -161,6 +166,10 @@ const RosterEdit = () => {
                         </Form.Group>
 
                         <UpdateBtn />
+                        <DeleteBtn
+                            label="supprimer le roster"
+                            handleClick={deleteRoster}
+                        />
                     </Form>
                 </Col>
             </Row>
