@@ -56,7 +56,7 @@ const UserParamPage = () => {
                     />
 
                     <ProtectedRoute
-                        path="/roster/:roster_id/:jPriority"
+                        path="/roster/view/:roster_id/:jPriority"
                         allowedUser={user.isLoggedIn}
                         component={RosterView}
                     />

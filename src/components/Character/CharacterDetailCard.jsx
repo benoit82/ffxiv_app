@@ -66,11 +66,11 @@ const CharacterDetailCard = ({ character }) => {
                 {!rosterRL && !rosterMember && <Link to={`/roster/create/${character._id}`} className="btn btn-primary"><i className="fas fa-edit"></i>créer un roster</Link>
                 }
                 {rosterRL && <>
-                    <Link to={`/roster/${rosterRL._id}/1`} className="btn btn-success mb-1"><i className="fas fa-eye"></i>roster</Link>
+                    <Link to={`/roster/view/${rosterRL._id}/1`} className="btn btn-success mb-1"><i className="fas fa-eye"></i>roster</Link>
                     <Link to={`/roster/edit/${rosterRL._id}`} className="btn btn-primary"><i className="fas fa-edit"></i>administer son roster</Link></>
                 }
                 {rosterMember &&
-                    <Link to={`/roster/${rosterMember._id}/1`} className="btn btn-success"><i className="fas fa-eye"></i>roster</Link>
+                    <Link to={`/roster/view/${rosterMember._id}/1`} className="btn btn-success"><i className="fas fa-eye"></i>roster</Link>
                 }
             </Card.Body>
 

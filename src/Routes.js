@@ -17,6 +17,7 @@ import {
 import ProtectedRoute from "./utils/protectedRoute";
 import checkStorage from "./utils/checkStorage";
 import { FirebaseContext } from "./components/firebase";
+import { RosterCreate } from "./components/roster";
 
 const Routes = () => {
   const User = useContext(UserApi);
@@ -39,12 +40,17 @@ const Routes = () => {
         component={AdminOptionPage}
       />
       <ProtectedRoute
+        path="/roster/create/:character_id"
+        allowedUser={user.isLoggedIn}
+        component={RosterCreate}
+      />
+      <ProtectedRoute
         path="/roster/edit/:roster_id"
         allowedUser={user.isAdmin || user.refRosterRaidLeader !== null}
         component={RosterEdit}
       />
       <ProtectedRoute
-        path="/roster/:roster_id/:jPriority"
+        path="/roster/view/:roster_id/:jPriority"
         allowedUser={user.isLoggedIn}
         component={RosterView}
       />

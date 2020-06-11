@@ -15,7 +15,7 @@ import Loading from '../loading'
 import Button from 'react-bootstrap/Button'
 
 /**
- * @route /param /roster/:roster_id/:jPriority
+ * @route /param /roster/view/:roster_id/:jPriority
  */
 const RosterView = () => {
     const { roster_id, jPriority } = useParams()
