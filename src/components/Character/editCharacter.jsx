@@ -19,7 +19,7 @@ import './editCharacter.scss'
 import { Character } from '../../models'
 
 /**
- * @route /param/chr/:chr_id
+ * @route /chr/:chr_id
  */
 const EditCharacter = () => {
     const history = useHistory()
@@ -101,7 +101,6 @@ const EditCharacter = () => {
         if (window.confirm(`Êtes-vous certain de remettre à zero la liste B.I.S. pour le job ${job} ?`)) {
             const bis = { ...character.bis, [job]: resetGearSet }
             firebase.updateCharacter(character._id, { bis })
-            setJobForBis(null)
         }
     }
 
@@ -112,7 +111,6 @@ const EditCharacter = () => {
             if (secondJob) bis = { ...bis, [secondJob]: resetGearSet }
             if (thirdJob) bis = { ...bis, [thirdJob]: resetGearSet }
             firebase.updateCharacter(character._id, { bis })
-            setJobForBis("")
         }
     }
 
