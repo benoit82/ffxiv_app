@@ -45,11 +45,14 @@ const RosterEdit = () => {
                     setRoster(new Roster(snapshot))
                     if (rosterData.refRaidLeader) {
                         rosterData.refRaidLeader.get().then(resp => {
+                            console.log(resp.data().userRef)
+                            console.log(user.uid)
+                            debugger
                             // check if  the user is allowed to access to roster edit
                             if (user.isAdmin || (user.uid === resp.data().userRef.id)) {
                                 setRaidLeader(new Character(resp))
                             } else {
-                                history.replace("/")
+                                history.push("/")
                             }
                         })
                     }
@@ -69,7 +72,7 @@ const RosterEdit = () => {
             );
 
         return () => unsubcribe();
-    }, [history, roster_id, user.isAdmin, user.uid, firebase.db]);
+    }, []);
 
     useEffect(() => {
         if (roster.rosterMembers) {

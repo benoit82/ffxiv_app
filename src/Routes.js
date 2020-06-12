@@ -46,7 +46,7 @@ const Routes = () => {
       />
       <ProtectedRoute
         path="/roster/edit/:roster_id"
-        allowedUser={user.isAdmin || user.refRosterRaidLeader !== null}
+        allowedUser={user.isLoggedIn}
         component={RosterEdit}
       />
       <ProtectedRoute
