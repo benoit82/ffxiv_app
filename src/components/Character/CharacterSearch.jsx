@@ -6,11 +6,11 @@ import { SearchBtn, AddBtn } from '../formElements'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import pluralize from 'pluralize'
-
-import "./characterSearch.css"
 import { XIVApi } from '../../utils/appContext'
 import { CHARACTER_NAME_MIN, FIELD_REQUIRED, CHARACTER_NAME_ERR_MSG } from '../../utils/consts'
 import Container from 'react-bootstrap/Container'
+
+import "./characterSearch.css"
 
 const CharacterSearch = ({ handleAdd, userCharacters }) => {
   const [loading, setLoading] = useState(false)

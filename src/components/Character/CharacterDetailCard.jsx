@@ -27,7 +27,7 @@ const CharacterDetailCard = ({ character }) => {
             .doc(character._id)
             .onSnapshot(snap => {
                 if (snap.data() && snap.data().rosterRaidLeader) snap.data().rosterRaidLeader.get().then(data => setRosterRL(new Roster(data)))
-                if (snap.data() && snap.data().rosterMember) snap.data().rosterMember.get().then(data => setRosterMember(new Roster(data)))
+                else if (snap.data() && snap.data().rosterMember) snap.data().rosterMember.get().then(data => setRosterMember(new Roster(data)))
             }
             )
         return () => {

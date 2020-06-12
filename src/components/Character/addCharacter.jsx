@@ -14,6 +14,7 @@ const AddCharacter = ({ characters, unmount }) => {
 
     const handleAdd = async (character) => {
         character.userRef = userRef
+        character.bis = {}
         await firebase.addCharacter(uid, character)
         unmount()
     }
