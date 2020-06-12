@@ -128,7 +128,7 @@ const RosterEdit = () => {
 
     const deleteRoster = () => {
         firebase.deleteRoster(roster_id)
-        history.replace("/param/chr")
+        history.replace("/chr")
     }
 
     return (
