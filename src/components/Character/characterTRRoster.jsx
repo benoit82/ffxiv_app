@@ -33,7 +33,8 @@ const CharacterTRRoster = ({ character, job, rl }) => {
 
     const obtainedGear = (gearNameElement) => {
         // check if the user is admin or rl or user's character owner
-        if (user.isAdmin || user.characters.some(chrRef => chrRef.id === rl._id) || chrDB.userRef.id === user.uid) {
+        let rlId = rl ? rl._id : null
+        if (user.isAdmin || user.characters.some(chrRef => chrRef.id === rlId) || chrDB.userRef.id === user.uid) {
             const [element, propElement] = gearNameElement
             if (propElement.type === "Memo" && propElement.upgrade) {
                 propElement.upgrade.needed = !propElement.upgrade.needed

@@ -8,6 +8,7 @@ class Roster {
       this.rosterMembers = data.rosterMembers;
       this.label = data.name;
       this.value = this._id;
+      this.tmp = data.tmp || false;
     }
   }
 }

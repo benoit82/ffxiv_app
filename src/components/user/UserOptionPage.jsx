@@ -6,7 +6,9 @@ import EmailUpdateFrom from './emailUpdateFrom'
 import { FirebaseContext } from '../firebase'
 import { UserApi } from '../../utils/appContext'
 import Msg from '../../utils/msg'
-import { User } from '../../models'
+import { User, Roster } from '../../models'
+import { Link } from 'react-router-dom'
+import { DeleteBtn } from '../formElements'
 
 
 /**
@@ -15,8 +17,8 @@ import { User } from '../../models'
 const UserOptionPage = () => {
 
     const [userFromDb, setUserFromDb] = useState(null)
-    // const [userCharacters, setUserCharacters] = useState([])
     const [msgInfo, setMsgInfo] = useState(null)
+    const [rosterTmp, setRosterTmp] = useState(null)
     const firebase = useContext(FirebaseContext)
     const { user } = useContext(UserApi)
 
@@ -28,6 +30,13 @@ const UserOptionPage = () => {
                 (snapshot) => {
                     const usr = new User(snapshot)
                     setUserFromDb(usr)
+                    if (usr.refRosterRaidLeader) {
+                        const getRoster = async () => {
+                            const rost = new Roster(await usr.refRosterRaidLeader.get())
+                            setRosterTmp(rost)
+                        }
+                        getRoster()
+                    }
                 },
                 (error) => {
                     throw setMsgInfo(<Msg error={error.message} />)
@@ -35,6 +44,16 @@ const UserOptionPage = () => {
             );
         return () => unsubcribe()
     }, [user.uid, firebase.db])
+
+    const handleDelete = () => {
+        const confirmation = window.confirm(
+            `êtes-vous certain de supprimer le roster temporaire : ${rosterTmp.name} ?`
+        );
+        if (confirmation) {
+            firebase.deleteRoster(rosterTmp._id);
+            setRosterTmp(null)
+        }
+    };
 
     return (
         <Container>
@@ -48,6 +67,19 @@ const UserOptionPage = () => {
             <Row>
                 <EmailUpdateFrom />
             </Row>
+            {rosterTmp && <>
+                <hr />
+                <Row className="d-flex flex-column">
+                    <h2>Mon roster temporaire</h2>
+                    <div>
+                        <h4>{rosterTmp.name}</h4>
+                        <Link to={`/roster/edit/${rosterTmp._id}`} className="btn btn-success"><i className="fas fa-edit"></i>Editer</Link>
+                        {" "}<Link to={`/roster/view/${rosterTmp._id}/1`} className="btn btn-primary"><i className="fas fa-eye"></i>Voir</Link>
+                        {" "}<DeleteBtn handleClick={handleDelete} />
+                    </div>
+                </Row>
+            </>}
+
         </Container>)
 }
 
