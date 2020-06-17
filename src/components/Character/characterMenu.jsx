@@ -39,6 +39,34 @@ const CharacterMenu = ({ character }) => {
         }
     }, [firebase.db, character._id])
 
+    const seeRoster = () => {
+        let rosterID = rosterRL ? rosterRL._id : rosterMember._id
+        return <Link to={`/roster/view/${rosterID}/1`} className="btn btn-success mb-1"><i className="fas fa-eye"></i>voir le roster</Link>
+    }
+    const updateRoster = () => <Link to={`/roster/edit/${rosterRL._id}`} className="btn btn-primary"><i className="fas fa-edit"></i>modifier le roster</Link>
+    const createRoster = () => <Link to={`/roster/create/${character._id}`} className="btn btn-primary"><i className="fas fa-edit"></i>créer un roster</Link>
+    const menu_roster = () => {
+        if (rosterRL) {
+            return (<>
+                {seeRoster()}
+                {updateRoster()}
+            </>)
+        }
+        if (rosterMember) {
+            return seeRoster()
+        }
+        return createRoster()
+    }
+    const menu_chr = () => {
+        return (<>
+            <a
+                className="btn btn-info"
+                href={`https://fr.finalfantasyxiv.com/lodestone/character/${id}`}
+                target={"_blanck"}
+            >lodestone</a>
+            <DeleteBtn handleClick={() => { handleDelete(character) }} /></>)
+    }
+
 
     const handleDelete = character => {
         const confirmation = window.confirm(`êtes-vous certain de supprimer ${name} de votre compte ?\nSi ce personnage était un raid lead, cela supprimera également son roster`)
@@ -66,25 +94,10 @@ const CharacterMenu = ({ character }) => {
                 </div>
                 <div className={cx("chr_menu_container")}>
                     <div className="menu_roster">
-                        <h4>Roster</h4>
-                        {!rosterRL && !rosterMember && <Link to={`/roster/create/${character._id}`} className="btn btn-primary"><i className="fas fa-edit"></i>créer un roster</Link>
-                        }
-                        {rosterRL && <>
-                            <Link to={`/roster/view/${rosterRL._id}/1`} className="btn btn-success mb-1"><i className="fas fa-eye"></i>roster</Link>
-                            <Link to={`/roster/edit/${rosterRL._id}`} className="btn btn-primary"><i className="fas fa-edit"></i>administer son roster</Link></>
-                        }
-                        {rosterMember &&
-                            <Link to={`/roster/view/${rosterMember._id}/1`} className="btn btn-success"><i className="fas fa-eye"></i>voir le roster</Link>
-                        }
+                        {menu_roster()}
                     </div>
                     <div className="menu_chr">
-                        <h4>Personnage</h4>
-                        <a
-                            className="btn btn-info"
-                            href={`https://fr.finalfantasyxiv.com/lodestone/character/${id}`}
-                            target={"_blanck"}
-                        >page lodestone</a>
-                        <DeleteBtn handleClick={() => { handleDelete(character) }} />
+                        {menu_chr()}
                     </div>
                 </div>
             </Row>

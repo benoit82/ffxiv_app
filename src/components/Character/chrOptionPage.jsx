@@ -65,9 +65,6 @@ const ChrOptionPage = () => {
                         <Row className="justify-content-around">
                             {characters.map((character, index) =>
                                 <Row key={index} className="w-75 d-flex justify-content-center">
-                                    {/* < CharacterDetailCard
-                                        character={character} /> */}
-                                    {/* Character menu */}
                                     < CharacterMenu
                                         character={character} />
                                 </Row>

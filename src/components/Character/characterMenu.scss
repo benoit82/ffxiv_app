@@ -2,6 +2,10 @@
   background-color: #2a344a29;
   width: 500px !important;
   border-radius: 1rem;
+
+  -webkit-box-shadow: 15px 15px 25px -12px rgba(0, 0, 0, 1);
+  -moz-box-shadow: 15px 15px 25px -12px rgba(0, 0, 0, 1);
+  box-shadow: 15px 15px 25px -12px rgba(0, 0, 0, 1);
 }
 
 .chr_portrait_container {
@@ -16,13 +20,13 @@
     height: inherit;
     transition: transform 1500ms ease-in-out;
     &:hover {
-      transform: scale(1.3);
+      transform: scale(1.1);
     }
   }
   .chr_name {
     position: absolute;
-    top: 4px;
-    left: 6px;
+    top: 0.31rem;
+    left: 1rem;
     color: #cc9f9f;
   }
   .chr_portrait_jobs {
@@ -45,9 +49,5 @@
     flex-wrap: wrap;
     flex-direction: column;
     justify-content: space-around;
-  }
-  h4 {
-    text-align: center;
-    color: #1c2b40;
   }
 }
