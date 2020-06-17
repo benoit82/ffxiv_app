@@ -52,7 +52,7 @@ const RosterEdit = () => {
                             console.log(resp.data().userRef)
                             console.log(user.uid)
                             // check if  the user is allowed to access to roster edit
-                            if (user.isAdmin || (user.uid === resp.data().userRef.id)) {
+                            if (user.isAdmin || user.uid === resp.data().userRef.id) {
                                 setRaidLeader(new Character(resp))
                             } else {
                                 history.push("/")
