@@ -1,0 +1,53 @@
+.main_chr_container {
+  background-color: #2a344a29;
+  width: 500px !important;
+  border-radius: 1rem;
+}
+
+.chr_portrait_container {
+  position: relative;
+  width: 18.32rem;
+  height: 25rem;
+  overflow: hidden;
+  border: 1px solid #573c3c;
+  border-radius: 6px;
+  cursor: pointer;
+  .chr_portrait {
+    height: inherit;
+    transition: transform 1500ms ease-in-out;
+    &:hover {
+      transform: scale(1.3);
+    }
+  }
+  .chr_name {
+    position: absolute;
+    top: 4px;
+    left: 6px;
+    color: #cc9f9f;
+  }
+  .chr_portrait_jobs {
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    width: 100%;
+  }
+}
+
+.chr_menu_container {
+  width: 41%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.5rem 1rem 0;
+  & > * {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  h4 {
+    text-align: center;
+    color: #1c2b40;
+  }
+}
