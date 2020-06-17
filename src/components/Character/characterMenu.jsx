@@ -3,7 +3,6 @@ import { Link, useHistory } from 'react-router-dom'
 import { DeleteBtn } from '../formElements'
 import { FirebaseContext } from '../firebase'
 import JobListDisplay from '../../utils/jobListDisplay'
-import { styleRole } from '../../utils/styleRole'
 import { Roster } from '../../models'
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
@@ -22,8 +21,6 @@ const CharacterMenu = ({ character }) => {
     const [rosterMember, setRosterMember] = useState(null)
 
     const { portrait, name, id, _id, mainJob, secondJob, thirdJob } = character
-
-    const style = styleRole(character.mainJob)
 
     useEffect(() => {
         let unsubscribe = firebase.db
