@@ -10,8 +10,10 @@ const RosterTableRow = ({ roster }) => {
     const [raidLeader, setRaidLeader] = useState()
 
     useEffect(() => {
-        const setRL = async () => firebase.getDocByRef(refRaidLeader, setRaidLeader)
-        setRL()
+        if (refRaidLeader) {
+            const setRL = async () => firebase.getDocByRef(refRaidLeader, setRaidLeader)
+            setRL()
+        }
     }, [firebase, refRaidLeader])
 
     const handleDelete = (roster) => {
@@ -29,9 +31,9 @@ const RosterTableRow = ({ roster }) => {
         <tr>
             <td>{roster.name}</td>
             <td>
-                {raidLeader && <CharacterDetailInline
+                {raidLeader ? <CharacterDetailInline
                     character={raidLeader}
-                />}
+                /> : <p>Roster temporaire</p>}
             </td>
             <td>
                 <Link to={`/roster/edit/${roster._id}`} className="btn btn-success"><i className="fas fa-edit"></i>Editer</Link>

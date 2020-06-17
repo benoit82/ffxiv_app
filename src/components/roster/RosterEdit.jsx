@@ -31,8 +31,12 @@ const RosterEdit = () => {
     const [rosterMembers, setRosterMembers] = useState([])
 
     useEffect(() => {
-        firebase.getAllCharacters(setCharacters, { filter: "rosterRaidLeader" })
-    }, [firebase])
+        if (roster.tmp) {
+            firebase.getAllCharacters(setCharacters, { filter: null })
+        } else {
+            firebase.getAllCharacters(setCharacters, { filter: "rosterRaidLeader" })
+        }
+    }, [roster])
 
     useEffect(() => {
         // load the roster
@@ -101,7 +105,8 @@ const RosterEdit = () => {
             const rosterPayload = {
                 _id: roster._id,
                 name,
-                rosterMembers: rosterMembersTmp
+                rosterMembers: rosterMembersTmp,
+                tmp: roster.tmp
             }
             try {
                 firebase.updateRoster(rosterPayload)
@@ -119,7 +124,8 @@ const RosterEdit = () => {
 
     const handleChangeMembers = (tabValues) => {
         if (tabValues !== null) {
-            if (tabValues.length <= MAX_MEMBERS_ALLOWED) {
+            let limitMembers = roster.tmp ? MAX_MEMBERS_ALLOWED + 1 : MAX_MEMBERS_ALLOWED
+            if (tabValues.length <= limitMembers) {
                 tabValues.sort((a, b) => a.label > b.label ? 1 : -1)
                 setRosterMembers(tabValues)
             }
@@ -155,7 +161,7 @@ const RosterEdit = () => {
                         {raidLeader && <h2>Raid Leader : {raidLeader.name}</h2>}
 
                         <Form.Group>
-                            <Form.Label>{rosterMembers && `${pluralize("membre", rosterMembers.length, true)} / ${MAX_MEMBERS_ALLOWED}`}</Form.Label>
+                            <Form.Label>{rosterMembers && `${pluralize("membre", rosterMembers.length, true)} / ${roster.tmp ? MAX_MEMBERS_ALLOWED + 1 : MAX_MEMBERS_ALLOWED}`}</Form.Label>
                             <Select
                                 id="refRosterMembers"
                                 isMulti

@@ -40,17 +40,21 @@ const CharacterMenu = ({ character }) => {
         let rosterID = rosterRL ? rosterRL._id : rosterMember._id
         return <Link to={`/roster/view/${rosterID}/1`} className="btn btn-success mb-1"><i className="fas fa-eye"></i>voir le roster</Link>
     }
-    const updateRoster = () => <Link to={`/roster/edit/${rosterRL._id}`} className="btn btn-primary"><i className="fas fa-edit"></i>modifier le roster</Link>
-    const createRoster = () => <Link to={`/roster/create/${character._id}`} className="btn btn-primary"><i className="fas fa-edit"></i>créer un roster</Link>
+    const updateRoster = () => <Link to={`/roster/edit/${rosterRL._id}`} className="btn btn-warning mb-1"><i className="fas fa-edit"></i>modifier le roster</Link>
+    const createRoster = () => <Link to={`/roster/create/${character._id}`} className="btn btn-primary mb-1"><i className="fas fa-edit"></i>créer un roster</Link>
     const menu_roster = () => {
         if (rosterRL) {
             return (<>
                 {seeRoster()}
                 {updateRoster()}
+                {createRoster()}
             </>)
         }
         if (rosterMember) {
-            return seeRoster()
+            return (<>
+                {seeRoster()}
+                {createRoster()}
+            </>)
         }
         return createRoster()
     }

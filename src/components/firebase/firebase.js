@@ -75,7 +75,16 @@ class Firebase {
     const refDocRoster = await this.db.collection("rosters").add(roster);
 
     // Adding the refDocRoster to character Raid Leader
-    roster.refRaidLeader.update({ rosterRaidLeader: refDocRoster });
+    if (roster.tmp) {
+      const usr = (await roster.userRef.get()).data();
+      if (usr.refRosterRaidLeader) {
+        //deleting the old roster tmp
+        this.deleteRoster(usr.refRosterRaidLeader.id);
+      }
+      roster.userRef.update({ refRosterRaidLeader: refDocRoster });
+    } else {
+      roster.refRaidLeader.update({ rosterRaidLeader: refDocRoster });
+    }
 
     return refDocRoster.id;
   };
@@ -83,15 +92,23 @@ class Firebase {
   deleteRoster = async (_id, deleteChr = null) => {
     const refDeletedRoster = this.db.collection("rosters").doc(_id);
     const dataRoster = (await refDeletedRoster.get()).data();
-    if (!deleteChr) {
+    if (!deleteChr && !dataRoster.tmp) {
       dataRoster.refRaidLeader.update({
         rosterRaidLeader: null,
       });
     }
-    if (dataRoster.rosterMembers && dataRoster.rosterMembers.length > 0) {
+    if (
+      dataRoster.rosterMembers &&
+      dataRoster.rosterMembers.length > 0 &&
+      !dataRoster.tmp
+    ) {
       dataRoster.rosterMembers.forEach((refMember) => {
         refMember.update({ rosterMember: null });
       });
+    }
+    if (dataRoster.tmp) {
+      // update user info => delete roster ref
+      await dataRoster.userRef.update({ refRosterRaidLeader: null });
     }
     refDeletedRoster.delete();
   };
@@ -101,23 +118,25 @@ class Firebase {
     delete roster._id;
     const rosterDocRef = this.db.collection("rosters").doc(_id);
     // update old rostermember and remove the reference
-    let oldMembersRef = (await rosterDocRef.get()).data().rosterMembers;
-    if (oldMembersRef.length > 0) {
-      oldMembersRef = oldMembersRef.filter((chrRef) => {
-        return rosterMembers.some((memberRef) => !memberRef.isEqual(chrRef));
-      });
-      oldMembersRef.forEach((refMember) => {
-        refMember.update({ rosterMember: null });
-      });
+    if (!roster.tmp) {
+      let oldMembersRef = (await rosterDocRef.get()).data().rosterMembers;
+      if (oldMembersRef.length > 0 && !roster.tmp) {
+        oldMembersRef = oldMembersRef.filter((chrRef) => {
+          return rosterMembers.some((memberRef) => !memberRef.isEqual(chrRef));
+        });
+        oldMembersRef.forEach((refMember) => {
+          refMember.update({ rosterMember: null });
+        });
+      }
+      //for each member : add a reference
+      if (rosterMembers.length > 0 && !roster.tmp) {
+        rosterMembers.forEach((refMember) => {
+          refMember.update({ rosterMember: rosterDocRef });
+        });
+      }
     }
     // then we update the roster document
     rosterDocRef.update(roster);
-    //for each member : add a reference
-    if (rosterMembers.length > 0) {
-      rosterMembers.forEach((refMember) => {
-        refMember.update({ rosterMember: rosterDocRef });
-      });
-    }
   };
 
   // Character management
@@ -144,8 +163,11 @@ class Firebase {
 
   addCharacter = async (uid, character) => {
     character.userRef = this.db.collection("users").doc(uid);
-    //update user for chr reference
+    // add characters info by default concerning rosters
+    character.rosterRaidLeader = null;
+    character.rosterMember = null;
     const refChr = await this.db.collection("characters").add(character);
+    //update user for chr reference
     let user = (await this.db.collection("users").doc(uid).get()).data();
     let characters = [];
     if (user.characters && user.characters.length > 0) {
