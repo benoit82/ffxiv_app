@@ -9,6 +9,7 @@ import { getCategory } from '../../utils/jobs'
 import CharacterTRRoster from '../character/characterTRRoster'
 import RosterCheckUpgradeGear from './rosterCheckUpgradeGear'
 import { resetGearSet } from '../../utils/jobs'
+import Msg from '../../utils/msg'
 
 import './rosterView.scss'
 import Loading from '../loading'
@@ -26,6 +27,7 @@ const RosterView = () => {
     const [members, setMembers] = useState([])
     const [raidLeader, setRaidLeader] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [msgInfo, setMsgInfo] = useState(null)
 
     useEffect(() => {
         let unsubscribe = firebase.db
@@ -33,22 +35,21 @@ const RosterView = () => {
             .doc(roster_id)
             .onSnapshot(snap => {
                 setRoster(new Roster(snap))
-                const rosterData = snap.data()
-                let membersBuilder = []
-                // manage RL
-                rosterData.refRaidLeader.get().then(resp => {
-                    const chrRL = new Character(resp)
-                    setRaidLeader(chrRL)
-                    membersBuilder.push(chrRL)
-                }).then(() => {
+                const getRosterData = async (rosterData) => {
+                    // manage RL
+                    let membersBuilder = []
+                    if (rosterData.refRaidLeader) {
+                        const chrRL = new Character(await rosterData.refRaidLeader.get())
+                        setRaidLeader(chrRL)
+                        membersBuilder.push(chrRL)
+                    }
                     if (rosterData && rosterData.rosterMembers.length > 0) {
-                        // manage each members
                         rosterData.rosterMembers.forEach(refMember => {
-                            refMember.get().then(resp => {
-                                const chr = new Character(resp)
+                            const getMemberData = async () => {
+                                const chr = new Character(await refMember.get())
                                 membersBuilder.push(chr)
-                            }).then(() => {
-                                if (membersBuilder.length === rosterData.rosterMembers.length + 1) {
+                                const nbMembers = rosterData.refRaidLeader ? rosterData.rosterMembers.length + 1 : rosterData.rosterMembers.length
+                                if (membersBuilder.length === nbMembers) {
                                     membersBuilder.sort((chr_a, chr_b) => {
                                         const cat_a = getCategory(chr_a.mainJob)
                                         const cat_b = getCategory(chr_b.mainJob)
@@ -56,15 +57,21 @@ const RosterView = () => {
                                     })
                                     setMembers(membersBuilder)
                                 }
-                            })
+                            }
+                            // manage each members
+                            getMemberData()
                         })
                     } else {
                         setMembers(membersBuilder)
                     }
-
                 }
-
-                ).then(() => setLoading(false))
+                try {
+                    getRosterData(snap.data())
+                } catch (error) {
+                    setMsgInfo(<Msg error={error.message} />)
+                } finally {
+                    setLoading(false)
+                }
             }
             )
         return () => {
@@ -75,6 +82,7 @@ const RosterView = () => {
     return (
         loading ? <Loading />
             : <Container>
+                <Row>{msgInfo}</Row>
                 <Row className="mt-1">
                     <Table striped bordered hover variant="dark" className="table_roster">
                         <thead>
