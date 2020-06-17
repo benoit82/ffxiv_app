@@ -36,7 +36,7 @@ const RosterEdit = () => {
         } else {
             firebase.getAllCharacters(setCharacters, { filter: "rosterRaidLeader" })
         }
-    }, [roster])
+    }, [roster, firebase])
 
     useEffect(() => {
         // load the roster
@@ -75,6 +75,7 @@ const RosterEdit = () => {
             );
 
         return () => unsubcribe();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

@@ -9,6 +9,8 @@ import Msg from '../../utils/msg'
 import { User, Roster } from '../../models'
 import { Link } from 'react-router-dom'
 import { DeleteBtn } from '../formElements'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import Button from 'react-bootstrap/Button'
 
 
 /**
@@ -21,6 +23,8 @@ const UserOptionPage = () => {
     const [rosterTmp, setRosterTmp] = useState(null)
     const firebase = useContext(FirebaseContext)
     const { user } = useContext(UserApi)
+
+
 
     useEffect(() => {
         let unsubcribe = firebase.db
@@ -43,7 +47,8 @@ const UserOptionPage = () => {
                 }
             );
         return () => unsubcribe()
-    }, [user.uid, firebase.db])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const handleDelete = () => {
         const confirmation = window.confirm(
@@ -70,12 +75,16 @@ const UserOptionPage = () => {
             {rosterTmp && <>
                 <hr />
                 <Row className="d-flex flex-column">
-                    <h2>Mon roster temporaire</h2>
-                    <div>
-                        <h4>{rosterTmp.name}</h4>
-                        <Link to={`/roster/edit/${rosterTmp._id}`} className="btn btn-success"><i className="fas fa-edit"></i>Editer</Link>
-                        {" "}<Link to={`/roster/view/${rosterTmp._id}/1`} className="btn btn-primary"><i className="fas fa-eye"></i>Voir</Link>
-                        {" "}<DeleteBtn handleClick={handleDelete} />
+                    <h2>Mon roster temporaire</h2><span style={{ color: "gray", fontStyle: "italic", fontSize: "0.8rem", marginBottom: "1.5rem" }}>cliques sur le nom pour copier le lien pour la visu</span>
+                    <div className="d-flex">
+                        <CopyToClipboard text={`https://${window.location.href.split("/")[2]}/roster/view/${rosterTmp._id}/1`}>
+                            <h4 className="mr-5"><Button><i className="fas fa-clipboard"></i>{rosterTmp.name}</Button></h4>
+                        </CopyToClipboard>
+                        <div style={{ display: "flex", width: "30vw", justifyContent: "space-between" }}>
+                            <Link to={`/roster/view/${rosterTmp._id}/1`} className="btn btn-primary"><i className="fas fa-eye"></i>Voir</Link>
+                            <Link to={`/roster/edit/${rosterTmp._id}`} className="btn btn-success"><i className="fas fa-edit"></i>Editer</Link>
+                            <DeleteBtn handleClick={handleDelete} />
+                        </div>
                     </div>
                 </Row>
             </>}
