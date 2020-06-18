@@ -9,7 +9,7 @@ const Menu = ({ user }) => {
   const { isLoggedIn, isAdmin } = user;
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" >
-      <Link className="navbar-brand" to="/">FFXIV-Roster Helper</Link>
+      <Link className="navbar-brand" to="/">FFXIV-Roster Helper <span class="font-italic">{process.env.REACT_APP_VERSION}</span></Link>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
