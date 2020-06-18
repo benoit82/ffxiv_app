@@ -48,7 +48,7 @@ const RosterCreate = () => {
             const roster_id = await firebase.addRoster(payloadbuilder);
             history.replace(`/roster/edit/${roster_id}`)
         } catch (error) {
-            setInfoMsg(<Row><Msg error={{ message: error.message }} /></Row>);
+            setInfoMsg(<Row><Msg error={error.message} /></Row>);
         }
     };
 

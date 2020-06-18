@@ -6,7 +6,6 @@ import { FirebaseContext } from '../firebase'
 import Msg from '../../utils/msg'
 import { UserApi } from '../../utils/appContext'
 import { AddBtn, CloseBtn, } from '../formElements'
-import CharacterDetailCard from './characterDetailCard'
 import CharacterMenu from './characterMenu'
 import { Character } from '../../models'
 import Col from 'react-bootstrap/Col'
@@ -65,7 +64,7 @@ const ChrOptionPage = () => {
                         <Row className="justify-content-around">
                             {characters.map((character, index) =>
                                 <Row key={index} className="w-75 d-flex justify-content-center">
-                                    < CharacterMenu
+                                    <CharacterMenu
                                         character={character} />
                                 </Row>
                             )}

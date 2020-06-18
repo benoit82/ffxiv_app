@@ -24,6 +24,7 @@ const Welcome = () => {
                     </>
                 )
             }
+            {process.env.NODE_ENV === "development" && <p>Application en mode  : {process.env.NODE_ENV}</p>}
         </Jumbotron >
 
 

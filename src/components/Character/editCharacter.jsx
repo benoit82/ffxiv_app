@@ -100,8 +100,9 @@ const EditCharacter = () => {
 
     const resetBis = (job) => {
         if (window.confirm(`Êtes-vous certain de remettre à zero la liste B.I.S. pour le job ${job} ?`)) {
-            const bis = { ...character.bis, [job]: {} }
+            const bis = { ...character.bis, [job]: null }
             firebase.updateCharacter(character._id, { bis })
+            setJobForBis("")
         }
     }
     const resetAllBis = () => {

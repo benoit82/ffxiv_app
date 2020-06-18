@@ -121,7 +121,7 @@ const RosterView = () => {
                         </tbody>
                     </Table>
                 </Row>
-                {members && members.length > 0 && <Row>
+                {members.length > 0 && <Row>
                     <RosterCheckUpgradeGear members={members} priorityJob={jobPriority} />
                     <Button variant="light" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/1`)}>Main Job</Button>
                     <Button variant="dark" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/2`)}>Job 2</Button>

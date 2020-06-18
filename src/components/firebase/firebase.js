@@ -2,6 +2,7 @@ import app from "firebase/app";
 import config from "./firebase-config";
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/storage";
 import { User, Character } from "../../models";
 
 class Firebase {
@@ -9,6 +10,7 @@ class Firebase {
     app.initializeApp(config);
     this.auth = app.auth();
     this.db = app.firestore();
+    this.storage = app.storage();
   }
 
   /**
@@ -210,6 +212,12 @@ class Firebase {
 
   getDocByRef = async (documentRef, docSetter) => {
     docSetter((await documentRef.get()).data());
+  };
+
+  // Storage
+  getLog = (fileName) => {
+    return this.storage.ref(`patchlog/${fileName}`);
+    // return await this.storage.ref().child("patchlog").child(fileName)
   };
 }
 export default Firebase;
