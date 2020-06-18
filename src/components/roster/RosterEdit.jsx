@@ -49,8 +49,6 @@ const RosterEdit = () => {
                     setRoster(new Roster(snapshot))
                     if (rosterData.refRaidLeader) {
                         rosterData.refRaidLeader.get().then(resp => {
-                            console.log(resp.data().userRef)
-                            console.log(user.uid)
                             // check if  the user is allowed to access to roster edit
                             if (user.isAdmin || user.uid === resp.data().userRef.id) {
                                 setRaidLeader(new Character(resp))
