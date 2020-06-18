@@ -10,10 +10,10 @@ const Menu = ({ user }) => {
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" >
       <Link className="navbar-brand" to="/">FFXIV-Roster Helper</Link>
-      <Link className="nav-link" to="/log"><span className="font-italic">{process.env.REACT_APP_VERSION}</span></Link>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
+          <Link className="nav-link" to="/log"><span className="font-italic"><i className="fas fa-newspaper"></i>{process.env.REACT_APP_VERSION}</span></Link>
           {/* si l'utilisateur est connecté */
             isLoggedIn && <>
               {/* <NavLink className="nav-link" to="/item">Item</NavLink> NOT USED */}

@@ -1,6 +1,6 @@
 # Version 1.1.0
 
-Déploiement le :
+Date de déploiement : 18/06/2020
 
 ## Ajout de la possibilité d'indiquer si on a acheté le stuff Mémo
 
