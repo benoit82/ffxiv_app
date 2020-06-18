@@ -36,6 +36,17 @@ const CharacterTRRoster = ({ character, job, rl }) => {
         let rlId = rl ? rl._id : null
         if (user.isAdmin || user.characters.some(chrRef => chrRef.id === rlId) || chrDB.userRef.id === user.uid) {
             const [element, propElement] = gearNameElement
+            //if the character's owner click, and confirm, on non-buy memo => set memo purchased and stop
+            if (chrDB.userRef.id === user.uid
+                && propElement.type === gearType[0]
+                && !propElement.lowMemoPurchased
+                && window.confirm(`Confirmation de l'achat en ${gearType[0]} : ${propElement.name}`)) {
+                propElement.lowMemoPurchased = true
+                propElement.upgrade.needed = true
+                let jobBis = { ...character.bis, [job]: { ...bis[job], [element]: { ...propElement } } }
+                firebase.updateCharacter(_id, { bis: jobBis })
+                return
+            }
             switch (propElement.type) {
                 case gearType[0]:
                     if (propElement.upgrade && propElement.lowMemoPurchased) {
