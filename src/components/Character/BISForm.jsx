@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Formik, Field } from 'formik'
 import Form from 'react-bootstrap/Form'
 import Container from 'react-bootstrap/Container'
@@ -13,12 +13,20 @@ const BISForm = ({ job, character, updateBis, resetBis }) => {
 
     const submitForm = (values) => {
         Object.entries(values).forEach(armorElement => {
-            const { type, obtained } = armorElement[1];
-            if (armorElement[1].upgrade && type === gearType[0]) {
-                armorElement[1].upgrade.needed = !obtained;
+            const { type, obtained, lowMemoPurchased, upgrade } = armorElement[1];
+            if (type === gearType[0]) {// "Memo"
+                if (lowMemoPurchased === null || lowMemoPurchased === undefined) armorElement[1].lowMemoPurchased = false
+                // if stuff memo not upgraded has been purchased => need the upgrade, if not, we do not need the upgrade yet as well
+                upgrade.needed = lowMemoPurchased
+                // if memo upgraded obtained, we do not need anymore the upgrade, and the lowMemo has been purchased
+                if (obtained) {
+                    upgrade.needed = false
+                    armorElement[1].lowMemoPurchased = true
+                }
             }
-            if (armorElement[1].upgrade && type === gearType[1]) {
-                armorElement[1].upgrade.needed = false;
+            if (upgrade && type === gearType[1]) {
+                upgrade.needed = false
+                armorElement[1].lowMemoPurchased = false
             }
         })
         updateBis(values, job)
@@ -35,7 +43,7 @@ const BISForm = ({ job, character, updateBis, resetBis }) => {
                         <h3>BIS : {job} - Cochez les équipements obtenu</h3>
                     </Row>
                     <Form onSubmit={handleSubmit}>
-                        <div className="bg-light pl-4">
+                        <div className="pl-4">
                             <Row><UpdateBtn /> <ResetBtn handleReset={() => resetBis(job)} /></Row>
                             <Row>
                                 <div style={{ maxHeight: "400px" }} className="d-flex flex-column flex-lg-wrap">
@@ -64,7 +72,16 @@ export default BISForm
 const GearPiece = ({ armorElement, job, gearType }) => {
 
     const gearPiece = armorElement[0]
-    const { name } = armorElement[1]
+    const { name, type, obtained } = armorElement[1]
+    const [lootChecked, setLootChecked] = useState(type === gearType[1])
+    const [gearObtained, setGearObtained] = useState(obtained)
+
+    const onLootChecked = (e) => {
+        setLootChecked(e.target.value === gearType[1])
+    }
+    const onCheckGearObtained = (e) => {
+        setGearObtained(!gearObtained)
+    }
 
     return (
         <Col>
@@ -76,6 +93,7 @@ const GearPiece = ({ armorElement, job, gearType }) => {
                         id={`${job}_${gearPiece}_obtained`}
                         name={`${gearPiece}.obtained`}
                         label={name}
+                        onClick={onCheckGearObtained}
                         inline
                         custom
                     />
@@ -90,6 +108,7 @@ const GearPiece = ({ armorElement, job, gearType }) => {
                             name={`${gearPiece}.type`}
                             label={gearType[1]}
                             value={gearType[1]}
+                            onClick={onLootChecked}
                             inline
                             custom
                         />
@@ -101,11 +120,25 @@ const GearPiece = ({ armorElement, job, gearType }) => {
                             name={`${gearPiece}.type`}
                             label={gearType[0]}
                             value={gearType[0]}
+                            onClick={onLootChecked}
                             inline
                             custom
                         />
                     </>
                 }
+                {!lootChecked &&
+                    <Field
+                        as={Form.Check}
+                        type="checkbox"
+                        id={`${job}_${gearPiece}_memo_lowMemoPurchased`}
+                        name={`${gearPiece}.lowMemoPurchased`}
+                        label={"Memo acheté"}
+                        inline
+                        custom
+                        disabled={gearObtained}
+                    />
+                }
+
             </Form.Group>
         </Col>
     )

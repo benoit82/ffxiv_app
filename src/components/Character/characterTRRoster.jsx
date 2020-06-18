@@ -3,7 +3,7 @@ import { FirebaseContext } from '../firebase'
 import { UserApi } from '../../utils/appContext'
 import { Character } from '../../models'
 import { styleRole } from '../../utils/styleRole'
-import { getJobIcon } from '../../utils/jobs'
+import { getJobIcon, gearType } from '../../utils/jobs'
 import { OBTAINED } from '../../utils/consts'
 import ShowGearInfo from '../gear/showGearInfo'
 import classNames from 'classnames'
@@ -36,10 +36,20 @@ const CharacterTRRoster = ({ character, job, rl }) => {
         let rlId = rl ? rl._id : null
         if (user.isAdmin || user.characters.some(chrRef => chrRef.id === rlId) || chrDB.userRef.id === user.uid) {
             const [element, propElement] = gearNameElement
-            if (propElement.type === "Memo" && propElement.upgrade) {
-                propElement.upgrade.needed = !propElement.upgrade.needed
+            switch (propElement.type) {
+                case gearType[0]:
+                    if (propElement.upgrade && propElement.lowMemoPurchased) {
+                        propElement.upgrade.needed = !propElement.upgrade.needed
+                    }
+                    propElement.obtained = !propElement.lowMemoPurchased ? false : !propElement.obtained
+                    break;
+                case gearType[1]:
+                    propElement.obtained = !propElement.obtained
+                    break;
+                default:
+                    return;
             }
-            let jobBis = { ...character.bis, [job]: { ...bis[job], [element]: { ...propElement, obtained: !propElement.obtained } } }
+            let jobBis = { ...character.bis, [job]: { ...bis[job], [element]: { ...propElement } } }
             firebase.updateCharacter(_id, { bis: jobBis })
         }
     }
@@ -51,13 +61,18 @@ const CharacterTRRoster = ({ character, job, rl }) => {
                 {Object.entries(bis[job])
                     .sort((gearElement_a, gearElement_b) => gearElement_a[1].order > gearElement_b[1].order ? 1 : -1)
                     .map(gearElement => {
-                        const toolTipInfo = `${chrDB.name} - ${gearElement[1].name}`
+                        // condition for v1.0.0 users
+                        if (gearElement[1].type === gearType[0] && (gearElement[1].lowMemoPurchased === null || gearElement[1].lowMemoPurchased === undefined)) {
+                            gearElement[1].lowMemoPurchased = false
+                            gearElement[1].upgrade.needed = false
+                        }
+                        const toolTipInfo = (gearElement[1].type === gearType[0] && !gearElement[1].lowMemoPurchased) ? `${chrDB.name} - ${gearElement[1].name} - non acheté` : `${chrDB.name} - ${gearElement[1].name}`
                         return <td
                             key={gearElement[1].order}
                             onClick={() => obtainedGear(gearElement)}
                             className={cx({ bg_obtained: gearElement[1].obtained })}
                         >
-                            {!gearElement[1].obtained && <ShowGearInfo type={gearElement[1].type} tooltipInfo={toolTipInfo} />}
+                            {!gearElement[1].obtained && <ShowGearInfo type={gearElement[1].type} lowMemoPurchased={gearElement[1].lowMemoPurchased} tooltipInfo={toolTipInfo} />}
                             {gearElement[1].obtained && <ShowGearInfo type={OBTAINED} tooltipInfo={toolTipInfo} />}
                         </td>
                     })}
