@@ -13,6 +13,7 @@ import {
   ChrOptionPage,
   EditCharacter,
   UserOptionPage,
+  LogPatch,
 } from "./components";
 import ProtectedRoute from "./utils/protectedRoute";
 import checkStorage from "./utils/checkStorage";
@@ -30,6 +31,7 @@ const Routes = () => {
   return (
     <Switch>
       <Route exact path="/" component={Welcome} />
+      <Route exact path="/log" component={LogPatch} />
       <Route path="/signup" component={SignupPage} />
       <Route path="/login" component={LoginPage} />
       <Route path="/resetpassword" component={ForgottenPasswordPage} />
