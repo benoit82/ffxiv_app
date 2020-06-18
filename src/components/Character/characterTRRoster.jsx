@@ -72,19 +72,22 @@ const CharacterTRRoster = ({ character, job, rl }) => {
                 {Object.entries(bis[job])
                     .sort((gearElement_a, gearElement_b) => gearElement_a[1].order > gearElement_b[1].order ? 1 : -1)
                     .map(gearElement => {
+                        let { type, lowMemoPurchased, order, obtained, upgrade } = gearElement[1]
                         // condition for v1.0.0 users
-                        if (gearElement[1].type === gearType[0] && (gearElement[1].lowMemoPurchased === null || gearElement[1].lowMemoPurchased === undefined)) {
-                            gearElement[1].lowMemoPurchased = false
-                            gearElement[1].upgrade.needed = false
+                        if (type === gearType[0] && (lowMemoPurchased === null || lowMemoPurchased === undefined)) {
+                            lowMemoPurchased = false
+                            upgrade.needed = false
                         }
-                        const toolTipInfo = (gearElement[1].type === gearType[0] && !gearElement[1].lowMemoPurchased) ? `${chrDB.name} - ${gearElement[1].name} - non acheté` : `${chrDB.name} - ${gearElement[1].name}`
+                        const toolTipInfo = (type === gearType[0] && !lowMemoPurchased) ? `${chrDB.name} - ${gearElement[1].name} - non acheté` : `${chrDB.name} - ${gearElement[1].name}`
                         return <td
-                            key={gearElement[1].order}
+                            key={order}
                             onClick={() => obtainedGear(gearElement)}
-                            className={cx({ bg_obtained: gearElement[1].obtained })}
+                            className={cx({ bg_obtained: obtained })}
                         >
-                            {!gearElement[1].obtained && <ShowGearInfo type={gearElement[1].type} lowMemoPurchased={gearElement[1].lowMemoPurchased} tooltipInfo={toolTipInfo} />}
-                            {gearElement[1].obtained && <ShowGearInfo type={OBTAINED} tooltipInfo={toolTipInfo} />}
+                            {obtained ?
+                                <ShowGearInfo type={OBTAINED} tooltipInfo={toolTipInfo} />
+                                : <ShowGearInfo type={type} lowMemoPurchased={lowMemoPurchased} tooltipInfo={toolTipInfo} />
+                            }
                         </td>
                     })}
             </>}

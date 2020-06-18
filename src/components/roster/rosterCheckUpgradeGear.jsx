@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import RosterInfoBadget from './rosterInfoBadget'
+import { gearType } from '../../utils/jobs'
 
 
 const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
@@ -7,16 +8,28 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
     const [upgradeWeapon, setUpgradeWeapon] = useState(0)
     const [upgradeArmor, setUpgradeArmor] = useState(0)
     const [upgradeAccessory, setUpgradeAccessory] = useState(0)
-    const [membersNamesForUpgradeWeapon, setMembersNamesForUpgradeWeapon] = useState([])
-    const [membersNamesForUpgradeArmor, setMembersNamesForUpgradeArmor] = useState([])
-    const [membersNamesForUpgradeAccessory, setMembersNamesForUpgradeAccessory] = useState([])
+    const [waitersWeap, setWaitersWeap] = useState(0)
+    const [waitersArm, setWaitersArm] = useState(0)
+    const [waitersAcc, setWaitersAcc] = useState(0)
+    const [tooltipBuilderWeap, setTooltipBuilderWeap] = useState([])
+    const [tooltipBuilderArm, setTooltipBuilderArm] = useState([])
+    const [tooltipBuilderAcc, setTooltipBuilderAcc] = useState([])
+
 
     useEffect(() => {
-        let namesMissingUpgradeWeapon = []
-        let namesMissingUpgradeArmor = []
-        let namesMissingUpgradeAccessory = []
+
+        let namesMissingUpWeap = []
+        let namesMissingUpArm = []
+        let namesMissingUpAcc = []
+
+        let namesWaiterWeap = []
+        let namesWaiterArm = []
+        let namesWaiterAcc = []
+
+
         members.forEach((member) => {
             let bisJob = null
+
             switch (priorityJob) {
                 case 1:
                     bisJob = member.bis[member.mainJob]
@@ -33,56 +46,65 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
             if (bisJob) {
                 let bj = Object.entries(bisJob)
                 bj.forEach(gearElement => {
-                    if (gearElement[1].upgrade) {
-                        switch (gearElement[1].upgrade.type) {
-                            case "Weapon":
-                                if (gearElement[1].upgrade.needed) {
-                                    namesMissingUpgradeWeapon.push(member.name)
-                                }
-                                break
-                            case "Armor":
-                                if (gearElement[1].upgrade.needed) {
-                                    namesMissingUpgradeArmor.push(member.name)
-                                }
-                                break
-                            case "Accessory":
-                                if (gearElement[1].upgrade.needed) {
-                                    namesMissingUpgradeAccessory.push(member.name)
-                                }
-                                break
-                            default:
-                                break
+                    const checkForGear = (type, tabMbNeedType, tabMbFuturNeed) => {
+                        if (gearElement[1].upgrade.type === type) {
+                            if (gearElement[1].upgrade.needed) {
+                                tabMbNeedType.push(member.name)
+                                // else if gear is not obtained and memo not purchased yet
+                            }
+                            if (gearElement[1].type === gearType[0]
+                                && !gearElement[1].obtained
+                                && !gearElement[1].lowMemoPurchased) {
+                                tabMbFuturNeed.push(member.name)
+                            }
                         }
+                    }
+                    if (gearElement[1].upgrade) {
+                        checkForGear("Weapon", namesMissingUpWeap, namesWaiterWeap)
+                        checkForGear("Armor", namesMissingUpArm, namesWaiterArm)
+                        checkForGear("Accessory", namesMissingUpAcc, namesWaiterAcc)
                     }
                 })
             }
         })
-        setUpgradeWeapon(namesMissingUpgradeWeapon.length)
-        setUpgradeArmor(namesMissingUpgradeArmor.length)
-        setUpgradeAccessory(namesMissingUpgradeAccessory.length)
+        setUpgradeWeapon(namesMissingUpWeap.length)
+        setUpgradeArmor(namesMissingUpArm.length)
+        setUpgradeAccessory(namesMissingUpAcc.length)
+
+        setWaitersWeap(namesWaiterWeap.length)
+        setWaitersArm(namesWaiterArm.length)
+        setWaitersAcc(namesWaiterAcc.length)
+
         // build object for tooltip render
-        let objWeapon = {}
-        let objArmor = {}
-        let objAcces = {}
-        namesMissingUpgradeWeapon.forEach((name) => {
-            objWeapon[name] = 1 + (objWeapon[name] || 0);
-        })
-        namesMissingUpgradeArmor.forEach((name) => {
-            objArmor[name] = 1 + (objArmor[name] || 0);
-        })
-        namesMissingUpgradeAccessory.forEach((name) => {
-            objAcces[name] = 1 + (objAcces[name] || 0);
-        })
-        setMembersNamesForUpgradeWeapon(Object.entries(objWeapon))
-        setMembersNamesForUpgradeArmor(Object.entries(objArmor))
-        setMembersNamesForUpgradeAccessory(Object.entries(objAcces))
+        const countNames = (setterNamesPerType, tabNeed, tabNext) => {
+            let need = {}
+            let next = {}
+            let finalObject = {}
+
+            tabNeed.forEach((name) => {
+                need[name] = 1 + (need[name] || 0);
+            })
+
+            tabNext.forEach((name) => {
+                next[name] = 1 + (next[name] || 0);
+            })
+
+            Object.entries(need).forEach(element => finalObject[element[0]] = { ...finalObject[element[0]], need: element[1] })
+            Object.entries(next).forEach(element => finalObject[element[0]] = { ...finalObject[element[0]], next: element[1] })
+
+
+            setterNamesPerType(Object.entries(finalObject))
+        }
+        countNames(setTooltipBuilderWeap, namesMissingUpWeap, namesWaiterWeap)
+        countNames(setTooltipBuilderArm, namesMissingUpArm, namesWaiterArm)
+        countNames(setTooltipBuilderAcc, namesMissingUpAcc, namesWaiterAcc)
     }, [members, priorityJob])
 
     return (
         <p className="mr-2">Besoin restant en améliorant :
-            <RosterInfoBadget color={"primary"} info={"Agent Renforçant (arme)"} count={upgradeWeapon} tooltipContent={membersNamesForUpgradeWeapon} />
-            <RosterInfoBadget color={"success"} info={"Fibre renforcée (armure)"} count={upgradeArmor} tooltipContent={membersNamesForUpgradeArmor} />
-            <RosterInfoBadget color={"info"} info={"Agent solidifiant (accessoire)"} count={upgradeAccessory} tooltipContent={membersNamesForUpgradeAccessory} />
+            <RosterInfoBadget color={"primary"} info={"Agent Renforçant (arme)"} count={upgradeWeapon} countNext={waitersWeap} tooltipContent={tooltipBuilderWeap} />
+            <RosterInfoBadget color={"success"} info={"Fibre renforcée (armure)"} count={upgradeArmor} countNext={waitersArm} tooltipContent={tooltipBuilderArm} />
+            <RosterInfoBadget color={"info"} info={"Agent solidifiant (accessoire)"} count={upgradeAccessory} countNext={waitersAcc} tooltipContent={tooltipBuilderAcc} />
         </p>
     )
 }
