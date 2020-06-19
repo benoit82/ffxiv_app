@@ -67,9 +67,9 @@ const BISForm = ({ job, character, updateBis, resetBis }) => {
     )
 }
 
-export default BISForm
+export default React.memo(BISForm)
 
-const GearPiece = ({ armorElement, job, gearType }) => {
+const GearPiece = React.memo(function ({ armorElement, job, gearType }) {
 
     const gearPiece = armorElement[0]
     const { name, type, obtained } = armorElement[1]
@@ -142,4 +142,4 @@ const GearPiece = ({ armorElement, job, gearType }) => {
             </Form.Group>
         </Col>
     )
-}
+})
