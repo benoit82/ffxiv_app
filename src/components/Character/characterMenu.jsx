@@ -76,21 +76,20 @@ const CharacterMenu = ({ character }) => {
         }
     }
 
+    const handlePortraitClick = () => {
+        history.push(`/chr/${_id}`)
+    }
+
     return (
         <Container className={classNames("mb-2", cx("main_chr_container"))}>
             <Row>
-                <div className={cx("chr_portrait_container")} onClick={() => history.push(`/chr/${_id}`)}>
+                <div className={cx("chr_portrait_container")} onClick={handlePortraitClick}>
                     <img className={cx("chr_portrait")} src={portrait} alt={name} />
                     <h3 className={cx("chr_name")} >{name}</h3>
-                    <div className={cx("chr_portrait_jobs")}>
+                    <div className={classNames("d-flex", "justify-content-around", cx("chr_portrait_jobs"))}>
                         {mainJob ?
-                            <div className="d-flex justify-content-around">
-                                <JobListDisplay job={mainJob} />{secondJob && <JobListDisplay job={secondJob} />}{thirdJob && <JobListDisplay job={thirdJob} />}
-                            </div>
-                            : <div className="d-flex justify-content-around">
-                                <Alert variant="warning">Jobs à définir - cliques sur le portrait</Alert>
-                            </div>
-                        }
+                            <><JobListDisplay job={mainJob} />{secondJob && <JobListDisplay job={secondJob} />}{thirdJob && <JobListDisplay job={thirdJob} />}</>
+                            : <Alert variant="warning">Jobs à définir - cliques sur le portrait</Alert>}
                     </div>
                 </div>
                 <div className={cx("chr_menu_container")}>
