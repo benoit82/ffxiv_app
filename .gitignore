@@ -30,3 +30,4 @@ firebase.json
 
 #vscode
 .vscode/
+yarn.lock

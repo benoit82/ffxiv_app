@@ -126,8 +126,7 @@ const CharacterSearch = ({ handleAdd, userCharacters }) => {
         }
       </Formik>
       {loading && <Row><Loading /></Row>}
-      {
-        characterSelected &&
+      {characterSelected &&
         <Row>
           <Form.Group controlId="selectChr">
             <Form.Label>Résultat : {pluralize("personnage", characters.length, true)}</Form.Label>
