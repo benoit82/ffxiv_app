@@ -17,6 +17,7 @@ import Msg from '../../utils/msg'
 import { Character } from '../../models'
 
 import './editCharacter.scss'
+import Swal from 'sweetalert2'
 
 /**
  * @route /chr/:chr_id
@@ -98,17 +99,53 @@ const EditCharacter = () => {
         }, 1500)
     }
 
-    const resetBis = (job) => {
-        if (window.confirm(`Êtes-vous certain de remettre à zero la liste B.I.S. pour le job ${job} ?`)) {
+    const resetBis = async (job) => {
+        const confirmation = await Swal.fire({
+            icon: "warning",
+            html: `Êtes-vous certain de remettre à zero la liste B.I.S. pour le job ${job} ?`,
+            cancelButtonText: "annuler",
+            showCancelButton: true,
+            confirmButtonText: "oui, certain"
+        })
+        if (confirmation.value) {
             const bis = { ...character.bis, [job]: null }
             firebase.updateCharacter(character._id, { bis })
             setJobForBis("")
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top",
+                showConfirmButton: false,
+                timer: 2500,
+                timerProgressBar: true,
+            })
+            Toast.fire({
+                icon: 'success',
+                title: 'reset du B.I.S. effecté !'
+            })
         }
     }
-    const resetAllBis = () => {
-        if (window.confirm("Êtes-vous certain de remettre à zero tous les B.I.S. ?")) {
+    const resetAllBis = async () => {
+        const confirmation = await Swal.fire({
+            icon: "warning",
+            html: "Êtes-vous certain de remettre à zero tous les B.I.S. ?",
+            cancelButtonText: "annuler",
+            showCancelButton: true,
+            confirmButtonText: "oui, certain"
+        })
+        if (confirmation.value) {
             firebase.updateCharacter(character._id, { bis: {} })
             setJobForBis("")
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top",
+                showConfirmButton: false,
+                timer: 2500,
+                timerProgressBar: true,
+            })
+            Toast.fire({
+                icon: 'success',
+                title: 'reset de tous vos B.I.S. effecté !'
+            })
         }
     }
 

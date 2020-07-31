@@ -3,6 +3,7 @@ import CharacterDetailInline from '../character/characterDetailInline'
 import { FirebaseContext } from '../firebase';
 import { Link } from 'react-router-dom';
 import { DeleteBtn } from '../formElements';
+import Swal from 'sweetalert2';
 
 const RosterTableRow = ({ roster }) => {
     const { refRaidLeader } = roster
@@ -16,12 +17,27 @@ const RosterTableRow = ({ roster }) => {
         }
     }, [firebase, refRaidLeader])
 
-    const handleDelete = (roster) => {
-        const confirmation = window.confirm(
-            `êtes-vous certain de supprimer ${roster.name} de votre compte ?`
-        );
-        if (confirmation) {
+    const handleDelete = async (roster) => {
+        const confirmation = await Swal.fire({
+            icon: "warning",
+            html: `êtes-vous certain de supprimer le roster : ${roster.name} ?`,
+            cancelButtonText: "annuler",
+            showCancelButton: true,
+            confirmButtonText: "oui, certain"
+        })
+        if (confirmation.value) {
             firebase.deleteRoster(roster._id);
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top",
+                showConfirmButton: false,
+                timer: 2500,
+                timerProgressBar: true,
+            })
+            Toast.fire({
+                icon: 'success',
+                title: `${roster.name} supprimé !`,
+            })
         }
     };
 

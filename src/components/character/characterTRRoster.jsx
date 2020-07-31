@@ -7,6 +7,7 @@ import { getJobIcon, gearType } from '../../utils/jobs'
 import { OBTAINED } from '../../utils/consts'
 import ShowGearInfo from '../gear/showGearInfo'
 import classNames from 'classnames'
+import Swal from 'sweetalert2'
 
 import styles from './characterTRRoster.scss'
 
@@ -31,20 +32,43 @@ const CharacterTRRoster = ({ character, job, rl }) => {
         }
     }, [_id, firebase.db])
 
-    const obtainedGear = (gearNameElement) => {
+    const obtainedGear = async (gearNameElement) => {
         // check if the user is admin or rl or user's character owner
         let rlId = rl ? rl._id : null
         if (user.isAdmin || user.characters.some(chrRef => chrRef.id === rlId) || chrDB.userRef.id === user.uid) {
             const [element, propElement] = gearNameElement
             //if the character's owner click, and confirm, on non-buy memo => set memo purchased and stop
+
             if (chrDB.userRef.id === user.uid
                 && propElement.type === gearType[0]
                 && !propElement.lowMemoPurchased
-                && window.confirm(`Confirmation de l'achat en ${gearType[0]} : ${propElement.name}`)) {
-                propElement.lowMemoPurchased = true
-                propElement.upgrade.needed = true
-                let jobBis = { ...character.bis, [job]: { ...bis[job], [element]: { ...propElement } } }
-                firebase.updateCharacter(_id, { bis: jobBis })
+            ) {
+                const confirmation = await Swal.fire({
+                    title: "confirmation d'achat",
+                    html: `Confirmation de l'achat en ${gearType[0]} : ${propElement.name}`,
+                    cancelButtonText: "annuler",
+                    showCancelButton: true,
+                    confirmButtonText: "oui",
+                    icon: "info"
+                })
+                if (confirmation.value) {
+                    propElement.lowMemoPurchased = true
+                    propElement.upgrade.needed = true
+                    let jobBis = { ...character.bis, [job]: { ...bis[job], [element]: { ...propElement } } }
+                    firebase.updateCharacter(_id, { bis: jobBis })
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top',
+                        showConfirmButton: false,
+                        timer: 2500,
+                        timerProgressBar: true,
+                    })
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Achat confirmé !'
+                    })
+                }
+
                 return
             }
             switch (propElement.type) {

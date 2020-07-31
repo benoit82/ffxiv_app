@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom'
 import { DeleteBtn } from '../formElements'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import Button from 'react-bootstrap/Button'
+import Swal from 'sweetalert2'
 
 
 /**
@@ -50,13 +51,28 @@ const UserOptionPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const handleDelete = () => {
-        const confirmation = window.confirm(
-            `êtes-vous certain de supprimer le roster temporaire : ${rosterTmp.name} ?`
-        );
-        if (confirmation) {
+    const handleDelete = async () => {
+        const confirmation = await Swal.fire({
+            icon: "warning",
+            html: `êtes-vous certain de supprimer le roster temporaire : ${rosterTmp.name} ?`,
+            cancelButtonText: "annuler",
+            showCancelButton: true,
+            confirmButtonText: "oui, certain"
+        })
+        if (confirmation.value) {
             firebase.deleteRoster(rosterTmp._id);
             setRosterTmp(null)
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top",
+                showConfirmButton: false,
+                timer: 2500,
+                timerProgressBar: true,
+            })
+            Toast.fire({
+                icon: 'success',
+                title: `${rosterTmp.name} supprimé !`,
+            })
         }
     };
 

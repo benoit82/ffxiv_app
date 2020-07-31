@@ -9,6 +9,7 @@ import Container from 'react-bootstrap/Container'
 import classNames from 'classnames'
 import styles from './characterMenu.scss'
 import Alert from 'react-bootstrap/Alert'
+import Swal from 'sweetalert2'
 
 const cx = classNames.bind(styles)
 
@@ -68,13 +69,20 @@ const CharacterMenu = ({ character }) => {
             <DeleteBtn handleClick={() => { handleDelete(character) }} /></>)
     }
 
-
-    const handleDelete = character => {
-        const confirmation = window.confirm(`êtes-vous certain de supprimer ${name} de votre compte ?\nSi ce personnage était un raid lead, cela supprimera également son roster`)
-        if (confirmation) {
+    const handleDelete = async character => {
+        const confirmation = await Swal.fire({
+            icon: "warning",
+            title: "Suppression de personnage",
+            html: `êtes-vous certain de supprimer ${name} de votre compte ? <br/>
+            Si ce personnage était un raid lead, cela supprimera également son roster.`,
+            showCancelButton: true,
+            confirmButtonText: `Oui, je veux supprimer ${name}`,
+        })
+        if (confirmation.value) {
             firebase.deleteCharacter(character)
         }
     }
+
 
     const handlePortraitClick = () => {
         history.push(`/chr/${_id}`)

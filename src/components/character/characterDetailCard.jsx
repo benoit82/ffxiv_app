@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card'
 import { Link, useHistory } from 'react-router-dom'
 import { DeleteBtn } from '../formElements'
 import { FirebaseContext } from '../firebase'
+import Swal from 'sweetalert2'
 
 import './characterDetailCard.scss'
 import JobListDisplay from '../../utils/jobListDisplay'
@@ -36,11 +37,27 @@ const CharacterDetailCard = ({ character }) => {
     }, [firebase.db, character._id])
 
 
-    const handleDelete = character => {
-        const confirmation = window.confirm(`êtes-vous certain de supprimer ${name} de votre compte ?\nSi ce personnage était un raid lead, cela supprimera également son roster`)
-        if (confirmation) {
+    const handleDelete = async character => {
+        const confirmation = await Swal.fire({
+            icon: "warning",
+            title: `Suppression de personnage : ${name}`,
+            text: `êtes-vous certain de supprimer ${name} de votre compte ?\nSi ce personnage était un raid lead, cela supprimera également son roster.`,
+            showCancelButton: true,
+            confirmButtonText: `Oui, je veux supprimer ${name}`,
+        })
+        if (confirmation.value) {
             firebase.deleteCharacter(character)
         }
+    }
+
+
+    const mainJobCheck = () => {
+        return mainJob ? <div className="d-flex justify-content-around">
+            <JobListDisplay job={mainJob} />{secondJob && <JobListDisplay job={secondJob} />}{thirdJob && <JobListDisplay job={thirdJob} />}
+        </div>
+            : <Card.Text className="d-flex justify-content-around">
+                <span>Jobs à définir (cliques sur son portrait !)</span>
+            </Card.Text>
     }
 
     return (
@@ -49,16 +66,8 @@ const CharacterDetailCard = ({ character }) => {
                 <Card.Img variant="top" src={portrait} />
                 <Card.Body style={style}>
                     <Card.Title>{name}</Card.Title>
-                    {mainJob &&
-                        <div className="d-flex justify-content-around">
-                            <JobListDisplay job={mainJob} />{secondJob && <JobListDisplay job={secondJob} />}{thirdJob && <JobListDisplay job={thirdJob} />}
-                        </div>
-                    }
-                    {!mainJob &&
-                        <Card.Text className="d-flex justify-content-around">
-                            <span>Jobs à définir (cliques sur son portrait !)</span>
-                        </Card.Text>
-                    }
+                    {"bla"}
+                    {mainJobCheck()}
                 </Card.Body>
             </div>
 
