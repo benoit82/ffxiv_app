@@ -91,7 +91,7 @@ const CharacterTRRoster = ({ character, job, rl }) => {
 
     return (
         <tr>
-            <td style={style}><span>{chrDB.name}</span><div className="avatar_job"><img src={chrDB.avatar} alt={"img"} />{job ? getJobIcon(job) : "job à déterminer"}</div></td>
+            <td className="chr_table_detail" style={style}><span>{chrDB.name}</span><div className="avatar_job"><img src={chrDB.avatar} alt={"img"} />{job ? getJobIcon(job) : "job à déterminer"}</div></td>
             {bis && bis[job] && <>
                 {Object.entries(bis[job])
                     .sort((gearElement_a, gearElement_b) => gearElement_a[1].order > gearElement_b[1].order ? 1 : -1)
