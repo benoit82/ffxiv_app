@@ -38,14 +38,13 @@ const CharacterTRRoster = ({ character, job, rl }) => {
         if (user.isAdmin || user.characters.some(chrRef => chrRef.id === rlId) || chrDB.userRef.id === user.uid) {
             const [element, propElement] = gearNameElement
             //if the character's owner click, and confirm, on non-buy memo => set memo purchased and stop
-
             if (chrDB.userRef.id === user.uid
                 && propElement.type === gearType[0]
                 && !propElement.lowMemoPurchased
             ) {
                 const confirmation = await Swal.fire({
                     title: "confirmation d'achat",
-                    html: `Confirmation de l'achat en ${gearType[0]} : ${propElement.name}`,
+                    html: `Confirmation de l'achat en ${gearType[0].toLowerCase()} : ${propElement.name}`,
                     cancelButtonText: "annuler",
                     showCancelButton: true,
                     confirmButtonText: "oui",
