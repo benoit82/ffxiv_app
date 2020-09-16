@@ -29,5 +29,6 @@ yarn-error.log*
 firebase.json
 
 #vscode
-.vscode/*
+/.vscode
+.vscode
 yarn.lock
