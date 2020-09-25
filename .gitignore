@@ -32,3 +32,4 @@ firebase.json
 /.vscode
 .vscode
 yarn.lock
+.vscode/settings.json
