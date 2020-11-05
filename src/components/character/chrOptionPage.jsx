@@ -35,7 +35,7 @@ const ChrOptionPage = () => {
                 .orderBy("name", "asc")
                 .onSnapshot(
                     (snapshot) => {
-                        const cList = snapshot.docs.map((characterRefDoc, index) => new Character(characterRefDoc));
+                        const cList = snapshot.docs.map((characterRefDoc) => new Character(characterRefDoc));
                         setCharacters(cList);
                     },
                     (error) => {
@@ -48,30 +48,32 @@ const ChrOptionPage = () => {
 
     return (
         <Container fluid className="ml-2 mr-2">
-            <Row><h3>Vos personnages ({`${characters.length}/${MAX_CHR_ALLOWED}`})</h3></Row>
             <Row>
-                {characters.length < MAX_CHR_ALLOWED &&
-                    <Col lg={3}>
-                        <Row>
+                <Col lg={2}>
+                    <h3>Vos personnages ({`${characters.length}/${MAX_CHR_ALLOWED}`})</h3>
+                    {
+                        characters.length < MAX_CHR_ALLOWED &&
+                        <>
                             {!addShow ? <AddBtn handleClick={() => setAddShow(true)} /> : <CloseBtn handleClick={() => setAddShow(false)} />}
                             {addShow && <AddCharacter characters={characters} unmount={() => setAddShow(false)} />}
-                        </Row>
-                    </Col>
-                }
+                        </>
+                    }
+                </Col>
                 <Col>
-                    <Row>{msgInfo}</Row>
+                    {msgInfo}
                     {characters.length > 0 &&
-                        <Row className="justify-content-around">
+                        <div className="justify-content-around d-flex">
                             {characters.map((character, index) =>
-                                <Row key={index} className="w-75 d-flex justify-content-center">
+                                <div key={index} className="w-75 d-flex">
                                     <CharacterMenu
                                         character={character} />
-                                </Row>
+                                </div>
                             )}
-                        </Row>
+                        </div>
                     }
                 </Col>
             </Row>
+
         </Container>
     )
 }

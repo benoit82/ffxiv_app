@@ -104,11 +104,11 @@ const JobListDisplay = ({ job }) => {
 
     return (
         <div style={{
-            minWidth: "55px", maxWidth: "85px", margin: "0.5rem", border: "1px solid #7b7b7b91", borderRadius: "7%", padding: "2px",
+            minWidth: "55px", maxWidth: "85px", margin: "0.5rem", border: "2px solid rgba(255, 255, 255, 0.57)", borderRadius: "7%", padding: "0.5rem",
             backgroundColor: jobStyleRole.backgroundColor
         }}>
             <img style={{ width: "1.5em", height: "1.5em", marginRight: "5px" }} src={imgSrc} alt={job} />
-            <span>{job}</span>
+            <span style={{ fontWeight: "bolder" }}>{job}</span>
         </div>
     )
 }

@@ -154,7 +154,7 @@ const EditCharacter = () => {
     const style_role = styleRole(character.mainJob)
 
     return (
-        <Container>
+        <Container fluid>
             {msgInfo && <Row>{msgInfo}</Row>}
             <Row className="d-flex justify-content-center">
                 {/* cadre avatar */}

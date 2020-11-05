@@ -4,13 +4,11 @@ import { DeleteBtn } from '../formElements'
 import { FirebaseContext } from '../firebase'
 import JobListDisplay from '../../utils/jobListDisplay'
 import { Roster } from '../../models'
-import Row from 'react-bootstrap/Row'
-import Container from 'react-bootstrap/Container'
 import classNames from 'classnames'
-import styles from './characterMenu.scss'
 import Alert from 'react-bootstrap/Alert'
 import Swal from 'sweetalert2'
 
+import styles from './characterMenu.scss'
 const cx = classNames.bind(styles)
 
 const CharacterMenu = ({ character }) => {
@@ -89,27 +87,25 @@ const CharacterMenu = ({ character }) => {
     }
 
     return (
-        <Container className={classNames("mb-2", cx("main_chr_container"))}>
-            <Row>
-                <div className={cx("chr_portrait_container")} onClick={handlePortraitClick}>
-                    <img className={cx("chr_portrait")} src={portrait} alt={name} />
-                    <h3 className={cx("chr_name")} >{name}</h3>
-                    <div className={classNames("d-flex", "justify-content-around", cx("chr_portrait_jobs"))}>
-                        {mainJob ?
-                            <><JobListDisplay job={mainJob} />{secondJob && <JobListDisplay job={secondJob} />}{thirdJob && <JobListDisplay job={thirdJob} />}</>
-                            : <Alert variant="warning">Jobs à définir - cliques sur le portrait</Alert>}
-                    </div>
+        <div className={classNames("mb-2", cx("main_chr_container"))}>
+            <div className={cx("chr_portrait_container")} onClick={handlePortraitClick}>
+                <img className={cx("chr_portrait")} src={portrait} alt={name} />
+                <h3 className={cx("chr_name")} >{name}</h3>
+                <div className={classNames("d-flex", "justify-content-around", cx("chr_portrait_jobs"))}>
+                    {mainJob ?
+                        <><JobListDisplay job={mainJob} />{secondJob && <JobListDisplay job={secondJob} />}{thirdJob && <JobListDisplay job={thirdJob} />}</>
+                        : <Alert variant="warning">Jobs à définir - cliques sur le portrait</Alert>}
                 </div>
-                <div className={cx("chr_menu_container")}>
-                    <div className="menu_roster">
-                        {menu_roster()}
-                    </div>
-                    <div className="menu_chr">
-                        {menu_chr()}
-                    </div>
+            </div>
+            <div className={cx("chr_menu_container")}>
+                <div className="menu_roster">
+                    {menu_roster()}
                 </div>
-            </Row>
-        </Container>
+                <div className="menu_chr">
+                    {menu_chr()}
+                </div>
+            </div>
+        </div>
     )
 }
 
