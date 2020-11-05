@@ -5,3 +5,8 @@
 .active {
   border: 1px solid #696969af;
 }
+
+.App {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}

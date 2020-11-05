@@ -4,7 +4,7 @@ import RosterTableRow from './rosterTableRow'
 
 const RostersTable = ({ rosters }) => {
     return (
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover variant="dark" style={{ maxWidth: "930px" }}>
             <thead>
                 <tr>
                     <th>Nom</th>

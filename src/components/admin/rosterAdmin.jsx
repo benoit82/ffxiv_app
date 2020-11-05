@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
 import { FirebaseContext } from "../firebase";
 import Msg from "../../utils/msg";
 import { Roster } from "../../models";
@@ -32,25 +30,19 @@ const RosterAdmin = () => {
     }, [firebase]);
 
     return (
-        <Container>
+        <section style={{ display: "flex", flexDirection: "column" }}>
             {infoMsg}
-            <Row>
-                <h2>Liste des rosters existants</h2>
-            </Row>
-            <Row>
-                {rosters.length > 0 ? (
-                    <RostersTable rosters={rosters} />
-                ) : (
-                        <p>aucun roster créer</p>
-                    )}
-            </Row>
-            <Row>
-                <Switch>
-                    <Route path="/admin/roster/edit/:roster_id" component={RosterEdit} />
-                    <Route path="/admin/roster/view/:roster_id/:jPriority" component={RosterView} />
-                </Switch>
-            </Row>
-        </Container>
+            <h2>Liste des rosters existants</h2>
+            {rosters.length > 0 ? (
+                <RostersTable rosters={rosters} />
+            ) : (
+                    <p>aucun roster créer</p>
+                )}
+            <Switch>
+                <Route path="/admin/roster/edit/:roster_id" component={RosterEdit} />
+                <Route path="/admin/roster/view/:roster_id/:jPriority" component={RosterView} />
+            </Switch>
+        </section>
     );
 };
 

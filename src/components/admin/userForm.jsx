@@ -33,7 +33,7 @@ const UserForm = ({ user }) => {
 
 
     return (
-        <Container>
+        <Container fluid>
             <Formik
                 validationSchema={userSchema}
                 onSubmit={values => updateUser(values)}

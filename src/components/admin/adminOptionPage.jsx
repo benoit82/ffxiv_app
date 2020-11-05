@@ -13,20 +13,22 @@ import RosterAdmin from './rosterAdmin'
  */
 const AdminOptionPage = () => {
     return (
-        <Container>
+        <Container fluid>
             <Row>
                 <Col lg={3}>
                     <Row><Link to="/admin/users" className="btn btn-primary mb-2">Gestion des utilisateurs</Link></Row>
                     <Row><Link to="/admin/roster" className="btn btn-info mb-2">Gestion des rosters</Link></Row>
                 </Col>
                 <Col>
-                    <h1>Administration du site</h1>
-                    <Switch>
-                        <Route exact path="/admin" component={AdminWelcomePage} />
-                        <Route exact path="/admin/users" component={UsersAdmin} />
-                        <Route path="/admin/users/:user_id" component={UserOptionPage} />
-                        <Route exact path="/admin/roster" component={RosterAdmin} />
-                    </Switch>
+                    <Row><h1>Administration du site</h1></Row>
+                    <Row>
+                        <Switch>
+                            <Route exact path="/admin" component={AdminWelcomePage} />
+                            <Route exact path="/admin/users" component={UsersAdmin} />
+                            <Route path="/admin/users/:user_id" component={UserOptionPage} />
+                            <Route exact path="/admin/roster" component={RosterAdmin} />
+                        </Switch>
+                    </Row>
                 </Col>
             </Row>
         </Container>

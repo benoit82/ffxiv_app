@@ -2,7 +2,6 @@ import React, { useEffect, useContext, useState } from 'react'
 import { FirebaseContext } from '../firebase';
 import { User } from '../../models';
 import Msg from '../../utils/msg';
-import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
@@ -50,39 +49,37 @@ const UsersAdmin = () => {
     }
 
     return (
-        <Container>
-            <Row>
-                {msgInfo}
-                <h2>Liste des utilisateurs</h2>
-                <Table responsive striped bordered hover variant="dark">
-                    <thead>
-                        <tr>
-                            <th>Pseudo</th>
-                            <th>Email</th>
-                            <th>Admin</th>
-                            <th>Raid Leader</th>
-                            <th>Crafteur</th>
-                            <th>Récolteur</th>
-                            <th>Date création</th>
+        <>
+            {msgInfo}
+            <h2>Liste des utilisateurs</h2>
+            <Table responsive striped bordered hover variant="dark" style={{ maxWidth: "930px" }}>
+                <thead>
+                    <tr>
+                        <th>Pseudo</th>
+                        <th>Email</th>
+                        <th>Admin</th>
+                        <th>Raid Leader</th>
+                        <th>Crafteur</th>
+                        <th>Récolteur</th>
+                        <th>Date création</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users && users.map(user => {
+                        return <tr key={user.uid}>
+                            <td><Button variant="info" onClick={() => editUser(user)}>{user.pseudo}</Button></td>
+                            <td>{user.email}</td>
+                            <td>{user.isAdmin && <i className="fas fa-check"></i>}</td>
+                            <td>{user.refRosterRaidLeader && <i className="fas fa-check"></i>}</td>
+                            <td>{user.isCrafter && <i className="fas fa-check"></i>}</td>
+                            <td>{user.isGatherer && <i className="fas fa-check"></i>}</td>
+                            <td>{user.createdAt}</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {users && users.map(user => {
-                            return <tr key={user.uid}>
-                                <td><Button variant="info" onClick={() => editUser(user)}>{user.pseudo}</Button></td>
-                                <td>{user.email}</td>
-                                <td>{user.isAdmin && <i className="fas fa-check"></i>}</td>
-                                <td>{user.refRosterRaidLeader && <i className="fas fa-check"></i>}</td>
-                                <td>{user.isCrafter && <i className="fas fa-check"></i>}</td>
-                                <td>{user.isGatherer && <i className="fas fa-check"></i>}</td>
-                                <td>{user.createdAt}</td>
-                            </tr>
-                        })}
-                    </tbody>
-                </Table>
-            </Row>
-            {userForm}
-        </Container>
+                    })}
+                </tbody>
+            </Table>
+            { userForm}
+        </>
     )
 }
 

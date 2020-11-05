@@ -9,7 +9,6 @@ import XIVAPI from "xivapi-js";
 import checkStorage from "./utils/checkStorage";
 
 import "./App.css";
-import Row from "react-bootstrap/Row";
 import Msg from "./utils/msg";
 
 function App() {
@@ -29,11 +28,7 @@ function App() {
     try {
       checkStorage(firebase, setUser);
     } catch (error) {
-      setInfoMsg(
-        <Row>
-          <Msg error={error.message}></Msg>
-        </Row>
-      );
+      setInfoMsg(<Msg error={error.message}></Msg>);
     }
   }, [firebase]);
 
@@ -43,7 +38,7 @@ function App() {
         <UserApi.Provider value={{ user, setUser }}>
           <XIVApi.Provider value={xivapi}>
             <Menu user={user} />
-            <Container>
+            <Container fluid>
               {infoMsg}
               <div className="row mt-3 d-flex justify-content-center align-items-center">
                 <Routes />
