@@ -10,11 +10,11 @@ import CharacterTRRoster from '../character/characterTRRoster'
 import RosterCheckUpgradeGear from './rosterCheckUpgradeGear'
 import { resetGearSet } from '../../utils/jobs'
 import Msg from '../../utils/msg'
-
-import './rosterView.scss'
 import Loading from '../loading'
 import Button from 'react-bootstrap/Button'
+import FFlogsView from './fflogsView'
 
+import './rosterView.scss'
 /**
  * @route /param /roster/view/:roster_id/:jPriority
  */
@@ -83,8 +83,12 @@ const RosterView = () => {
         loading ? <Loading />
             : <>
                 <Col lg={2}>
-                    <h3>FF-Logs</h3>
-                    {/* TODO : faire la liste des logs selon un choix de date
+                    <Row>
+                        <h3>FF-Logs</h3>
+                    </Row>
+                    <Row>
+                        <FFlogsView roster={roster} />
+                        {/* TODO : faire la liste des logs selon un choix de date
                     1/ Selection plage de date
                     2/ résultat
                     list : 
@@ -96,6 +100,7 @@ const RosterView = () => {
 
                     4/ Formulaire ajouter un log
                     */}
+                    </Row>
                 </Col>
                 <Col lg={8}>
                     <Row>{msgInfo}</Row>
