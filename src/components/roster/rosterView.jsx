@@ -140,7 +140,7 @@ const RosterView = () => {
                     </Row>
                     {members.length > 0 && <Row>
                         <RosterCheckUpgradeGear members={members} priorityJob={jobPriority} />
-                        <Button variant="light" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/1`)}>Main Job</Button>
+                        <Button variant="danger" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/1`)}>Main Job</Button>
                         <Button variant="dark" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/2`)}>Job 2</Button>
                         <Button variant="warning" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/3`)}>Job 3</Button>
                     </Row>}

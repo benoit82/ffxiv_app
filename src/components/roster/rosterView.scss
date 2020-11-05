@@ -1,4 +1,11 @@
 .table_roster {
+  & th:nth-child(1) {
+    width: 225px;
+  }
+  & tr td:not(:first-child) {
+    line-height: 85px;
+    text-align: center;
+  }
   & td,
   & th {
     padding: 5px !important;
