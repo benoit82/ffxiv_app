@@ -22,12 +22,12 @@ function FFlogsView({ roster }) {
         return () => {
             unsubscribe()
         }
-    }, [])
+    }, [roster._id, firebase.db])
 
     return (
         <Row className="d-flex flex-column">
             {ffLogs.map((log, index) => {
-                return <p key={index}><a href={log.url} target="_blank">{log.date}</a></p>
+                return <p key={index}><a href={log.url} target="_blank" rel="noopener noreferrer">{log.date}</a></p>
             })}
         </Row>
     )
