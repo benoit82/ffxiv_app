@@ -1,4 +1,6 @@
-.table_roster td,
-.table_roster th {
-  padding: 5px !important;
+.table_roster {
+  & td,
+  & th {
+    padding: 5px !important;
+  }
 }

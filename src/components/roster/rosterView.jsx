@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
-import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import Table from 'react-bootstrap/Table'
 import { Roster, Character } from '../../models'
 import { getCategory } from '../../utils/jobs'
@@ -81,53 +81,71 @@ const RosterView = () => {
 
     return (
         loading ? <Loading />
-            : <Container>
-                <Row>{msgInfo}</Row>
-                <Row className="mt-1">
-                    <Table striped bordered hover variant="dark" className="table_roster">
-                        <thead>
-                            <tr>
-                                <th>Membres : {roster && roster.name}</th>
-                                {Object.entries(resetGearSet)
-                                    .sort((gearElement_a, gearElement_b) => gearElement_a[1].order > gearElement_b[1].order ? 1 : -1)
-                                    .map(gearElement => {
-                                        const thGearName = gearElement[1].name.replace("Loot", "L.").replace("Memo", "M.").replace("Ras de cou", "Cou")
-                                        return <th key={gearElement[1].order}>{thGearName}</th>
-                                    })}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                members && members.length > 0 &&
-                                members.map(member => {
-                                    let job = null
-                                    switch (jobPriority) {
-                                        case 1:
-                                            job = member.mainJob
-                                            break
-                                        case 2:
-                                            job = member.secondJob
-                                            break
-                                        case 3:
-                                            job = member.thirdJob
-                                            break
-                                        default:
-                                            job = member.mainJob
-                                            break
-                                    }
-                                    return <CharacterTRRoster key={member._id} character={member} job={job} rl={raidLeader} />
-                                })
-                            }
-                        </tbody>
-                    </Table>
-                </Row>
-                {members.length > 0 && <Row>
-                    <RosterCheckUpgradeGear members={members} priorityJob={jobPriority} />
-                    <Button variant="light" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/1`)}>Main Job</Button>
-                    <Button variant="dark" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/2`)}>Job 2</Button>
-                    <Button variant="warning" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/3`)}>Job 3</Button>
-                </Row>}
-            </Container>
+            : <>
+                <Col lg={2}>
+                    <h3>FF-Logs</h3>
+                    {/* TODO : faire la liste des logs selon un choix de date
+                    1/ Selection plage de date
+                    2/ résultat
+                    list : 
+                    - log du DD/MM/YYYY
+                    - log du DD/MM/YYYY
+                    - log du DD/MM/YYYY
+
+                    3 / Afficher le dernier FF-Log enregistrer
+
+                    4/ Formulaire ajouter un log
+                    */}
+                </Col>
+                <Col lg={8}>
+                    <Row>{msgInfo}</Row>
+                    <Row className="mt-1">
+                        <h3>Table des loots</h3>
+                        <Table striped bordered hover variant="dark" className="table_roster">
+                            <thead>
+                                <tr>
+                                    <th>Membres : {roster && roster.name}</th>
+                                    {Object.entries(resetGearSet)
+                                        .sort((gearElement_a, gearElement_b) => gearElement_a[1].order > gearElement_b[1].order ? 1 : -1)
+                                        .map(gearElement => {
+                                            const thGearName = gearElement[1].name.replace("Loot", "L.").replace("Memo", "M.").replace("Ras de cou", "Cou")
+                                            return <th key={gearElement[1].order}>{thGearName}</th>
+                                        })}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    members && members.length > 0 &&
+                                    members.map(member => {
+                                        let job = null
+                                        switch (jobPriority) {
+                                            case 1:
+                                                job = member.mainJob
+                                                break
+                                            case 2:
+                                                job = member.secondJob
+                                                break
+                                            case 3:
+                                                job = member.thirdJob
+                                                break
+                                            default:
+                                                job = member.mainJob
+                                                break
+                                        }
+                                        return <CharacterTRRoster key={member._id} character={member} job={job} rl={raidLeader} />
+                                    })
+                                }
+                            </tbody>
+                        </Table>
+                    </Row>
+                    {members.length > 0 && <Row>
+                        <RosterCheckUpgradeGear members={members} priorityJob={jobPriority} />
+                        <Button variant="light" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/1`)}>Main Job</Button>
+                        <Button variant="dark" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/2`)}>Job 2</Button>
+                        <Button variant="warning" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/3`)}>Job 3</Button>
+                    </Row>}
+                </Col>
+            </>
     )
 }
 
