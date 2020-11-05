@@ -181,8 +181,8 @@ const EditCharacter = () => {
                 <Col lg={2} className="mr-2">
                     <h3>Jobs</h3>
                     <form onSubmit={handleSubmit}>
-                        <ul className="list-group list-group-flush">
-                            <ListGroup.Item className="list-group-item selectJob">
+                        <ListGroup variant="flush">
+                            <ListGroup.Item className="selectJob">
                                 <Select
                                     className="basic-single"
                                     placeholder={character.mainJob || "Main job"}
@@ -221,13 +221,13 @@ const EditCharacter = () => {
                                 />
                                 {character.thirdJob && <EditBtn label={`édit. BIS ${character.thirdJob}`} handleClick={() => editBis(character.thirdJob)} />}
                             </ListGroup.Item>}
-                            <ListGroup.Item>
+                            <ListGroup.Item className="selectJob">
                                 <div className="d-flex flex-column">
                                     <SendBtn label="mettre à jour les jobs" />
                                     <ResetBtn label="reset tous les BIS" handleReset={resetAllBis} />
                                 </div>
                             </ListGroup.Item>
-                        </ul>
+                        </ListGroup>
 
                     </form>
                 </Col>

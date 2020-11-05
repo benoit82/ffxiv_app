@@ -6,9 +6,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-family: "Nunito", sans-serif !important;
   height: 100vh;
-  background-color: #acb39c;
-  background-attachment: fixed;
-  background-size: contain;
+  background-color: #adfff871 !important;
 }
 
 code {
