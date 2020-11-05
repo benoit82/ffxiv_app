@@ -177,11 +177,12 @@ const EditCharacter = () => {
                 </div>
             </Row>
             <Row className="mt-3">
-                <Col lg={3} className="mr-2">
+                {/* cadre menu job */}
+                <Col lg={2} className="mr-2">
                     <h3>Jobs</h3>
                     <form onSubmit={handleSubmit}>
                         <ul className="list-group list-group-flush">
-                            <li className="list-group-item selectJob">
+                            <ListGroup.Item className="list-group-item selectJob">
                                 <Select
                                     className="basic-single"
                                     placeholder={character.mainJob || "Main job"}
@@ -193,7 +194,7 @@ const EditCharacter = () => {
                                     formatGroupLabel={formatGroupLabel}
                                 />
                                 {character.mainJob && <EditBtn label={`édit. BIS ${character.mainJob}`} handleClick={() => editBis(character.mainJob)} />}
-                            </li>
+                            </ListGroup.Item>
                             {job1 && <ListGroup.Item className="selectJob">
                                 <Select
                                     className="basic-single"
@@ -221,8 +222,10 @@ const EditCharacter = () => {
                                 {character.thirdJob && <EditBtn label={`édit. BIS ${character.thirdJob}`} handleClick={() => editBis(character.thirdJob)} />}
                             </ListGroup.Item>}
                             <ListGroup.Item>
-                                <SendBtn label="mettre à jour les jobs" />
-                                <ResetBtn label="reset tous les BIS" handleReset={resetAllBis} />
+                                <div className="d-flex flex-column">
+                                    <SendBtn label="mettre à jour les jobs" />
+                                    <ResetBtn label="reset tous les BIS" handleReset={resetAllBis} />
+                                </div>
                             </ListGroup.Item>
                         </ul>
 
