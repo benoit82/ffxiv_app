@@ -1,0 +1,20 @@
+.gear__label_name {
+  width: 135px;
+  padding-top: 5px;
+}
+
+.gear__field {
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+  padding: 0.5rem;
+  &:nth-child(odd) {
+    background-color: #d1d1d11c;
+  }
+  &:nth-child(even) {
+    background-color: #3f3f3f1c;
+  }
+}
+
+.custom__form_group {
+  margin-bottom: 0 !important;
+}

@@ -7,6 +7,8 @@ import Col from 'react-bootstrap/Col'
 import { UpdateBtn, ResetBtn } from '../formElements'
 import { gearType, resetGearSet } from '../../utils/jobs'
 
+import "./bisForm.scss"
+
 const BISForm = ({ job, character, updateBis, resetBis }) => {
 
     const initialGearSet = character.bis && character.bis[job] ? character.bis[job] : resetGearSet
@@ -43,22 +45,20 @@ const BISForm = ({ job, character, updateBis, resetBis }) => {
                         <h3>BIS : {job} - Cochez les équipements obtenu</h3>
                     </Row>
                     <Form onSubmit={handleSubmit}>
-                        <div className="pl-4">
-                            <Row><UpdateBtn /> <ResetBtn handleReset={() => resetBis(job)} /></Row>
-                            <Row>
-                                <div style={{ maxHeight: "400px" }} className="d-flex flex-column flex-lg-wrap">
-                                    {
-                                        Object.entries(initialGearSet)
-                                            .sort((gearPieceA, gearPieceB) => {
-                                                return gearPieceA[1].order > gearPieceB[1].order ? 1 : -1
-                                            })
-                                            .map((armorElement, index) => {
-                                                return <Row key={index} className="mr-5"><GearPiece armorElement={armorElement} job={job} gearType={gearType} /></Row>
-                                            })
-                                    }
-                                </div>
-                            </Row>
-                        </div>
+                        <Row><UpdateBtn /> <ResetBtn handleReset={() => resetBis(job)} /></Row>
+                        <Row>
+                            <div style={{ maxHeight: "505px" }} className="d-flex flex-column flex-lg-wrap">
+                                {
+                                    Object.entries(initialGearSet)
+                                        .sort((gearPieceA, gearPieceB) => {
+                                            return gearPieceA[1].order > gearPieceB[1].order ? 1 : -1
+                                        })
+                                        .map((armorElement, index) => {
+                                            return <Row key={index} className="mr-5 gear__field"><GearPiece armorElement={armorElement} job={job} gearType={gearType} /></Row>
+                                        })
+                                }
+                            </div>
+                        </Row>
                     </Form>
                 </Container>
             )
@@ -69,7 +69,7 @@ const BISForm = ({ job, character, updateBis, resetBis }) => {
 
 export default React.memo(BISForm)
 
-const GearPiece = React.memo(function ({ armorElement, job, gearType }) {
+const GearPiece = function ({ armorElement, job, gearType }) {
 
     const gearPiece = armorElement[0]
     const { name, type, obtained } = armorElement[1]
@@ -81,22 +81,25 @@ const GearPiece = React.memo(function ({ armorElement, job, gearType }) {
     }
     const onCheckGearObtained = (e) => {
         setGearObtained(!gearObtained)
+
     }
 
     return (
         <Col>
-            <Form.Group key={gearPiece}>
+            <Form.Group key={gearPiece} className="custom__form_group" >
                 <Form.Label>
-                    <Field
-                        as={Form.Check}
-                        type="checkbox"
-                        id={`${job}_${gearPiece}_obtained`}
-                        name={`${gearPiece}.obtained`}
-                        label={name}
-                        onClick={onCheckGearObtained}
-                        inline
-                        custom
-                    />
+                    <div className="gear__label_name">
+                        <Field
+                            as={Form.Check}
+                            type="checkbox"
+                            id={`${job}_${gearPiece}_obtained`}
+                            name={`${gearPiece}.obtained`}
+                            label={name}
+                            onClick={onCheckGearObtained}
+                            inline
+                            custom
+                        />
+                    </div>
                 </Form.Label>
                 {
                     !gearPiece.match(/(weapon.)|(ring.)/) &&
@@ -135,11 +138,10 @@ const GearPiece = React.memo(function ({ armorElement, job, gearType }) {
                         label={"Memo acheté"}
                         inline
                         custom
-                        disabled={gearObtained}
                     />
                 }
 
             </Form.Group>
         </Col>
     )
-})
+}
