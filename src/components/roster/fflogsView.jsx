@@ -75,8 +75,8 @@ function FFlogsView({ roster }) {
                     {ffLogs.sort((log1, log2) => log2.dateRaid - log1.dateRaid).map((log) => {
                         return (
                             <ListGroup.Item key={log._id}>
-                                <span style={{ display: "flex", justifyContent: "space-between", lineHeight: "42px" }}>
-                                    <span><a href={log.fflogurl} target="_blank" rel="noopener noreferrer">{log.title} - {log.showDate()}</a>, par {log.pseudo}</span>
+                                <span style={{ display: "flex", justifyContent: "space-between", lineHeight: "24px" }}>
+                                    <span><a href={log.fflogurl} target="_blank" rel="noopener noreferrer">{log.title} {log.showDate()}</a><br />par {log.pseudo}</span>
                                     {(isRaidLeadOrAdmin || user.uid === log.uid) && <DeleteBtn label=" " handleClick={() => handleDeleteLog(log)} />}
                                 </span>
                             </ListGroup.Item>

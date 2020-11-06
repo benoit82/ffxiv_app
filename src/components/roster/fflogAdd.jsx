@@ -41,9 +41,7 @@ function FFLogAdd({ roster, onFormSubmit }) {
         }
     })
 
-    const handleCalendarClick = () => {
-        setShowCalendar(!showCalendar)
-    }
+    const handleCalendarClick = () => setShowCalendar(!showCalendar)
 
     return (
         <>
@@ -55,7 +53,6 @@ function FFLogAdd({ roster, onFormSubmit }) {
                         value={formik.values.title}
                         onChange={formik.handleChange}
                         isInvalid={formik.touched.fflogurl && formik.errors.title}
-                        required
                     />
                     <Form.Control.Feedback type="invalid">{formik.errors.title}</Form.Control.Feedback>
                 </Form.Group>
@@ -82,7 +79,7 @@ function FFLogAdd({ roster, onFormSubmit }) {
 
 
                 <SendBtn isDisabled={formik.isSubmitting} label="Envoyer le lien" />
-                {/* <pre>{JSON.stringify(formik.values, null, 2)}</pre> */}
+                <pre>{JSON.stringify(formik.values, null, 2)}</pre>
             </Form>
         </>
     )
