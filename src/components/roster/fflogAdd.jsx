@@ -77,9 +77,7 @@ function FFLogAdd({ roster, onFormSubmit }) {
                     />}
                 </Form.Group>
 
-
                 <SendBtn isDisabled={formik.isSubmitting} label="Envoyer le lien" />
-                <pre>{JSON.stringify(formik.values, null, 2)}</pre>
             </Form>
         </>
     )
