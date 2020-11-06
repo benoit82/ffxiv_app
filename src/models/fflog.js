@@ -1,13 +1,17 @@
-class FFlog {
+export default class FFlog {
   constructor(fflogDocRef = null) {
     if (fflogDocRef) {
       const data = fflogDocRef.data();
 
       this._id = fflogDocRef.id;
-      this.date = data.date.toDate().toLocaleDateString();
-      this.url = data.url;
+      this.title = data.title;
+      this.dateRaid = data.dateRaid;
+      this.fflogurl = data.fflogurl;
+      this.pseudo = data.pseudo;
     }
   }
-}
 
-export default FFlog;
+  showDate() {
+    return this.dateRaid.toDate().toLocaleDateString();
+  }
+}

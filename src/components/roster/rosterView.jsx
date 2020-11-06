@@ -82,13 +82,9 @@ const RosterView = () => {
     return (
         loading ? <Loading />
             : <>
-                <Col lg={2}>
-                    <Row>
-                        <h3>FF-Logs</h3>
-                    </Row>
-                    <Row>
-                        <FFlogsView roster={roster} />
-                        {/* TODO : faire la liste des logs selon un choix de date
+                <Col lg={2} style={{ height: "100vh" }}>
+                    <FFlogsView roster={roster} />
+                    {/* TODO : faire la liste des logs selon un choix de date
                     1/ Selection plage de date
                     2/ résultat
                     list : 
@@ -100,9 +96,8 @@ const RosterView = () => {
 
                     4/ Formulaire ajouter un log
                     */}
-                    </Row>
                 </Col>
-                <Col lg={8}>
+                <Col lg={9} style={{ height: "100vh" }}>
                     <Row>{msgInfo}</Row>
                     <Row className="mt-1">
                         <h3>Table des loots</h3>

@@ -219,5 +219,22 @@ class Firebase {
     return this.storage.ref(`patchlog/${fileName}`);
     // return await this.storage.ref().child("patchlog").child(fileName)
   };
+  // FFLogs
+  addFFLog = (values, roster) => {
+    this.db
+      .collection("rosters")
+      .doc(roster._id)
+      .collection("fflogs")
+      .add(values);
+  };
+
+  deleteLog = (log, roster) => {
+    this.db
+      .collection("rosters")
+      .doc(roster._id)
+      .collection("fflogs")
+      .doc(log._id)
+      .delete();
+  };
 }
 export default Firebase;
