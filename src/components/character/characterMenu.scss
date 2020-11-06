@@ -2,10 +2,15 @@
   background-color: #2a344a29;
   width: 500px !important;
   border-radius: 10px;
-
-  -webkit-box-shadow: 15px 15px 25px -12px rgba(0, 0, 0, 1);
-  -moz-box-shadow: 15px 15px 25px -12px rgba(0, 0, 0, 1);
-  box-shadow: 15px 15px 25px -12px rgba(0, 0, 0, 1);
+  transition: all 0.3s;
+  -webkit-box-shadow: -5px -5px 25px -12px rgba(0, 0, 0, 1);
+  -moz-box-shadow: -5px -5px 25px -12px rgba(0, 0, 0, 1);
+  box-shadow: -5px -5px 25px -12px rgba(0, 0, 0, 1);
+  &:hover {
+    -webkit-box-shadow: 15px 15px 25px -12px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 15px 15px 25px -12px rgba(0, 0, 0, 1);
+    box-shadow: 15px 15px 25px -12px rgba(0, 0, 0, 1);
+  }
 }
 
 .chr_portrait_container {

@@ -50,7 +50,7 @@ const ChrOptionPage = () => {
         <Container fluid className="ml-2 mr-2">
             <Row>
                 <Col lg={2}>
-                    <h3>Vos personnages ({`${characters.length}/${MAX_CHR_ALLOWED}`})</h3>
+                    <h4>Mes personnages ({`${characters.length}/${MAX_CHR_ALLOWED}`})</h4>
                     {
                         characters.length < MAX_CHR_ALLOWED &&
                         <>

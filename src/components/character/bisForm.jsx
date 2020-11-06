@@ -72,16 +72,19 @@ export default React.memo(BISForm)
 const GearPiece = function ({ armorElement, job, gearType }) {
 
     const gearPiece = armorElement[0]
-    const { name, type, obtained } = armorElement[1]
+    const { name, type, obtained, lowMemoPurchased } = armorElement[1]
     const [lootChecked, setLootChecked] = useState(type === gearType[1])
     const [gearObtained, setGearObtained] = useState(obtained)
+    const [isLowMemoPurchased, setIsLowMemoPurchased] = useState(lowMemoPurchased)
 
     const onLootChecked = (e) => {
         setLootChecked(e.target.value === gearType[1])
     }
     const onCheckGearObtained = (e) => {
         setGearObtained(!gearObtained)
-
+        if (gearObtained && type === gearType[0] && !isLowMemoPurchased) {
+            setIsLowMemoPurchased(true)
+        }
     }
 
     return (
