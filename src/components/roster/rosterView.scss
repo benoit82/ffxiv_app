@@ -1,4 +1,14 @@
 .table_roster {
+  .rotate {
+    white-space: nowrap;
+    & > div {
+      // transform: rotate(45deg);
+    }
+  }
+  & th {
+    width: 117px;
+    text-align: center;
+  }
   & th:nth-child(1) {
     width: 225px;
   }

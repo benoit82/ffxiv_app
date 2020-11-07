@@ -65,8 +65,7 @@ const ChrOptionPage = () => {
                         <div className="d-flex justify-content-around flex-wrap flex-lg-nowrap">
                             {characters.map((character, index) =>
                                 <div key={index} className="w-75 d-flex">
-                                    <CharacterMenu
-                                        character={character} />
+                                    <CharacterMenu character={character} />
                                 </div>
                             )}
                         </div>

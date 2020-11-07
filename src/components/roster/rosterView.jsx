@@ -82,29 +82,17 @@ const RosterView = () => {
     return (
         loading ? <Loading />
             : <>
-                <Col lg={2} style={{ height: "100vh" }}>
+                <Col lg={3} style={{ height: "100vh" }}>
                     <FFlogsView roster={roster} />
-                    {/* TODO : faire la liste des logs selon un choix de date
-                    1/ Selection plage de date
-                    2/ résultat
-                    list : 
-                    - log du DD/MM/YYYY
-                    - log du DD/MM/YYYY
-                    - log du DD/MM/YYYY
-
-                    3 / Afficher le dernier FF-Log enregistrer
-
-                    4/ Formulaire ajouter un log
-                    */}
                 </Col>
-                <Col lg={9} style={{ height: "100vh" }}>
+                <Col lg={8} style={{ height: "100vh" }}>
                     <Row>{msgInfo}</Row>
                     <Row className="mt-1">
                         <h3>Table des loots</h3>
                         <Table striped bordered hover variant="dark" className="table_roster">
                             <thead>
                                 <tr>
-                                    <th>Membres : {roster && roster.name}</th>
+                                    <th>{roster && roster.name}</th>
                                     {Object.entries(resetGearSet)
                                         .sort((gearElement_a, gearElement_b) => gearElement_a[1].order > gearElement_b[1].order ? 1 : -1)
                                         .map(gearElement => {

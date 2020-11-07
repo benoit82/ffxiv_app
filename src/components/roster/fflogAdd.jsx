@@ -18,7 +18,7 @@ function FFLogAdd({ roster, onFormSubmit }) {
         dateRaid: new Date()
     }
     const fflogValidationSchema = Yup.object().shape({
-        title: Yup.string().trim().notRequired(),
+        title: Yup.string().trim().max(60, "Titre trop long (max. 60 caractères)").notRequired(),
         fflogurl: Yup.string().trim().required("La saisie est vide").matches(/^https:\/\/([a-z]{2}|www)\.fflogs\.com\/reports\/([a-zA-Z0-9]{16,})$/gi, "Ce n'est pas une URL FFLog valide")
     })
     const formik = useFormik({

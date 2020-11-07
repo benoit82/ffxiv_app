@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import ReactPaginate from 'react-paginate'
 import { FirebaseContext } from '../firebase'
 import Row from "react-bootstrap/Row"
 import FFlog from "../../models/fflog"
@@ -7,41 +8,48 @@ import { Button, ListGroup } from 'react-bootstrap'
 import { DeleteBtn } from '../formElements'
 import Swal from 'sweetalert2'
 import { UserApi } from '../../utils/appContext'
+import { showInfoMessage } from '../../utils/globalFunctions'
+
+import "./fflogsView.scss"
 
 function FFlogsView({ roster }) {
     const firebase = useContext(FirebaseContext)
     const { user } = useContext(UserApi)
     const [showFormAddLog, setShowFormAddLog] = useState(false)
     const [ffLogs, setFfLogs] = useState([])
+    const [offset, setOffset] = useState(0)
+    const MAX_LOGS_PER_PAGE = 3
     // user is admin, or the raidLead, or the author of the log => can edit
     const isRaidLeadOrAdmin = user.isAdmin || user.characters.some(chr => chr.id === roster.refRaidLeader.id)
-    const showError = (err) => {
-        Swal.fire({
-            title: "Oups, erreur !",
-            icon: "error",
-            text: `une erreur est survenu... 
-        ${err.message}`
-        })
-    }
 
     useEffect(() => {
         const fflogRef = firebase.db.collection("rosters/" + roster._id + "/fflogs");
         let unsubscribe;
         if (fflogRef) {
-            unsubscribe = fflogRef.onSnapshot((snapshot) => {
-                let tabLogs = []
-                snapshot.forEach(function (childSnapshot) {
-                    tabLogs = [...tabLogs, new FFlog(childSnapshot)]
-                });
-                setFfLogs(tabLogs)
-            })
+            unsubscribe = fflogRef
+                .orderBy("dateRaid", "desc")
+                .onSnapshot((snapshot) => {
+                    let tabLogs = []
+                    snapshot.forEach(function (childSnapshot) {
+                        tabLogs = [...tabLogs, new FFlog(childSnapshot)]
+                    });
+                    setFfLogs(tabLogs)
+                })
         }
         return () => {
             unsubscribe()
         }
     }, [roster._id, firebase.db])
 
-    const handleShowFormAddLog = () => setShowFormAddLog(!showFormAddLog)
+
+    const handlePaginationChange = ({ selected }) => {
+        setOffset(Math.ceil(selected * MAX_LOGS_PER_PAGE))
+    }
+
+    const handleShowFormAddLog = () => {
+        setShowFormAddLog(!showFormAddLog)
+    }
+
     const handleDeleteLog = async (log) => {
         Swal.fire({
             title: 'Attention !',
@@ -52,37 +60,54 @@ function FFlogsView({ roster }) {
             showCancelButton: true
         })
             .then(async result => {
-                if (result.isConfirmed) {
-                    try {
-                        await firebase.deleteLog(log, roster)
-                    } catch (error) {
-                        showError(error)
-                    }
-
-                }
+                if (result.isConfirmed) await firebase.deleteLog(log, roster)
             })
-            .catch(err => showError(err))
+            .catch(error => showInfoMessage("error", error.message))
     }
 
 
     return (
         <>
-            <Button onClick={handleShowFormAddLog} style={{ marginBottom: "1rem", width: "100%" }} variant={showFormAddLog ? "outline-primary" : "primary"}>Ajouter un rapport de raid</Button>
-            {showFormAddLog && <FFLogAdd roster={roster} onFormSubmit={handleShowFormAddLog} />}
-            <Row className="d-flex flex-column flex-start">
-                <h3>FF-Logs</h3>
-                <ListGroup style={{ marginRight: "10px" }}>
-                    {ffLogs.sort((log1, log2) => log2.dateRaid - log1.dateRaid).map((log) => {
-                        return (
-                            <ListGroup.Item key={log._id}>
-                                <span style={{ display: "flex", justifyContent: "space-between", lineHeight: "24px" }}>
-                                    <span><a href={log.fflogurl} target="_blank" rel="noopener noreferrer">{log.title} {log.showDate()}</a><br />par {log.pseudo}</span>
-                                    {(isRaidLeadOrAdmin || user.uid === log.uid) && <DeleteBtn label=" " handleClick={() => handleDeleteLog(log)} />}
-                                </span>
-                            </ListGroup.Item>
-                        )
-                    })}
-                </ListGroup>
+            <Row className="d-flex flex-column flex-start mr-3">
+                <Button onClick={handleShowFormAddLog} style={{ marginBottom: "1rem", width: "100%" }} variant={showFormAddLog ? "outline-primary" : "primary"}>Ajouter un rapport de raid</Button>
+                {showFormAddLog && <FFLogAdd roster={roster} onFormSubmit={handleShowFormAddLog} />}
+                {ffLogs.length > 0 &&
+                    <>
+                        <h3>FF-Logs</h3>
+                        <ReactPaginate
+                            containerClassName={'pagination'}
+                            pageCount={Math.ceil(ffLogs.length / MAX_LOGS_PER_PAGE)}
+                            initialPage={0}
+                            pageRangeDisplayed={2}
+                            marginPagesDisplayed={2}
+                            breakLabel={'...'}
+                            pageLinkClassName={'linkpage'}
+                            onPageChange={handlePaginationChange}
+                            pageSize={MAX_LOGS_PER_PAGE}
+                            activeClassName={'active'}
+                            previousLabel={'<'}
+                            previousClassName={'prevBtn'}
+                            nextLabel={'>'}
+                            nextClassName={'nextBtn'}
+                            disabledClassName={'disBtn'}
+                        />
+                        <ListGroup>
+                            {ffLogs.map((log) => {
+                                return (
+                                    <ListGroup.Item key={log._id}>
+                                        <div style={{ display: "flex", justifyContent: "space-between", lineHeight: "24px" }}>
+                                            <span>
+                                                <a href={log.fflogurl} target="_blank" rel="noopener noreferrer">{log.title} {log.showDate()}</a><br />
+                                                <span style={{ fontStyle: "italic" }} > envoyé par {log.pseudo}</span>
+                                            </span>
+                                            {(isRaidLeadOrAdmin || user.uid === log.uid) && <DeleteBtn label=" " handleClick={() => handleDeleteLog(log)} />}
+                                        </div>
+                                    </ListGroup.Item>
+                                )
+                            })}
+                        </ListGroup>
+                    </>
+                }
             </Row>
 
         </>
