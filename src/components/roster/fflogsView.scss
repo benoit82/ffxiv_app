@@ -16,7 +16,7 @@ $prim_color: #0275d8;
     min-height: 2rem;
     text-align: center;
     &:hover {
-      background-color: lighten($prim_color, 10%);
+      background-color: lighten($prim_color, 40%);
     }
   }
   & .linkpage {
@@ -44,5 +44,5 @@ $prim_color: #0275d8;
 }
 
 .list__log:hover {
-  background-color: lighten($prim_color, 50%);
+  background-color: lighten($prim_color, 40%);
 }
