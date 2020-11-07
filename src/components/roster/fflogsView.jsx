@@ -96,7 +96,7 @@ function FFlogsView({ roster }) {
                                 .slice(offset, offset + MAX_LOGS_PER_PAGE)
                                 .map((log) => {
                                     return (
-                                        <ListGroup.Item key={log._id}>
+                                        <ListGroup.Item key={log._id} className="list__log">
                                             <div style={{ display: "flex", justifyContent: "space-between", lineHeight: "24px" }}>
                                                 <span>
                                                     <a href={log.fflogurl} target="_blank" rel="noopener noreferrer">{log.title} {log.showDate()}</a><br />
