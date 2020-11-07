@@ -69,7 +69,7 @@ function FFLogAdd({ roster, onFormSubmit }) {
                 </Form.Group>
 
                 <Form.Group controlId="dateRaid">
-                    <Button variant="outline-primary" onClick={handleCalendarClick} ><i className="far fa-calendar"></i>Raid du : {formik.values.dateRaid.toLocaleDateString()}</Button>
+                    <Button style={{ marginBottom: "1rem", width: "100%" }} variant="outline-primary" onClick={handleCalendarClick} ><i className="far fa-calendar"></i>Raid du : {formik.values.dateRaid.toLocaleDateString()}</Button>
                     {showCalendar && <Calendar
                         value={formik.values.dateRaid}
                         maxDate={new Date()}

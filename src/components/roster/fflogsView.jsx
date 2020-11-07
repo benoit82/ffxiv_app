@@ -67,7 +67,7 @@ function FFlogsView({ roster }) {
 
     return (
         <>
-            <Button onClick={handleShowFormAddLog}>Ajouter un rapport de raid</Button>
+            <Button onClick={handleShowFormAddLog} style={{ marginBottom: "1rem", width: "100%" }} variant={showFormAddLog ? "outline-primary" : "primary"}>Ajouter un rapport de raid</Button>
             {showFormAddLog && <FFLogAdd roster={roster} onFormSubmit={handleShowFormAddLog} />}
             <Row className="d-flex flex-column flex-start">
                 <h3>FF-Logs</h3>
