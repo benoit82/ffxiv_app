@@ -33,10 +33,16 @@ $prim_color: #0275d8;
 .nextBtn {
   @include pagination_all_items;
   margin-left: auto;
+  & > * {
+    display: block;
+  }
 }
 .prevBtn {
   @include pagination_all_items;
   margin-right: auto;
+  & > * {
+    display: block;
+  }
 }
 
 .disBtn {
