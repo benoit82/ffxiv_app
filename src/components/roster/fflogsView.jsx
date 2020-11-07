@@ -18,7 +18,7 @@ function FFlogsView({ roster }) {
     const [showFormAddLog, setShowFormAddLog] = useState(false)
     const [ffLogs, setFfLogs] = useState([])
     const [offset, setOffset] = useState(0)
-    const MAX_LOGS_PER_PAGE = 3
+    const MAX_LOGS_PER_PAGE = 5
     // user is admin, or the raidLead, or the author of the log => can edit
     const isRaidLeadOrAdmin = user.isAdmin || user.characters.some(chr => chr.id === roster.refRaidLeader.id)
 
@@ -92,19 +92,21 @@ function FFlogsView({ roster }) {
                             disabledClassName={'disBtn'}
                         />
                         <ListGroup>
-                            {ffLogs.map((log) => {
-                                return (
-                                    <ListGroup.Item key={log._id}>
-                                        <div style={{ display: "flex", justifyContent: "space-between", lineHeight: "24px" }}>
-                                            <span>
-                                                <a href={log.fflogurl} target="_blank" rel="noopener noreferrer">{log.title} {log.showDate()}</a><br />
-                                                <span style={{ fontStyle: "italic" }} > envoyé par {log.pseudo}</span>
-                                            </span>
-                                            {(isRaidLeadOrAdmin || user.uid === log.uid) && <DeleteBtn label=" " handleClick={() => handleDeleteLog(log)} />}
-                                        </div>
-                                    </ListGroup.Item>
-                                )
-                            })}
+                            {ffLogs
+                                .slice(offset, offset + MAX_LOGS_PER_PAGE)
+                                .map((log) => {
+                                    return (
+                                        <ListGroup.Item key={log._id}>
+                                            <div style={{ display: "flex", justifyContent: "space-between", lineHeight: "24px" }}>
+                                                <span>
+                                                    <a href={log.fflogurl} target="_blank" rel="noopener noreferrer">{log.title} {log.showDate()}</a><br />
+                                                    <span style={{ fontStyle: "italic" }} > envoyé par {log.pseudo}</span>
+                                                </span>
+                                                {(isRaidLeadOrAdmin || user.uid === log.uid) && <DeleteBtn label=" " handleClick={() => handleDeleteLog(log)} />}
+                                            </div>
+                                        </ListGroup.Item>
+                                    )
+                                })}
                         </ListGroup>
                     </>
                 }

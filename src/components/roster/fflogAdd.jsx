@@ -14,7 +14,7 @@ function FFLogAdd({ roster, onFormSubmit }) {
     const { user } = useContext(UserApi)
     const initialValues = {
         title: "",
-        fflogurl: "",
+        fflogurl: "https://fr.fflogs.com/reports/NPJa2WhB379wRDk1",
         dateRaid: new Date()
     }
     const fflogValidationSchema = Yup.object().shape({
