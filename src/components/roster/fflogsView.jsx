@@ -159,8 +159,7 @@ function FFlogsView({ roster }) {
                                             <div style={{ display: "flex", justifyContent: "space-between", lineHeight: "24px" }}>
                                                 <span>
                                                     <a href={log.fflogurl} target="_blank" rel="noopener noreferrer">{log.title} {log.showDate()}</a><br />
-                                                    {log.patch && <><span style={{ fontStyle: "italic" }} > Patch : {log.patch}</span><br /></>}
-                                                    <span style={{ fontStyle: "italic" }} > envoyé par {log.pseudo}</span>
+                                                    {log.patch && <span style={{ fontStyle: "italic" }} > Patch : {log.patch},</span>}<span style={{ fontStyle: "italic" }} > envoyé par {log.pseudo}</span>
                                                 </span>
                                                 {(isRaidLeadOrAdmin || user.uid === log.uid) && <DeleteBtn label=" " handleClick={() => handleDeleteLog(log)} />}
                                             </div>
