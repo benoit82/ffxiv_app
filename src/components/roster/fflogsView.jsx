@@ -4,22 +4,31 @@ import { FirebaseContext } from '../firebase'
 import Row from "react-bootstrap/Row"
 import FFlog from "../../models/fflog"
 import FFLogAdd from './fflogAdd'
-import { Button, ListGroup } from 'react-bootstrap'
+import { Alert, Button, Form, ListGroup } from 'react-bootstrap'
 import { DeleteBtn } from '../formElements'
 import Swal from 'sweetalert2'
 import { UserApi } from '../../utils/appContext'
 import { showInfoMessage } from '../../utils/globalFunctions'
+import pluralize from 'pluralize'
 
 import "./fflogsView.scss"
 import Axios from 'axios'
+import { useFormik } from 'formik'
+import { ALL } from '../../utils/consts'
 
 function FFlogsView({ roster }) {
     const firebase = useContext(FirebaseContext)
     const { user } = useContext(UserApi)
     const [showFormAddLog, setShowFormAddLog] = useState(false)
+    const [showFilter, setShowFilter] = useState(false)
     const [patchList, setPatchList] = useState([])
     const [ffLogs, setFfLogs] = useState([])
     const [offset, setOffset] = useState(0)
+    const formik = useFormik({
+        initialValues: {
+            patch: ALL
+        }
+    })
     const MAX_LOGS_PER_PAGE = 5
     // user is admin, or the raidLead, or the author of the log => can edit
     const isRaidLeadOrAdmin = user.isAdmin || user.characters.some(chr => chr.id === roster.refRaidLeader.id)
@@ -36,7 +45,6 @@ function FFlogsView({ roster }) {
             } else {
                 showInfoMessage("warning", "Le serveur API n'a pas pu fournir la liste des patchs.")
             }
-            console.log(response)
         } catch (error) {
             showInfoMessage("error", error.message)
         }
@@ -49,6 +57,9 @@ function FFlogsView({ roster }) {
 
     const handleShowFormAddLog = () => {
         setShowFormAddLog(!showFormAddLog)
+    }
+    const handleShowFilter = () => {
+        setShowFilter(!showFilter)
     }
 
     const handleDeleteLog = async (log) => {
@@ -64,6 +75,14 @@ function FFlogsView({ roster }) {
                 if (result.isConfirmed) await firebase.deleteLog(log, roster)
             })
             .catch(error => showInfoMessage("error", error.message))
+    }
+
+    const getFilteredLogs = () => {
+        let arrFilteredLogs = ffLogs
+        if (formik.values.patch !== ALL) {
+            arrFilteredLogs = ffLogs.filter(log => log.patch === formik.values.patch)
+        }
+        return arrFilteredLogs;
     }
 
     useEffect(() => {
@@ -97,9 +116,26 @@ function FFlogsView({ roster }) {
                 {ffLogs.length > 0 &&
                     <>
                         <h3>FF-Logs</h3>
-                        <ReactPaginate
+                        <Button onClick={handleShowFilter} style={{ marginBottom: "1rem", width: "100%" }} variant={showFormAddLog ? "outline-primary" : "primary"}>Filtrer la liste par patch</Button>
+                        {showFilter &&
+                            <>
+                                <Form.Group controlId="patch">
+                                    <Form.Control
+                                        as="select"
+                                        value={formik.values.patch}
+                                        onChange={formik.handleChange}
+                                        custom>
+                                        <option value={ALL}>{`${ALL} patchs confondus`}</option>
+                                        {patchList.map(patch => {
+                                            if (ffLogs.some(log => log.patch === patch.name)) return <option key={patch.releaseDate}>{patch.name}</option>
+                                        })}
+                                    </Form.Control>
+                                </Form.Group>
+                                {/* <pre>{JSON.stringify(formik.values, null, 2)}</pre> */}
+                            </>}
+                        {getFilteredLogs().length > 0 ? <ReactPaginate
                             containerClassName={'pagination'}
-                            pageCount={Math.ceil(ffLogs.length / MAX_LOGS_PER_PAGE)}
+                            pageCount={Math.ceil(getFilteredLogs().length / MAX_LOGS_PER_PAGE)}
                             initialPage={0}
                             pageRangeDisplayed={2}
                             marginPagesDisplayed={2}
@@ -113,9 +149,9 @@ function FFlogsView({ roster }) {
                             nextLabel={'>'}
                             nextClassName={'nextBtn'}
                             disabledClassName={'disBtn'}
-                        />
+                        /> : <Alert variant="warning">Aucun log pour le patch {formik.values.patch}</Alert>}
                         <ListGroup>
-                            {ffLogs
+                            {getFilteredLogs()
                                 .slice(offset, offset + MAX_LOGS_PER_PAGE)
                                 .map((log) => {
                                     return (

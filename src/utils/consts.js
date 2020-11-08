@@ -34,3 +34,5 @@ export const OBTAINED = "OBTAINED";
 export const JOB_PRIORITY_ERR = "job priority undefined";
 
 export const FFXIV_ARR_RELEASE_DATE = new Date("2013/08/27");
+
+export const ALL = "Tout";
