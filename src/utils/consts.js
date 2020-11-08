@@ -32,3 +32,5 @@ export const ROSTER_NAME_ERR_MSG = `Le pseudo doit avoir entre ${ROSTER_NAME_MIN
 export const OBTAINED = "OBTAINED";
 
 export const JOB_PRIORITY_ERR = "job priority undefined";
+
+export const FFXIV_ARR_RELEASE_DATE = new Date("2013/08/27");

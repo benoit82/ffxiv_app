@@ -7,6 +7,7 @@ export default class FFlog {
       this.title = data.title;
       this.dateRaid = data.dateRaid;
       this.fflogurl = data.fflogurl;
+      this.patch = data.patch;
       this.pseudo = data.pseudo;
     }
   }
