@@ -50,7 +50,7 @@ const EmailUpdateFrom = () => {
 
     return (
         <Col lg={4}>
-            <Form onSubmit={formik.onSubmit}>
+            <Form onSubmit={formik.handleSubmit}>
                 <h2>Mettre à jour son email</h2>
                 <Form.Group controlId="newEmail">
                     <Form.Label>Mon nouvel email</Form.Label>
