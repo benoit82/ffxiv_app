@@ -10,6 +10,8 @@ class User {
       refRosterRaidLeader,
       createdAt,
       characters,
+      fflogsAccount,
+      twitchAccount,
     } = docRef.data();
     this.uid = uid;
     this.pseudo = pseudo;
@@ -22,6 +24,8 @@ class User {
       createdAt !== undefined ? createdAt.toDate().toLocaleDateString() : null;
     this.characters = characters || [];
     this.isLoggedIn = true;
+    this.fflogsAccount = fflogsAccount || null;
+    this.twitchAccount = twitchAccount || null;
   }
 }
 
