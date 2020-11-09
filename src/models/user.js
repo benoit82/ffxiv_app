@@ -24,8 +24,8 @@ class User {
       createdAt !== undefined ? createdAt.toDate().toLocaleDateString() : null;
     this.characters = characters || [];
     this.isLoggedIn = true;
-    this.fflogsAccount = fflogsAccount || null;
-    this.twitchAccount = twitchAccount || null;
+    this.fflogsAccount = fflogsAccount || {};
+    this.twitchAccount = twitchAccount || undefined;
   }
 }
 

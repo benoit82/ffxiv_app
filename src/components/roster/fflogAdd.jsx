@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Button, Form } from 'react-bootstrap'
+import { Button, Form, InputGroup } from 'react-bootstrap'
 import { UserApi } from '../../utils/appContext'
 import { FirebaseContext } from '../firebase'
 import { SendBtn } from '../formElements'
@@ -8,6 +8,8 @@ import { useFormik } from 'formik'
 import * as Yup from "yup"
 import 'react-calendar/dist/Calendar.css';
 import { FFXIV_ARR_RELEASE_DATE } from '../../utils/consts'
+import { showInfoMessage } from '../../utils/globalFunctions'
+import Axios from 'axios'
 
 function FFLogAdd({ roster, patchList, onFormSubmit }) {
     const [showCalendar, setShowCalendar] = useState(false)
@@ -16,7 +18,7 @@ function FFLogAdd({ roster, patchList, onFormSubmit }) {
 
     const initialValues = {
         title: "",
-        fflogurl: "https://fr.fflogs.com/reports/NPJa2WhB379wRDk1",
+        fflogurl: "",
         dateRaid: new Date(),
         patch: patchList[0].name
     }
@@ -40,6 +42,7 @@ function FFLogAdd({ roster, patchList, onFormSubmit }) {
             }
             // enable sending btn again
             formik.setSubmitting(false)
+            formik.resetForm()
             onFormSubmit()
         }
     })
@@ -58,8 +61,24 @@ function FFLogAdd({ roster, patchList, onFormSubmit }) {
         formik.setFieldValue("patch", patchObj.name)
     }
 
+    const importFFLogsData = async () => {
+        try {
+            const lastUserLog = await (await Axios.get(`https://www.fflogs.com/v1/reports/user/${user.fflogsAccount.name}?api_key=${user.fflogsAccount.apiKey}`)).data.shift()
+            formik.setFieldValue("title", lastUserLog.title)
+            formik.setFieldValue("fflogurl", `https://www.fflogs.com/reports/${lastUserLog.id}`)
+            formik.setFieldValue("dateRaid", new Date(lastUserLog.start))
+            //formik.setValues()
+
+        } catch (error) {
+            showInfoMessage("error", error.message)
+        }
+    }
+
     return (
         <>
+            {user.fflogsAccount.name &&
+                <Button style={{ marginBottom: "1rem", width: "100%" }} variant="info" onClick={importFFLogsData} ><i className="fas fa-external-link-alt"></i>Importer le dernier log depuis FF-Logs</Button>
+            }
             <Form onSubmit={formik.handleSubmit}>
                 <Form.Group controlId="title">
                     <Form.Control
@@ -72,14 +91,23 @@ function FFLogAdd({ roster, patchList, onFormSubmit }) {
                     <Form.Control.Feedback type="invalid">{formik.errors.title}</Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group controlId="fflogurl">
-                    <Form.Control
-                        type="text"
-                        placeholder="https://www.fflogs.com/reports/...."
-                        value={formik.values.fflogurl}
-                        onChange={formik.handleChange}
-                        isInvalid={formik.touched.fflogurl && formik.errors.fflogurl}
-                        required
-                    />
+                    <InputGroup>
+                        <Form.Control
+                            type="text"
+                            placeholder="https://www.fflogs.com/reports/...."
+                            value={formik.values.fflogurl}
+                            onChange={formik.handleChange}
+                            isInvalid={formik.touched.fflogurl && formik.errors.fflogurl}
+                            required
+                        />
+                        {formik.validateForm && <InputGroup.Append>
+                            <InputGroup.Text>
+                                <a href={formik.values.fflogurl} target="_blank" rel="noopener noreferrer">
+                                    <i className="fas fa-external-link-alt"></i>vérifier
+                                </a>
+                            </InputGroup.Text>
+                        </InputGroup.Append>}
+                    </InputGroup>
                     <Form.Control.Feedback type="invalid">{formik.errors.fflogurl}</Form.Control.Feedback>
                 </Form.Group>
 

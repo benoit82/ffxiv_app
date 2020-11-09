@@ -84,14 +84,14 @@ const UserOptionPage = () => {
                 <ListGroup>
                     <ListGroup.Item>Pseudo : {userFromDb.pseudo}</ListGroup.Item>
                     <ListGroup.Item>Email : {userFromDb.email}</ListGroup.Item>
-                    {userFromDb.fflogsAccount && <ListGroup.Item>Compte FF-Logs : {userFromDb.fflogsAccount.name}</ListGroup.Item>}
-                    {userFromDb.twitchAccount && <ListGroup.Item>Compte Twitch : {userFromDb.twitchAccount}</ListGroup.Item>}
+                    <ListGroup.Item>Compte FF-Logs : {userFromDb.fflogsAccount && userFromDb.fflogsAccount.name}</ListGroup.Item>
+                    <ListGroup.Item>Compte Twitch : {userFromDb.twitchAccount}</ListGroup.Item>
                 </ListGroup>
             </Col>
             <Col className="mr-3 ml-3">
                 <Row>
                     <FFlogAccountUpdate />
-                    <EmailUpdateFrom />
+                    {/* <EmailUpdateFrom /> */}
                 </Row>
                 {rosterTmp && <>
                     <Row className="d-flex flex-column">

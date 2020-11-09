@@ -16,6 +16,10 @@ export const EMAIL_ERR_MSG = "Email invalide.";
 export const EMAIL_UPDATE_ERR_MSG =
   "Le nouvel email indiqué est le même que l'ancien.";
 
+//FF Logs API Key RESTRICTION
+export const API_KEY_REGEX = /^([0-9a-f]){32}$/gi;
+export const API_KEY_ERR_REGEX = `Ce n'est pas le bon format d'une clé API`;
+
 // CHARACTER
 // name
 export const CHARACTER_NAME_MIN = 3;
