@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { UserApi } from '../../utils/appContext'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -8,7 +8,6 @@ import { UpdateBtn } from '../formElements'
 import { FirebaseContext } from '../firebase'
 import Col from 'react-bootstrap/Col'
 import { showInfoMessage } from '../../utils/globalFunctions'
-import FormImpl from 'react-bootstrap/Form'
 
 const EmailUpdateFrom = () => {
     const User = useContext(UserApi)
