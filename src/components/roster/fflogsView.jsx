@@ -132,6 +132,7 @@ function FFlogsView({ roster }) {
                                         onChange={formik.handleChange}
                                         custom>
                                         <option value={ALL}>{`${ALL} patchs confondus`}</option>
+                                        {/* eslint-disable-next-line */}
                                         {patchList.map(patch => {
                                             if (ffLogs.some(log => log.patch === patch.name)) return <option key={patch.releaseDate}>{patch.name}</option>
                                         })}
