@@ -5,11 +5,10 @@ import Row from "react-bootstrap/Row"
 import FFlog from "../../models/fflog"
 import FFLogAdd from './fflogAdd'
 import { Alert, Button, Form, ListGroup } from 'react-bootstrap'
-import { DeleteBtn } from '../formElements'
 import Swal from 'sweetalert2'
 import { UserApi } from '../../utils/appContext'
 import { showInfoMessage } from '../../utils/globalFunctions'
-import pluralize from 'pluralize'
+import CopyToClipboard from "react-copy-to-clipboard"
 
 import "./fflogsView.scss"
 import Axios from 'axios'
@@ -26,7 +25,8 @@ function FFlogsView({ roster }) {
     const [offset, setOffset] = useState(0)
     const formik = useFormik({
         initialValues: {
-            patch: ALL
+            patch: ALL,
+            author: ALL
         }
     })
     const MAX_LOGS_PER_PAGE = 5
@@ -75,6 +75,12 @@ function FFlogsView({ roster }) {
                 if (result.isConfirmed) await firebase.deleteLog(log, roster)
             })
             .catch(error => showInfoMessage("error", error.message))
+    }
+
+    const getAuthorsList = () => {
+        let authors = []
+        ffLogs.forEach(log => authors = [...authors, log.pseudo])
+        return new Set(authors)
     }
 
     const getFilteredLogs = () => {
@@ -131,6 +137,18 @@ function FFlogsView({ roster }) {
                                         })}
                                     </Form.Control>
                                 </Form.Group>
+                                <Form.Group controlId="author">
+                                    <Form.Control
+                                        as="select"
+                                        value={formik.values.author}
+                                        onChange={formik.handleChange}
+                                        custom>
+                                        <option value={ALL}>{`${ALL} auteurs confondus`}</option>
+                                        {getAuthorsList().forEach(author => {
+                                            return <option key={author}>{author}</option>
+                                        })}
+                                    </Form.Control>
+                                </Form.Group>
                                 {/* <pre>{JSON.stringify(formik.values, null, 2)}</pre> */}
                             </>}
                         {getFilteredLogs().length > 0 ? <ReactPaginate
@@ -149,19 +167,25 @@ function FFlogsView({ roster }) {
                             nextLabel={'>'}
                             nextClassName={'nextBtn'}
                             disabledClassName={'disBtn'}
-                        /> : <Alert variant="warning">Aucun log pour le patch {formik.values.patch}</Alert>}
+                        /> : <Alert variant="warning">Aucun log trouvé avec les paramètres de filtre</Alert>}
                         <ListGroup>
                             {getFilteredLogs()
                                 .slice(offset, offset + MAX_LOGS_PER_PAGE)
                                 .map((log) => {
                                     return (
                                         <ListGroup.Item key={log._id} className="list__log">
-                                            <div style={{ display: "flex", justifyContent: "space-between", lineHeight: "24px" }}>
+                                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                                 <span>
                                                     <a href={log.fflogurl} target="_blank" rel="noopener noreferrer">{log.title} {log.showDate()}</a><br />
                                                     {log.patch && <span style={{ fontStyle: "italic" }} > Patch : {log.patch},</span>}<span style={{ fontStyle: "italic" }} > envoyé par {log.pseudo}</span>
                                                 </span>
-                                                {(isRaidLeadOrAdmin || user.uid === log.uid) && <DeleteBtn label=" " handleClick={() => handleDeleteLog(log)} />}
+                                                <div className="d-flex flex-row">
+                                                    <CopyToClipboard text={log.fflogurl}>
+                                                        <Button><i className="fas fa-clipboard"></i></Button>
+                                                    </CopyToClipboard>
+                                                    {(isRaidLeadOrAdmin || user.uid === log.uid) && <Button variant="danger" style={{ marginLeft: "2px" }} onClick={() => handleDeleteLog(log)}><i className="fas fa-trash"></i></Button>}
+                                                </div>
+
                                             </div>
                                         </ListGroup.Item>
                                     )
