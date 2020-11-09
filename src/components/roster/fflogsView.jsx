@@ -80,13 +80,16 @@ function FFlogsView({ roster }) {
     const getAuthorsList = () => {
         let authors = []
         ffLogs.forEach(log => authors = [...authors, log.pseudo])
-        return new Set(authors)
+        return Array.from(new Set(authors))
     }
 
     const getFilteredLogs = () => {
         let arrFilteredLogs = ffLogs
         if (formik.values.patch !== ALL) {
-            arrFilteredLogs = ffLogs.filter(log => log.patch === formik.values.patch)
+            arrFilteredLogs = arrFilteredLogs.filter(log => log.patch === formik.values.patch)
+        }
+        if (formik.values.author !== ALL) {
+            arrFilteredLogs = arrFilteredLogs.filter(log => log.pseudo === formik.values.author)
         }
         return arrFilteredLogs;
     }
@@ -145,7 +148,7 @@ function FFlogsView({ roster }) {
                                         onChange={formik.handleChange}
                                         custom>
                                         <option value={ALL}>{`${ALL} auteurs confondus`}</option>
-                                        {getAuthorsList().forEach(author => {
+                                        {getAuthorsList().map(author => {
                                             return <option key={author}>{author}</option>
                                         })}
                                     </Form.Control>
