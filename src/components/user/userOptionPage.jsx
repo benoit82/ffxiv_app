@@ -48,13 +48,14 @@ const UserOptionPage = () => {
                 }
             );
         return () => unsubcribe()
+    },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        [])
 
-    const handleDelete = async () => {
+    const handleRosterTmpDelete = async () => {
         const confirmation = await Swal.fire({
             icon: "warning",
-            html: `êtes-vous certain de supprimer le roster temporaire : ${rosterTmp.name} ?`,
+            html: `êtes-vous certain de supprimer le roster temporaire: ${rosterTmp.name} ?`,
             cancelButtonText: "annuler",
             showCancelButton: true,
             confirmButtonText: "oui, certain"
@@ -93,13 +94,13 @@ const UserOptionPage = () => {
                 <Row className="d-flex flex-column">
                     <h2>Mon roster temporaire</h2><span style={{ color: "gray", fontStyle: "italic", fontSize: "0.8rem", marginBottom: "1.5rem" }}>cliques sur le nom pour copier le lien pour la visu</span>
                     <div className="d-flex">
-                        <CopyToClipboard text={`https://${window.location.href.split("/")[2]}/roster/view/${rosterTmp._id}/1`}>
+                        <CopyToClipboard text={`${window.location.origin}/roster/view/${rosterTmp._id}/1`}>
                             <h4 className="mr-5"><Button><i className="fas fa-clipboard"></i>{rosterTmp.name}</Button></h4>
                         </CopyToClipboard>
                         <div style={{ display: "flex", width: "30vw", justifyContent: "space-between" }}>
                             <Link to={`/roster/view/${rosterTmp._id}/1`} className="btn btn-primary"><i className="fas fa-eye"></i>Voir</Link>
                             <Link to={`/roster/edit/${rosterTmp._id}`} className="btn btn-success"><i className="fas fa-edit"></i>Editer</Link>
-                            <DeleteBtn handleClick={handleDelete} />
+                            <DeleteBtn handleClick={handleRosterTmpDelete} />
                         </div>
                     </div>
                 </Row>
