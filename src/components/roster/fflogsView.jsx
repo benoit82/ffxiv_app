@@ -187,7 +187,7 @@ function FFlogsView({ roster }) {
                                                     <CopyToClipboard text={log.fflogurl}>
                                                         <Button><i className="fas fa-clipboard"></i></Button>
                                                     </CopyToClipboard>
-                                                    {(isRaidLeadOrAdmin || user.uid === log.uid) && <Button variant="danger" style={{ marginLeft: "2px" }} onClick={() => handleDeleteLog(log)}><i className="fas fa-trash"></i></Button>}
+                                                    {(isRaidLeadOrAdmin || user.pseudo === log.pseudo) && <Button variant="danger" style={{ marginLeft: "2px" }} onClick={() => handleDeleteLog(log)}><i className="fas fa-trash"></i></Button>}
                                                 </div>
 
                                             </div>
