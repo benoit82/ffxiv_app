@@ -53,7 +53,7 @@ const Welcome = () => {
     return (
         <>{
             streamers.length > 0 &&
-            <Col lg={3} style={{ backgroundColor: "#c6c6c642" }}>
+            <Col lg={3} className="form__container">
                 <h4>En live sur Twitch</h4>
                 <ListGroup>
                     {streamers.map(stream => {

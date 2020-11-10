@@ -49,40 +49,38 @@ const EmailUpdateForm = () => {
 
 
     return (
-        <Col lg={4}>
-            <Form onSubmit={formik.handleSubmit}>
-                <h2>Mettre à jour son email</h2>
-                <Form.Group controlId="newEmail">
-                    <Form.Label>Mon nouvel email</Form.Label>
-                    <Form.Control
-                        type="email"
-                        name="newEmail"
-                        value={formik.values.newEmail}
-                        onChange={formik.handleChange}
-                        isInvalid={formik.errors.newEmail && formik.validateOnChange}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                        {formik.errors.newEmail}
-                    </Form.Control.Feedback>
-                </Form.Group>
+        <Form onSubmit={formik.handleSubmit}>
+            <h2>Mettre à jour son email</h2>
+            <Form.Group controlId="newEmail">
+                <Form.Label>Mon nouvel email</Form.Label>
+                <Form.Control
+                    type="email"
+                    name="newEmail"
+                    value={formik.values.newEmail}
+                    onChange={formik.handleChange}
+                    isInvalid={formik.errors.newEmail && formik.validateOnChange}
+                />
+                <Form.Control.Feedback type="invalid">
+                    {formik.errors.newEmail}
+                </Form.Control.Feedback>
+            </Form.Group>
 
-                <Form.Group>
-                    <Form.Label>Mot de passe</Form.Label>
-                    <Form.Control
-                        type="password"
-                        name="password"
-                        isInvalid={formik.errors.password && formik.validateOnChange}
-                        value={formik.values.password}
-                        onChange={formik.handleChange}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                        {formik.errors.password}
-                    </Form.Control.Feedback>
-                </Form.Group>
-                <UpdateBtn />
-                {/* <pre>{JSON.stringify(formik.values, null, 2)}</pre> */}
-            </Form>
-        </Col>
+            <Form.Group>
+                <Form.Label>Mot de passe</Form.Label>
+                <Form.Control
+                    type="password"
+                    name="password"
+                    isInvalid={formik.errors.password && formik.validateOnChange}
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                />
+                <Form.Control.Feedback type="invalid">
+                    {formik.errors.password}
+                </Form.Control.Feedback>
+            </Form.Group>
+            <UpdateBtn />
+            {/* <pre>{JSON.stringify(formik.values, null, 2)}</pre> */}
+        </Form>
     )
 }
 

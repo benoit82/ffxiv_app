@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { Col, Form } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 import { UpdateBtn } from '../formElements'
 import { UserApi } from '../../utils/appContext'
 import { FirebaseContext } from '../firebase'
@@ -30,26 +30,24 @@ function TwitchAccountForm() {
     })
 
     return (
-        <Col lg={5}>
-            <Form onSubmit={formik.handleSubmit}>
-                <h2>Mettre à jour son compte Twitch</h2>
-                <Form.Group controlId="twitchAccount">
-                    <Form.Label>Pseudo du compte</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="twitchAccount"
-                        value={formik.values.twitchAccount}
-                        onChange={formik.handleChange}
-                        isInvalid={formik.errors.twitchAccount && formik.validateOnChange}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                        {formik.errors.twitchAccount}
-                    </Form.Control.Feedback>
-                </Form.Group>
-                <UpdateBtn />
-                {/* <pre>{JSON.stringify(formik.values, null, 2)}</pre> */}
-            </Form>
-        </Col>
+        <Form onSubmit={formik.handleSubmit}>
+            <h2>Mettre à jour son compte Twitch</h2>
+            <Form.Group controlId="twitchAccount">
+                <Form.Label>Pseudo du compte</Form.Label>
+                <Form.Control
+                    type="text"
+                    name="twitchAccount"
+                    value={formik.values.twitchAccount}
+                    onChange={formik.handleChange}
+                    isInvalid={formik.errors.twitchAccount && formik.validateOnChange}
+                />
+                <Form.Control.Feedback type="invalid">
+                    {formik.errors.twitchAccount}
+                </Form.Control.Feedback>
+            </Form.Group>
+            <UpdateBtn />
+            {/* <pre>{JSON.stringify(formik.values, null, 2)}</pre> */}
+        </Form>
     )
 }
 

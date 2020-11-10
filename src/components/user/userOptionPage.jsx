@@ -82,7 +82,7 @@ const UserOptionPage = () => {
 
 
     return (
-        <Row className="min-vh-100 min-vw-100">
+        <Row className="min-vh-90 min-vw-100">
             <Col lg={3} className="mr-3 ml-3">
                 <h2>Mes infos</h2>
                 <ListGroup>
@@ -129,10 +129,9 @@ const UserOptionPage = () => {
                 }
             </Col>
             <Col className="mr-3 ml-3">
-                <Row>
+                <div className="form__container">
                     {form}
-                </Row>
-
+                </div>
             </Col>
         </Row>
     )
