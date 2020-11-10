@@ -5,7 +5,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: "Nunito", sans-serif !important;
-  height: 100vh;
+  min-height: 100vh;
+  background: url(./img/GaruFrit.png) center;
   background-color: #adfff871 !important;
 }
 
