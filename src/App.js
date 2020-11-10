@@ -7,13 +7,12 @@ import Container from "react-bootstrap/Container";
 import { Menu, Footer } from "./components";
 import XIVAPI from "xivapi-js";
 import checkStorage from "./utils/checkStorage";
+import { showInfoMessage } from "./utils/globalFunctions";
 
 import "./App.css";
-import Msg from "./utils/msg";
 
 function App() {
   const firebase = useContext(FirebaseContext);
-  const [infoMsg, setInfoMsg] = useState(null);
   const [user, setUser] = useState({
     uid: "",
     isLoggedIn: false,
@@ -28,7 +27,7 @@ function App() {
     try {
       checkStorage(firebase, setUser);
     } catch (error) {
-      setInfoMsg(<Msg error={error.message}></Msg>);
+      showInfoMessage("error", error.message);
     }
   }, [firebase]);
 
@@ -39,7 +38,6 @@ function App() {
           <XIVApi.Provider value={xivapi}>
             <Menu user={user} />
             <Container fluid>
-              {infoMsg}
               <div className="row mt-3 d-flex justify-content-center align-items-center">
                 <Routes />
               </div>
