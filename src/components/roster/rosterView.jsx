@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
-import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Table from 'react-bootstrap/Table'
 import { Roster, Character } from '../../models'
@@ -9,12 +8,12 @@ import { getCategory } from '../../utils/jobs'
 import CharacterTRRoster from '../character/characterTRRoster'
 import RosterCheckUpgradeGear from './rosterCheckUpgradeGear'
 import { resetGearSet } from '../../utils/jobs'
-import Msg from '../../utils/msg'
 import Loading from '../loading'
 import Button from 'react-bootstrap/Button'
 import FFlogsView from './fflogsView'
 
 import './rosterView.scss'
+import { showInfoMessage } from '../../utils/globalFunctions'
 /**
  * @route /param /roster/view/:roster_id/:jPriority
  */
@@ -27,7 +26,6 @@ const RosterView = () => {
     const [members, setMembers] = useState([])
     const [raidLeader, setRaidLeader] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [msgInfo, setMsgInfo] = useState(null)
 
     useEffect(() => {
         let unsubscribe = firebase.db
@@ -68,7 +66,7 @@ const RosterView = () => {
                 try {
                     getRosterData(snap.data())
                 } catch (error) {
-                    setMsgInfo(<Msg error={error.message} />)
+                    showInfoMessage("error", error.message)
                 } finally {
                     setLoading(false)
                 }
@@ -86,8 +84,7 @@ const RosterView = () => {
                     <FFlogsView roster={roster} />
                 </Col>
                 <Col lg={8} style={{ height: "100vh" }}>
-                    <Row>{msgInfo}</Row>
-                    <Row className="mt-1">
+                    <div className="custom__container mt-1">
                         <h3>Table des loots</h3>
                         <Table striped bordered hover variant="dark" className="table_roster">
                             <thead>
@@ -125,13 +122,13 @@ const RosterView = () => {
                                 }
                             </tbody>
                         </Table>
-                    </Row>
-                    {members.length > 0 && <Row>
-                        <RosterCheckUpgradeGear members={members} priorityJob={jobPriority} />
-                        <Button variant="danger" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/1`)}>Main Job</Button>
-                        <Button variant="dark" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/2`)}>Job 2</Button>
-                        <Button variant="warning" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/3`)}>Job 3</Button>
-                    </Row>}
+                        {members.length > 0 && <>
+                            <RosterCheckUpgradeGear members={members} priorityJob={jobPriority} />
+                            <Button variant="danger" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/1`)}>Main Job</Button>
+                            <Button variant="dark" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/2`)}>Job 2</Button>
+                            <Button variant="warning" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/3`)}>Job 3</Button>
+                        </>}
+                    </div>
                 </Col>
             </>
     )

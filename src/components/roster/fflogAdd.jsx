@@ -11,6 +11,8 @@ import { FFXIV_ARR_RELEASE_DATE } from '../../utils/consts'
 import { showInfoMessage } from '../../utils/globalFunctions'
 import Axios from 'axios'
 
+import "./fflogAdd.scss"
+
 function FFLogAdd({ roster, patchList, onFormSubmit }) {
     const [showCalendar, setShowCalendar] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -128,12 +130,14 @@ function FFLogAdd({ roster, patchList, onFormSubmit }) {
 
             <Form.Group controlId="dateRaid">
                 <Button style={{ marginBottom: "1rem", width: "100%" }} variant="outline-primary" onClick={handleCalendarClick} ><i className="far fa-calendar"></i>Raid du : {formik.values.dateRaid.toLocaleDateString()}</Button>
-                {showCalendar && <Calendar
-                    value={formik.values.dateRaid}
-                    minDate={FFXIV_ARR_RELEASE_DATE}
-                    maxDate={new Date()}
-                    onChange={(value) => fetchPatch(value)}
-                />}
+                {showCalendar &&
+                    <Calendar
+                        value={formik.values.dateRaid}
+                        minDate={FFXIV_ARR_RELEASE_DATE}
+                        maxDate={new Date()}
+                        onChange={(value) => fetchPatch(value)}
+                    />
+                }
             </Form.Group>
 
             <SendBtn isDisabled={formik.isSubmitting} label="Envoyer le lien" />

@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import ReactPaginate from 'react-paginate'
 import { FirebaseContext } from '../firebase'
-import Row from "react-bootstrap/Row"
 import FFlog from "../../models/fflog"
 import FFLogAdd from './fflogAdd'
 import { Alert, Button, Form, ListGroup } from 'react-bootstrap'
@@ -122,7 +121,7 @@ function FFlogsView({ roster }) {
 
     return (
         <>
-            <Row className="d-flex flex-column flex-start mr-3">
+            <div className="d-flex flex-column flex-start p-1">
                 <Button onClick={handleShowFormAddLog} style={{ marginBottom: "1rem", width: "100%" }} variant={showFormAddLog ? "outline-primary" : "primary"}>Ajouter un rapport de raid</Button>
                 {showFormAddLog && <FFLogAdd roster={roster} patchList={patchList} onFormSubmit={handleShowFormAddLog} />}
                 {ffLogs.length > 0 &&
@@ -200,7 +199,7 @@ function FFlogsView({ roster }) {
                         </ListGroup>
                     </>
                 }
-            </Row>
+            </div>
 
         </>
     )

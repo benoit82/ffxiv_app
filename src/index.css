@@ -6,8 +6,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-family: "Nunito", sans-serif !important;
   min-height: 100vh;
-  background: url(./img/GaruFrit.png) center fixed;
-  background-color: #adfff871 !important;
+  background: url(./img/GaruFrit.png) center fixed,
+    linear-gradient(
+      297deg,
+      rgb(252, 63, 63) 0%,
+      rgb(248, 249, 66) 33%,
+      rgb(52, 83, 28) 100%
+    );
 }
 
 code {

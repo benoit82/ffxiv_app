@@ -15,6 +15,12 @@ const Welcome = () => {
     const { user } = useContext(UserApi)
     const firebase = useContext(FirebaseContext)
     const [streamers, setStreamers] = useState([])
+    const twitchAxiosConfig = {
+        headers: {
+            "Authorization": `Bearer ${process.env.REACT_APP_TWITCH_API_KEY}`,
+            "Client-ID": process.env.REACT_APP_TWITCH_API_CLIENT_ID
+        }
+    }
     dayjs.extend(relativeTime).locale(fr)
 
     useEffect(() => {
@@ -30,11 +36,10 @@ const Welcome = () => {
                     streamersList.forEach(streamer => urlBuilder += `user_login=${streamer}&`)
                     urlBuilder = urlBuilder.substr(0, urlBuilder.length - 1)
                     try {
-                        const response = await Axios.get(urlBuilder, {
-                            headers: {
-                                "Authorization": `Bearer ${process.env.REACT_APP_TWITCH_API_KEY}`,
-                                "Client-ID": process.env.REACT_APP_TWITCH_API_CLIENT_ID
-                            },
+                        const response = await Axios.get(urlBuilder, twitchAxiosConfig)
+                        response.data.data.forEach(async streamer => {
+                            const res = await Axios.get(`https://api.twitch.tv/helix/games?id=${streamer.game_id}`, twitchAxiosConfig)
+                            streamer.game = res.data.data[0]
                         })
                         setStreamers(Array.from(response.data.data));
                     } catch (error) {
@@ -47,18 +52,20 @@ const Welcome = () => {
             );
 
         return () => unsubcribe();
-    }, [firebase.db])
+    },
+        //eslint-disable-next-line
+        [firebase.db])
 
     return (
         <>{
             streamers.length > 0 &&
-            <div className="custom__container" style={{ position: "absolute", top: "0", left: "0" }}>
+            <div className="custom__container" style={{ position: "absolute", top: "0", left: "0", borderRadius: "0px" }}>
                 <h4>En live sur Twitch</h4>
                 <ListGroup>
                     {streamers.map(stream => {
                         return (<ListGroupItem key={stream.id} className="d-flex flex-column">
-                            <span><a href={`https://www.twitch.tv/${stream.user_name}`} target="_blank" rel="noopener noreferrer">{stream.user_name}</a></span>
-                            <span>{stream.title}</span>
+                            <span><a href={`https://www.twitch.tv/${stream.user_name}`} target="_blank" rel="noopener noreferrer">{stream.user_name}</a> : {stream.game && stream.game.name}</span>
+                            <span></span>
                             <span>commencé {dayjs().to(stream.started_at)}</span>
                         </ListGroupItem>)
                     })}
@@ -67,13 +74,12 @@ const Welcome = () => {
         }
             <div className="custom__container" style={{ width: "30rem", margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }} >
                 <h1>\o Lali-ho {user.isLoggedIn && `${user.pseudo}`} ! o/</h1>
-                <p>Bienvenue sur l'application pour gerer les récompenses de raid dans un premier temps.</p>
-                <p>D'autres options viendront compléter l'application dans les futurs versions !</p>
+                <p>Bienvenue sur l&apos;application pour gerer les récompenses de raid dans un premier temps.</p>
                 {
                     !user.isLoggedIn && (
                         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
                             <Link to="/login" className="btn btn-primary fas fa-sign-in-alt mr-2"> login</Link>
-                            <Link to="/signup" className="btn btn-success fas fa-user-plus"> s'inscrire</Link>
+                            <Link to="/signup" className="btn btn-success fas fa-user-plus"> s&apos;inscrire</Link>
                         </div>
                     )
                 }
