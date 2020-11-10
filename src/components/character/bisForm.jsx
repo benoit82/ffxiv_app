@@ -40,27 +40,31 @@ const BISForm = ({ job, character, updateBis, resetBis }) => {
             initialValues={initialGearSet}
         >
             {({ handleSubmit }) => (
-                <Container className="mt-3">
-                    <Row>
-                        <h3>BIS : {job} - Cochez les équipements obtenu</h3>
-                    </Row>
-                    <Form onSubmit={handleSubmit}>
-                        <Row><UpdateBtn /> <ResetBtn handleReset={() => resetBis(job)} /></Row>
-                        <Row>
-                            <div style={{ maxHeight: "505px" }} className="d-flex flex-column flex-lg-wrap">
-                                {
-                                    Object.entries(initialGearSet)
-                                        .sort((gearPieceA, gearPieceB) => {
-                                            return gearPieceA[1].order > gearPieceB[1].order ? 1 : -1
-                                        })
-                                        .map((armorElement, index) => {
-                                            return <Row key={index} className="mr-5 gear__field"><GearPiece armorElement={armorElement} job={job} gearType={gearType} /></Row>
-                                        })
-                                }
-                            </div>
-                        </Row>
-                    </Form>
-                </Container>
+                <>
+                    <div className="custom__container mt-3" style={{ width: "1020px", padding: "10px" }}>
+                        <Container fluid>
+                            <Row>
+                                <h3>BIS : {job} - Cochez les équipements obtenu</h3>
+                            </Row>
+                            <Form onSubmit={handleSubmit}>
+                                <Row><UpdateBtn /> <ResetBtn handleReset={() => resetBis(job)} /></Row>
+                                <Row>
+                                    <div style={{ maxHeight: "505px" }} className="d-flex flex-column flex-lg-wrap">
+                                        {
+                                            Object.entries(initialGearSet)
+                                                .sort((gearPieceA, gearPieceB) => {
+                                                    return gearPieceA[1].order > gearPieceB[1].order ? 1 : -1
+                                                })
+                                                .map((armorElement, index) => {
+                                                    return <div key={index} className="mr-5 gear__field"><GearPiece armorElement={armorElement} job={job} gearType={gearType} /></div>
+                                                })
+                                        }
+                                    </div>
+                                </Row>
+                            </Form>
+                        </Container>
+                    </div>
+                </>
             )
             }
         </Formik >

@@ -17,7 +17,9 @@
   background-color: #adfff8b5;
   border-radius: 10px;
 }
-
+.auto_margin {
+  margin: auto;
+}
 .form__container {
   max-width: 30rem;
 }

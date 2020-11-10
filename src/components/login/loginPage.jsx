@@ -23,7 +23,7 @@ const LoginPage = () => {
     })
 
     return (
-        <div className="col-sm-12 col-md-8 p-3">
+        <div className="custom__container form__container auto_margin">
             <h1 className="text-center font-weight-bold">Connexion</h1>
             <LoginForm />
             <Alert variant="info" className="mt-3">Nouvel utilisateur ? Aller à la page d'<Link to="/signup">inscription</Link> !</Alert>

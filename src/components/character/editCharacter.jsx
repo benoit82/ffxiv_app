@@ -13,7 +13,7 @@ import { styleRole } from '../../utils/styleRole'
 import Col from 'react-bootstrap/Col'
 import JobListDisplay from '../../utils/jobListDisplay'
 import BISForm from './bisForm'
-import Msg from '../../utils/msg'
+import { showInfoMessage } from '../../utils/globalFunctions'
 import { Character } from '../../models'
 
 import './editCharacter.scss'
@@ -29,7 +29,6 @@ const EditCharacter = () => {
     const User = useContext(UserApi)
     const [character, setCharacter] = useState({})
     const [msgUpdate, setMsgUpdate] = useState("")
-    const [msgInfo, setMsgInfo] = useState(null)
 
     // select state
     const [job1, setJob1] = useState("")
@@ -69,7 +68,7 @@ const EditCharacter = () => {
                     if (chr.thirdJob) setJob3(chr.thirdJob)
                 },
                 (error) => {
-                    setMsgInfo(<Msg error={error.message} />)
+                    showInfoMessage('error', error.message)
                 }
             );
 
@@ -155,7 +154,6 @@ const EditCharacter = () => {
 
     return (
         <Container fluid>
-            {msgInfo && <Row>{msgInfo}</Row>}
             <Row className="d-flex justify-content-center">
                 {/* cadre avatar */}
                 <div className="d-flex rounded p-2 w-auto align-items-center"
@@ -179,57 +177,59 @@ const EditCharacter = () => {
             <Row className="mt-3">
                 {/* cadre menu job */}
                 <Col lg={2} className="mr-2">
-                    <h3>Jobs</h3>
-                    <form onSubmit={handleSubmit}>
-                        <ListGroup variant="flush">
-                            <ListGroup.Item className="selectJob">
-                                <Select
-                                    className="basic-single"
-                                    placeholder={character.mainJob || "Main job"}
-                                    onChange={setJob1}
-                                    value={job1}
-                                    isSearchable
-                                    name="job1"
-                                    options={selectJobsGroup}
-                                    formatGroupLabel={formatGroupLabel}
-                                />
-                                {character.mainJob && <EditBtn label={`édit. BIS ${character.mainJob}`} handleClick={() => editBis(character.mainJob)} />}
-                            </ListGroup.Item>
-                            {job1 && <ListGroup.Item className="selectJob">
-                                <Select
-                                    className="basic-single"
-                                    placeholder={character.secondJob || "2eme Job"}
-                                    onChange={setJob2}
-                                    value={job2}
-                                    isSearchable
-                                    name="job2"
-                                    options={selectJobsGroup}
-                                    formatGroupLabel={formatGroupLabel}
-                                />
-                                {character.secondJob && <EditBtn label={`édit. BIS ${character.secondJob}`} handleClick={() => editBis(character.secondJob)} />}
-                            </ListGroup.Item>}
-                            {job2 && <ListGroup.Item className="selectJob">
-                                <Select
-                                    className="basic-single"
-                                    placeholder={character.thirdJob || "3eme Job"}
-                                    onChange={setJob3}
-                                    value={job3}
-                                    isSearchable
-                                    name="job3"
-                                    options={selectJobsGroup}
-                                    formatGroupLabel={formatGroupLabel}
-                                />
-                                {character.thirdJob && <EditBtn label={`édit. BIS ${character.thirdJob}`} handleClick={() => editBis(character.thirdJob)} />}
-                            </ListGroup.Item>}
-                            <ListGroup.Item className="selectJob">
-                                <div className="d-flex flex-column">
-                                    <SendBtn label="mettre à jour les jobs" />
-                                    <ResetBtn label="reset tous les BIS" handleReset={resetAllBis} />
-                                </div>
-                            </ListGroup.Item>
-                        </ListGroup>
+                    <div className="custom__container">
+                        <h3>Jobs</h3>
+                        <form onSubmit={handleSubmit}>
+                            <ListGroup variant="flush">
+                                <ListGroup.Item className="selectJob">
+                                    <Select
+                                        className="basic-single"
+                                        placeholder={character.mainJob || "Main job"}
+                                        onChange={setJob1}
+                                        value={job1}
+                                        isSearchable
+                                        name="job1"
+                                        options={selectJobsGroup}
+                                        formatGroupLabel={formatGroupLabel}
+                                    />
+                                    {character.mainJob && <EditBtn label={`édit. BIS ${character.mainJob}`} handleClick={() => editBis(character.mainJob)} />}
+                                </ListGroup.Item>
+                                {job1 && <ListGroup.Item className="selectJob">
+                                    <Select
+                                        className="basic-single"
+                                        placeholder={character.secondJob || "2eme Job"}
+                                        onChange={setJob2}
+                                        value={job2}
+                                        isSearchable
+                                        name="job2"
+                                        options={selectJobsGroup}
+                                        formatGroupLabel={formatGroupLabel}
+                                    />
+                                    {character.secondJob && <EditBtn label={`édit. BIS ${character.secondJob}`} handleClick={() => editBis(character.secondJob)} />}
+                                </ListGroup.Item>}
+                                {job2 && <ListGroup.Item className="selectJob">
+                                    <Select
+                                        className="basic-single"
+                                        placeholder={character.thirdJob || "3eme Job"}
+                                        onChange={setJob3}
+                                        value={job3}
+                                        isSearchable
+                                        name="job3"
+                                        options={selectJobsGroup}
+                                        formatGroupLabel={formatGroupLabel}
+                                    />
+                                    {character.thirdJob && <EditBtn label={`édit. BIS ${character.thirdJob}`} handleClick={() => editBis(character.thirdJob)} />}
+                                </ListGroup.Item>}
+                                <ListGroup.Item className="selectJob">
+                                    <div className="d-flex flex-column">
+                                        <SendBtn label="mettre à jour les jobs" />
+                                        <ResetBtn label="reset tous les BIS" handleReset={resetAllBis} />
+                                    </div>
+                                </ListGroup.Item>
+                            </ListGroup>
 
-                    </form>
+                        </form>
+                    </div>
                 </Col>
                 <Col>
                     {msgUpdate}

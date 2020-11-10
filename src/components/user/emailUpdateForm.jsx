@@ -6,7 +6,6 @@ import Form from 'react-bootstrap/Form'
 import { FIELD_REQUIRED, EMAIL_ERR_MSG, PASSWORD_MIN, PASSWORD_ERR_MSG, EMAIL_UPDATE_ERR_MSG } from '../../utils/consts'
 import { UpdateBtn } from '../formElements'
 import { FirebaseContext } from '../firebase'
-import Col from 'react-bootstrap/Col'
 import { showInfoMessage } from '../../utils/globalFunctions'
 
 const EmailUpdateForm = () => {
