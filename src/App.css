@@ -12,9 +12,12 @@
   padding-left: 0 !important;
 }
 
+.custom__container {
+  padding: 1rem;
+  background-color: #adfff8b5;
+  border-radius: 10px;
+}
+
 .form__container {
   max-width: 30rem;
-  padding: 1rem;
-  background-color: #adfff871;
-  border-radius: 10px;
 }

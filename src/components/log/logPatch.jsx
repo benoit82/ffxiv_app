@@ -6,7 +6,7 @@ import "./logPatch.scss"
 
 const LogPatch = () => {
     return (
-        <div className="log__container">
+        <div className="custom__container log__container">
             <ReactMd fileName={logMd} />
         </div>
     )

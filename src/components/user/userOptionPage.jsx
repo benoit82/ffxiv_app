@@ -84,52 +84,54 @@ const UserOptionPage = () => {
     return (
         <Row className="min-vh-90 min-vw-100">
             <Col lg={3} className="mr-3 ml-3">
-                <h2>Mes infos</h2>
-                <ListGroup>
-                    <ListGroup.Item>
-                        <div className="info_user_listgrp_item">
-                            <span>Pseudo : {userFromDb.pseudo}</span>
-                        </div>
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                        <div className="info_user_listgrp_item">
-                            <span>Email : {userFromDb.email}</span>
-                            <Button variant="info" onClick={() => setForm(<EmailUpdateForm />)}>modifier</Button>
-                        </div>
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                        <div className="info_user_listgrp_item">
-                            <span>Compte FF-Logs : {userFromDb.fflogsAccount && userFromDb.fflogsAccount.name}</span>
-                            <Button variant="info" onClick={() => setForm(<FFlogAccountForm />)}>modifier</Button>
-                        </div>
-                    </ListGroup.Item>
-                    <ListGroup.Item>
-                        <div className="info_user_listgrp_item">
-                            <span>Compte Twitch : {userFromDb.twitchAccount}</span>
-                            <Button variant="info" onClick={() => setForm(<TwitchAccountForm />)}>modifier</Button>
-                        </div>
-                    </ListGroup.Item>
-                </ListGroup>
-                {rosterTmp &&
-                    <>
-                        <hr />
-                        <div className="d-flex flex-column">
-                            <CopyToClipboard text={`${window.location.origin}/roster/view/${rosterTmp._id}/1`}>
-                                <Button><i className="fas fa-clipboard"></i>Mon roster temporaire : {rosterTmp.name}</Button>
-                            </CopyToClipboard>
-                            <div className="d-flex mt-1">
-                                <div style={{ display: "flex", width: "100%", justifyContent: "space-between" }}>
-                                    <Link to={`/roster/view/${rosterTmp._id}/1`} className="btn btn-primary"><i className="fas fa-eye"></i>Voir</Link>
-                                    <Link to={`/roster/edit/${rosterTmp._id}`} className="btn btn-success"><i className="fas fa-edit"></i>Editer</Link>
-                                    <DeleteBtn handleClick={handleRosterTmpDelete} />
+                <div className="custom__container">
+                    <h2>Mes infos</h2>
+                    <ListGroup>
+                        <ListGroup.Item>
+                            <div className="info_user_listgrp_item">
+                                <span>Pseudo : {userFromDb.pseudo}</span>
+                            </div>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                            <div className="info_user_listgrp_item">
+                                <span>Email : {userFromDb.email}</span>
+                                <Button variant="info" onClick={() => setForm(<EmailUpdateForm />)}>modifier</Button>
+                            </div>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                            <div className="info_user_listgrp_item">
+                                <span>Compte FF-Logs : {userFromDb.fflogsAccount && userFromDb.fflogsAccount.name}</span>
+                                <Button variant="info" onClick={() => setForm(<FFlogAccountForm />)}>modifier</Button>
+                            </div>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                            <div className="info_user_listgrp_item">
+                                <span>Compte Twitch : {userFromDb.twitchAccount}</span>
+                                <Button variant="info" onClick={() => setForm(<TwitchAccountForm />)}>modifier</Button>
+                            </div>
+                        </ListGroup.Item>
+                    </ListGroup>
+                    {rosterTmp &&
+                        <>
+                            <hr />
+                            <div className="d-flex flex-column">
+                                <CopyToClipboard text={`${window.location.origin}/roster/view/${rosterTmp._id}/1`}>
+                                    <Button><i className="fas fa-clipboard"></i>Mon roster temporaire : {rosterTmp.name}</Button>
+                                </CopyToClipboard>
+                                <div className="d-flex mt-1">
+                                    <div style={{ display: "flex", width: "100%", justifyContent: "space-between" }}>
+                                        <Link to={`/roster/view/${rosterTmp._id}/1`} className="btn btn-primary"><i className="fas fa-eye"></i>Voir</Link>
+                                        <Link to={`/roster/edit/${rosterTmp._id}`} className="btn btn-success"><i className="fas fa-edit"></i>Editer</Link>
+                                        <DeleteBtn handleClick={handleRosterTmpDelete} />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </>
-                }
+                        </>
+                    }
+                </div>
             </Col>
             <Col className="mr-3 ml-3">
-                <div className="form__container">
+                <div className="custom__container form__container">
                     {form}
                 </div>
             </Col>

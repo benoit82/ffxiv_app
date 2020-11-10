@@ -53,17 +53,19 @@ const Welcome = () => {
     return (
         <>{
             streamers.length > 0 &&
-            <Col lg={3} className="form__container">
-                <h4>En live sur Twitch</h4>
-                <ListGroup>
-                    {streamers.map(stream => {
-                        return (<ListGroupItem key={stream.id} className="d-flex flex-column">
-                            <span><a href={`https://www.twitch.tv/${stream.user_name}`} target="_blank" rel="noopener noreferrer">{stream.user_name}</a></span>
-                            <span>{stream.title}</span>
-                            <span>commencé {dayjs().to(stream.started_at)}</span>
-                        </ListGroupItem>)
-                    })}
-                </ListGroup>
+            <Col lg={3}>
+                <div className="custom__container">
+                    <h4>En live sur Twitch</h4>
+                    <ListGroup>
+                        {streamers.map(stream => {
+                            return (<ListGroupItem key={stream.id} className="d-flex flex-column">
+                                <span><a href={`https://www.twitch.tv/${stream.user_name}`} target="_blank" rel="noopener noreferrer">{stream.user_name}</a></span>
+                                <span>{stream.title}</span>
+                                <span>commencé {dayjs().to(stream.started_at)}</span>
+                            </ListGroupItem>)
+                        })}
+                    </ListGroup>
+                </div>
             </Col>
         }
             <Col>
