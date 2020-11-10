@@ -11,3 +11,10 @@
   padding-right: 0 !important;
   padding-left: 0 !important;
 }
+
+.form__container {
+  max-width: 30rem;
+  padding: 1rem;
+  background-color: #adfff871;
+  border-radius: 10px;
+}

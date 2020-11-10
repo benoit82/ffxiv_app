@@ -6,7 +6,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-family: "Nunito", sans-serif !important;
   min-height: 100vh;
-  background: url(./img/GaruFrit.png) center;
+  background: url(./img/GaruFrit.png) center fixed;
   background-color: #adfff871 !important;
 }
 
