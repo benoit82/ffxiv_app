@@ -38,7 +38,7 @@ function App() {
           <XIVApi.Provider value={xivapi}>
             <Menu user={user} />
             <Container fluid>
-              <div className="row mt-3 d-flex justify-content-center align-items-center">
+              <div className="row mt-3 d-flex" style={{ minHeight: "90vh" }}>
                 <Routes />
               </div>
             </Container>
