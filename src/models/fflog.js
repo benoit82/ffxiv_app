@@ -9,6 +9,7 @@ export default class FFlog {
       this.fflogurl = data.fflogurl;
       this.patch = data.patch;
       this.pseudo = data.pseudo;
+      this.uid = data.uid;
     }
   }
 

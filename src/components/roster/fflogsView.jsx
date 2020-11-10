@@ -14,6 +14,9 @@ import "./fflogsView.scss"
 import Axios from 'axios'
 import { useFormik } from 'formik'
 import { ALL } from '../../utils/consts'
+import { PropTypes } from 'prop-types'
+import { Roster } from '../../models'
+
 
 function FFlogsView({ roster }) {
     const firebase = useContext(FirebaseContext)
@@ -134,7 +137,7 @@ function FFlogsView({ roster }) {
                                         value={formik.values.patch}
                                         onChange={formik.handleChange}
                                         custom>
-                                        <option value={ALL}>{`${ALL} patchs confondus`}</option>
+                                        <option value={ALL}>{`${ALL} : patchs confondus`}</option>
                                         {/* eslint-disable-next-line */}
                                         {patchList.map(patch => {
                                             if (ffLogs.some(log => log.patch === patch.name)) return <option key={patch.releaseDate}>{patch.name}</option>
@@ -147,7 +150,7 @@ function FFlogsView({ roster }) {
                                         value={formik.values.author}
                                         onChange={formik.handleChange}
                                         custom>
-                                        <option value={ALL}>{`${ALL} auteurs confondus`}</option>
+                                        <option value={ALL}>{`${ALL} : auteurs confondus`}</option>
                                         {getAuthorsList().map(author => {
                                             return <option key={author}>{author}</option>
                                         })}
@@ -187,7 +190,7 @@ function FFlogsView({ roster }) {
                                                     <CopyToClipboard text={log.fflogurl}>
                                                         <Button><i className="fas fa-clipboard"></i></Button>
                                                     </CopyToClipboard>
-                                                    {(isRaidLeadOrAdmin || user.pseudo === log.pseudo) && <Button variant="danger" style={{ marginLeft: "2px" }} onClick={() => handleDeleteLog(log)}><i className="fas fa-trash"></i></Button>}
+                                                    {(isRaidLeadOrAdmin || user.uid === log.uid) && <Button variant="danger" style={{ marginLeft: "2px" }} onClick={() => handleDeleteLog(log)}><i className="fas fa-trash"></i></Button>}
                                                 </div>
 
                                             </div>
@@ -201,6 +204,10 @@ function FFlogsView({ roster }) {
 
         </>
     )
+}
+
+FFlogsView.propTypes = {
+    roster: PropTypes.instanceOf(Roster).isRequired
 }
 
 export default FFlogsView

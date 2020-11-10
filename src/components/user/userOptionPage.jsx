@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import Row from 'react-bootstrap/Row'
 import ListGroup from 'react-bootstrap/ListGroup'
-import EmailUpdateFrom from './emailUpdateFrom'
+import EmailUpdateForm from './emailUpdateForm'
 import { FirebaseContext } from '../firebase'
 import { UserApi } from '../../utils/appContext'
 import { User, Roster } from '../../models'
@@ -12,11 +12,14 @@ import Button from 'react-bootstrap/Button'
 import Swal from 'sweetalert2'
 import { Col } from 'react-bootstrap'
 import { showInfoMessage } from '../../utils/globalFunctions'
-import FFlogAccountUpdate from './fflogAccountUpdate'
+import FFlogAccountForm from './FFlogAccountForm'
+import TwitchAccountForm from './twitchAccountForm'
+
+import "./userOptionPage.scss"
 
 
 /**
- * @route /param : /
+ * @route /param
  */
 const UserOptionPage = () => {
 
@@ -24,33 +27,7 @@ const UserOptionPage = () => {
     const [rosterTmp, setRosterTmp] = useState(null)
     const firebase = useContext(FirebaseContext)
     const { user } = useContext(UserApi)
-
-
-
-    useEffect(() => {
-        let unsubcribe = firebase.db
-            .collection("users")
-            .doc(user.uid)
-            .onSnapshot(
-                (snapshot) => {
-                    const usr = new User(snapshot)
-                    setUserFromDb(usr)
-                    if (usr.refRosterRaidLeader) {
-                        const getRoster = async () => {
-                            const rost = new Roster(await usr.refRosterRaidLeader.get())
-                            setRosterTmp(rost)
-                        }
-                        getRoster()
-                    }
-                },
-                (error) => {
-                    showInfoMessage("error", error.message)
-                }
-            );
-        return () => unsubcribe()
-    },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [])
+    const [form, setForm] = useState(<EmailUpdateForm />)
 
     const handleRosterTmpDelete = async () => {
         const confirmation = await Swal.fire({
@@ -77,38 +54,85 @@ const UserOptionPage = () => {
         }
     };
 
+    useEffect(() => {
+        let unsubcribe = firebase.db
+            .collection("users")
+            .doc(user.uid)
+            .onSnapshot(
+                (snapshot) => {
+                    const usr = new User(snapshot)
+                    setUserFromDb(usr)
+                    if (usr.refRosterRaidLeader) {
+                        const getRoster = async () => {
+                            const rost = new Roster(await usr.refRosterRaidLeader.get())
+                            setRosterTmp(rost)
+                        }
+                        getRoster()
+                    }
+                },
+                (error) => {
+                    showInfoMessage("error", error.message)
+                }
+            );
+        return () => unsubcribe()
+    },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [])
+
+
+
     return (
         <Row className="min-vh-100 min-vw-100">
             <Col lg={3} className="mr-3 ml-3">
                 <h2>Mes infos</h2>
                 <ListGroup>
-                    <ListGroup.Item>Pseudo : {userFromDb.pseudo}</ListGroup.Item>
-                    <ListGroup.Item>Email : {userFromDb.email}</ListGroup.Item>
-                    <ListGroup.Item>Compte FF-Logs : {userFromDb.fflogsAccount && userFromDb.fflogsAccount.name}</ListGroup.Item>
-                    <ListGroup.Item>Compte Twitch : {userFromDb.twitchAccount}</ListGroup.Item>
+                    <ListGroup.Item>
+                        <div className="info_user_listgrp_item">
+                            <span>Pseudo : {userFromDb.pseudo}</span>
+                        </div>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                        <div className="info_user_listgrp_item">
+                            <span>Email : {userFromDb.email}</span>
+                            <Button variant="info" onClick={() => setForm(<EmailUpdateForm />)}>modifier</Button>
+                        </div>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                        <div className="info_user_listgrp_item">
+                            <span>Compte FF-Logs : {userFromDb.fflogsAccount && userFromDb.fflogsAccount.name}</span>
+                            <Button variant="info" onClick={() => setForm(<FFlogAccountForm />)}>modifier</Button>
+                        </div>
+                    </ListGroup.Item>
+                    <ListGroup.Item>
+                        <div className="info_user_listgrp_item">
+                            <span>Compte Twitch : {userFromDb.twitchAccount}</span>
+                            <Button variant="info" onClick={() => setForm(<TwitchAccountForm />)}>modifier</Button>
+                        </div>
+                    </ListGroup.Item>
                 </ListGroup>
+                {rosterTmp &&
+                    <>
+                        <hr />
+                        <div className="d-flex flex-column">
+                            <CopyToClipboard text={`${window.location.origin}/roster/view/${rosterTmp._id}/1`}>
+                                <Button><i className="fas fa-clipboard"></i>Mon roster temporaire : {rosterTmp.name}</Button>
+                            </CopyToClipboard>
+                            <div className="d-flex mt-1">
+                                <div style={{ display: "flex", width: "100%", justifyContent: "space-between" }}>
+                                    <Link to={`/roster/view/${rosterTmp._id}/1`} className="btn btn-primary"><i className="fas fa-eye"></i>Voir</Link>
+                                    <Link to={`/roster/edit/${rosterTmp._id}`} className="btn btn-success"><i className="fas fa-edit"></i>Editer</Link>
+                                    <DeleteBtn handleClick={handleRosterTmpDelete} />
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                }
             </Col>
             <Col className="mr-3 ml-3">
                 <Row>
-                    <FFlogAccountUpdate />
-                    {/* <EmailUpdateFrom /> */}
+                    {form}
                 </Row>
-                {rosterTmp && <>
-                    <Row className="d-flex flex-column">
-                        <hr />
-                        <h2>Mon roster temporaire</h2><span style={{ color: "gray", fontStyle: "italic", fontSize: "0.8rem", marginBottom: "1.5rem" }}>cliques sur le nom pour copier le lien pour la visu</span>
-                        <div className="d-flex">
-                            <CopyToClipboard text={`${window.location.origin}/roster/view/${rosterTmp._id}/1`}>
-                                <h4 className="mr-5"><Button><i className="fas fa-clipboard"></i>{rosterTmp.name}</Button></h4>
-                            </CopyToClipboard>
-                            <div style={{ display: "flex", width: "30vw", justifyContent: "space-between" }}>
-                                <Link to={`/roster/view/${rosterTmp._id}/1`} className="btn btn-primary"><i className="fas fa-eye"></i>Voir</Link>
-                                <Link to={`/roster/edit/${rosterTmp._id}`} className="btn btn-success"><i className="fas fa-edit"></i>Editer</Link>
-                                <DeleteBtn handleClick={handleRosterTmpDelete} />
-                            </div>
-                        </div>
-                    </Row>
-                </>}
+
             </Col>
         </Row>
     )

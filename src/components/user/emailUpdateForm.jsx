@@ -9,7 +9,7 @@ import { FirebaseContext } from '../firebase'
 import Col from 'react-bootstrap/Col'
 import { showInfoMessage } from '../../utils/globalFunctions'
 
-const EmailUpdateFrom = () => {
+const EmailUpdateForm = () => {
     const User = useContext(UserApi)
     const firebase = useContext(FirebaseContext)
     const { user, setUser } = User
@@ -86,4 +86,4 @@ const EmailUpdateFrom = () => {
     )
 }
 
-export default EmailUpdateFrom
+export default EmailUpdateForm

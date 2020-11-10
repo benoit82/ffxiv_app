@@ -3,12 +3,12 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import AddCharacter from './addCharacter'
 import { FirebaseContext } from '../firebase'
-import Msg from '../../utils/msg'
 import { UserApi } from '../../utils/appContext'
 import { AddBtn, CloseBtn, } from '../formElements'
 import CharacterMenu from './characterMenu'
 import { Character } from '../../models'
 import Col from 'react-bootstrap/Col'
+import { showInfoMessage } from '../../utils/globalFunctions'
 
 /**
  * @route /chr
@@ -19,7 +19,6 @@ const ChrOptionPage = () => {
     const MAX_CHR_ALLOWED = 2
     const [characters, setCharacters] = useState([])
     const [addShow, setAddShow] = useState(false)
-    const [msgInfo, setMsgInfo] = useState(null)
     const firebase = useContext(FirebaseContext)
     const User = useContext(UserApi)
 
@@ -39,7 +38,7 @@ const ChrOptionPage = () => {
                         setCharacters(cList);
                     },
                     (error) => {
-                        throw setMsgInfo(<Msg error={error.message} />);
+                        showInfoMessage("error", error.message);
                     }
                 );
             return () => unsubcribe()
@@ -60,7 +59,6 @@ const ChrOptionPage = () => {
                     }
                 </Col>
                 <Col>
-                    {msgInfo}
                     {characters.length > 0 &&
                         <div className="d-flex justify-content-around flex-wrap flex-lg-nowrap">
                             {characters.map((character, index) =>

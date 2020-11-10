@@ -8,7 +8,7 @@ import { UserApi } from '../../utils/appContext'
 import { FirebaseContext } from '../firebase'
 import { showInfoMessage } from '../../utils/globalFunctions'
 
-function FFlogAccountUpdate() {
+function FFlogAccountForm() {
 
     const User = useContext(UserApi)
     const firebase = useContext(FirebaseContext)
@@ -51,7 +51,7 @@ function FFlogAccountUpdate() {
                 </Form.Group>
 
                 <Form.Group>
-                    <Form.Label>V1 Client Key, sur FF-Logs : <a href={"https://www.fflogs.com/profile"} target="_blank" rel="noopener noreferrer">Réglage > Web API</a></Form.Label>
+                    <Form.Label>V1 Client Key, sur FF-Logs : <a href={"https://www.fflogs.com/profile"} target="_blank" rel="noopener noreferrer">Réglage {">"} Web API</a></Form.Label>
                     <Form.Control
                         type="apiKey"
                         name="apiKey"
@@ -64,10 +64,10 @@ function FFlogAccountUpdate() {
                     </Form.Control.Feedback>
                 </Form.Group>
                 <UpdateBtn />
-                <pre>{JSON.stringify(formik.values, null, 2)}</pre>
+                {/* <pre>{JSON.stringify(formik.values, null, 2)}</pre> */}
             </Form>
         </Col>
     )
 }
 
-export default FFlogAccountUpdate;
+export default FFlogAccountForm;

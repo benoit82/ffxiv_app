@@ -35,6 +35,7 @@ function FFLogAdd({ roster, patchList, onFormSubmit }) {
             setShowCalendar(false)
             // inserting user_uid on values
             values.pseudo = user.pseudo
+            values.uid = user.uid
             // send datas to Firebase DB
             try {
                 await firebase.addFFLog(values, roster)
