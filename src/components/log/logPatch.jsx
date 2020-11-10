@@ -1,14 +1,14 @@
 import React from 'react'
 import logMd from '../../logs/log.md'
 import ReactMd from 'react-md-file'
-import Container from 'react-bootstrap/Container'
 
+import "./logPatch.scss"
 
 const LogPatch = () => {
     return (
-        <Container>
+        <div className="log__container">
             <ReactMd fileName={logMd} />
-        </Container>
+        </div>
     )
 }
 
