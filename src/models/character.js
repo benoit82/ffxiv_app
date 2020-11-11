@@ -22,6 +22,7 @@ class Character {
         ? `${data.name} - ${data.mainJob}`
         : `${data.name} - (???)`;
       this.value = this._id;
+      this.BISPatch = data.BISPatch || null;
     }
   }
 }

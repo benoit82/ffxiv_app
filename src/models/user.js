@@ -13,6 +13,7 @@ class User {
       fflogsAccount,
       twitchAccount,
     } = docRef.data();
+
     this.uid = uid;
     this.value = uid;
     this.pseudo = pseudo;

@@ -15,20 +15,25 @@ import JobListDisplay from '../../utils/jobListDisplay'
 import BISForm from './bisForm'
 import { showInfoMessage } from '../../utils/globalFunctions'
 import { Character } from '../../models'
+import Swal from 'sweetalert2'
+import Axios from 'axios'
+import dayjs from 'dayjs'
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 
 import './editCharacter.scss'
-import Swal from 'sweetalert2'
 
 /**
  * @route /chr/:chr_id
  */
 const EditCharacter = () => {
+    dayjs.extend(isSameOrAfter)
     const history = useHistory()
     const { chr_id } = useParams()
     const firebase = useContext(FirebaseContext)
     const User = useContext(UserApi)
     const [character, setCharacter] = useState({})
     const [msgUpdate, setMsgUpdate] = useState("")
+    const [lastFFXIVversion, setLastFFXIVversion] = useState(null)
 
     // select state
     const [job1, setJob1] = useState("")
@@ -44,37 +49,28 @@ const EditCharacter = () => {
         </div>
     );
 
-    useEffect(() => {
-        // load the roster
-        const unsubcribe = firebase.db
-            .collection("characters")
-            .doc(chr_id)
-            .onSnapshot(
-                (snapshot) => {
-                    const chr = new Character(snapshot)
-                    if (chr.userRef !== null) {
-                        chr.userRef.get().then(
-                            response => {
-                                const userData = response.data()
-                                if (userData.uid !== user.uid) history.goBack()
-                            }
-                        )
-                    } else {
-                        history.goBack()
-                    }
-                    setCharacter(chr)
-                    if (chr.mainJob) setJob1(chr.mainJob)
-                    if (chr.secondJob) setJob2(chr.secondJob)
-                    if (chr.thirdJob) setJob3(chr.thirdJob)
-                },
-                (error) => {
-                    showInfoMessage('error', error.message)
-                }
-            );
+    const getFFXIVLastPatchVersion = async () => {
+        let version;
+        const response = await Axios.get("https://xivapi.com/patchlist");
+        if (response.status === 200) {
+            version = Array.from(response.data).pop().Version
+        }
+        setLastFFXIVversion(version);
+    }
 
-        return () => unsubcribe();
-    }, [chr_id, firebase.db, history, user.uid]);
-
+    const infoResetBis = () => {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true,
+        })
+        Toast.fire({
+            icon: 'success',
+            title: 'reset de tous vos B.I.S. effecté !'
+        })
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -91,6 +87,9 @@ const EditCharacter = () => {
 
     const updateBis = (val, job) => {
         const bis = { ...character.bis, [job]: val }
+        if (!character.BISPatch && lastFFXIVversion) {
+            firebase.updateCharacter(character._id, { BISPatch: lastFFXIVversion })
+        }
         firebase.updateCharacter(character._id, { bis })
         setMsgUpdate(<Alert variant="info">BIS pour {job} mis à jour !</Alert>)
         setTimeout(() => {
@@ -134,23 +133,73 @@ const EditCharacter = () => {
         if (confirmation.value) {
             firebase.updateCharacter(character._id, { bis: {} })
             setJobForBis("")
-            const Toast = Swal.mixin({
-                toast: true,
-                position: "top",
-                showConfirmButton: false,
-                timer: 2500,
-                timerProgressBar: true,
-            })
-            Toast.fire({
-                icon: 'success',
-                title: 'reset de tous vos B.I.S. effecté !'
-            })
+            infoResetBis()
         }
     }
 
     const { avatar, name, id, mainJob, secondJob, thirdJob } = character
 
     const style_role = styleRole(character.mainJob)
+
+    useEffect(() => {
+        getFFXIVLastPatchVersion()
+    }, [])
+
+    useEffect(() => {
+        // getting FFXIV last version and set it in lastFFXIVversion
+
+        // load the characters
+        const unsubcribe = firebase.db
+            .collection("characters")
+            .doc(chr_id)
+            .onSnapshot(
+                (snapshot) => {
+                    const chr = new Character(snapshot)
+                    if (chr.userRef !== null) {
+                        chr.userRef.get().then(
+                            response => {
+                                const userData = response.data()
+                                if (userData.uid !== user.uid) history.goBack()
+                            }
+                        )
+                    } else {
+                        history.goBack()
+                    }
+                    setCharacter(chr)
+                    if (chr.mainJob) setJob1(chr.mainJob)
+                    if (chr.secondJob) setJob2(chr.secondJob)
+                    if (chr.thirdJob) setJob3(chr.thirdJob)
+                    if (chr.BISPatch
+                        && lastFFXIVversion
+                        // && dayjs().isSameOrAfter(lastFFXIVversion.ReleaseDate)
+                        && chr.BISPatch !== lastFFXIVversion
+                    ) {
+                        Swal.fire({
+                            icon: "question",
+                            title: `Nouveau patch : ${lastFFXIVversion}`,
+                            html: `FFXIV a déployé un nouveau patch ! <br/>
+                            Les BIS de ce personnage datent du patch ${chr.BISPatch}.<br/>
+                            Veux-tu reset les BIS de ce personnage (dernière mise à jour ) ? <br/>
+                            En répondant ou annulant l'action, tes BIS actuels seront marqué par le nouveau patch.`,
+                            cancelButtonText: "Non",
+                            showCancelButton: true
+                        }).then(response => {
+                            if (response.isConfirmed) {
+                                firebase.updateCharacter(chr._id, { bis: {} })
+                                infoResetBis()
+                            }
+                            // in all cases, we set the new patch version on character
+                            firebase.updateCharacter(chr._id, { BISPatch: lastFFXIVversion })
+                        }).catch(error => showInfoMessage("error", error.message))
+                    }
+                },
+                (error) => {
+                    showInfoMessage('error', error.message)
+                }
+            );
+
+        return () => unsubcribe();
+    }, [chr_id, firebase.db, history, user.uid, lastFFXIVversion]);
 
     return (
         <Container fluid>
