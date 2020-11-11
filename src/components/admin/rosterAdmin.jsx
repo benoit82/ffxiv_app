@@ -9,12 +9,18 @@ import { Form } from "react-bootstrap";
 import Select from "react-select";
 import { ALL } from "../../utils/consts";
 
-
+/**
+ * @routes /admin/roster
+ */
 const RosterAdmin = () => {
     const firebase = useContext(FirebaseContext);
     const [rosters, setRosters] = useState([]);
     const formik = useFormik({
-        initialValues: { roster: { value: ALL, label: ALL } }
+        initialValues: {
+            roster: {
+                value: ALL, label: ALL
+            }
+        }
     })
 
     const handleSelectChange = (selected) => {
@@ -55,7 +61,7 @@ const RosterAdmin = () => {
                         <Form.Group controlId="roster">
                             <Select
                                 name="roster"
-                                options={[{ label: ALL, value: ALL }, ...rosters]}
+                                options={[formik.initialValues.roster, ...rosters]}
                                 isClearable={true}
                                 value={formik.values.roster}
                                 clearValue={() => formik.setFieldValue("roster", formik.initialValues.roster)}

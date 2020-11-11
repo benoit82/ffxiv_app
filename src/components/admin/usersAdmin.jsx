@@ -23,7 +23,7 @@ const UsersAdmin = () => {
     const formik = useFormik({
         initialValues: {
             user: {
-                lable: ALL,
+                label: ALL,
                 value: ALL
             }
         }
@@ -71,7 +71,7 @@ const UsersAdmin = () => {
                 <Form.Group controlId="user">
                     <Select
                         name="user"
-                        options={[{ label: ALL, value: ALL }, ...users]}
+                        options={[formik.initialValues.user, ...users]}
                         isClearable={true}
                         value={formik.values.user}
                         clearValue={() => formik.setFieldValue("roster", formik.initialValues.user)}
