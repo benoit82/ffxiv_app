@@ -11,6 +11,8 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import fr from 'dayjs/locale/fr'
 import { TWITCH_API_BASE_URI, TWITCH_AXIOS_CONFIG } from '../../utils/consts'
 
+import "./welcome.scss"
+
 
 const Welcome = () => {
     dayjs.extend(relativeTime).locale(fr)
@@ -24,20 +26,30 @@ const Welcome = () => {
         urlBuilder = urlBuilder.substr(0, urlBuilder.length - 1)
         try {
             const response = await Axios.get(urlBuilder, TWITCH_AXIOS_CONFIG)
-            response.data.data.forEach(async streamer => {
-                const res = await Axios.get(`${TWITCH_API_BASE_URI}games?id=${streamer.game_id}`, TWITCH_AXIOS_CONFIG)
-                streamer.game = res.data.data[0]
+            response.data.data.forEach(async (streamer, index) => {
+                streamer.game = await getGame(streamer.game_id)
+                if (index === response.data.data.length - 1) setStreamers(Array.from(response.data.data));
             })
-            setStreamers(Array.from(response.data.data));
         } catch (error) {
             toast("error", "problème de communication avec twitch.")
         }
     }
 
+    const getGame = async (game_id) => {
+        let game = {}
+        try {
+            const res = await Axios.get(`${TWITCH_API_BASE_URI}games?id=${game_id}`, TWITCH_AXIOS_CONFIG)
+            game = res.data.data.shift()
+        } catch (error) {
+            toast("error", "problème de communication avec twitch.")
+        }
+        return game
+    }
+
     useEffect(() => {
         const intervalLives = setInterval(() => {
             if (streamers.length > 0) getLives(streamers)
-        }, 5 * 60 * 1000);
+        }, 60 * 1000);
         const unsubcribe = firebase.db
             .collection("users")
             .where("twitchAccount", "!=", '""')
@@ -67,9 +79,16 @@ const Welcome = () => {
                 <h4>En live sur Twitch</h4>
                 <ListGroup>
                     {streamers.map(stream => {
-                        return (<ListGroupItem key={stream.id} className="d-flex flex-column">
-                            <span><a href={`https://www.twitch.tv/${stream.user_name}`} target="_blank" rel="noopener noreferrer">{stream.user_name}</a> : {stream.game && stream.game.name}</span>
-                            <span>commencé {dayjs().to(stream.started_at)}</span>
+                        return (<ListGroupItem key={stream.id} className="d-flex">
+                            {stream.game && <div className="gameImgContainer mr-1">
+                                <img src={stream.game.box_art_url.replace("{width}", "75").replace("{height}", "100")} alt="" />
+                            </div>}
+                            <div className="streamerInfo d-flex flex-column">
+                                <span><a href={`https://www.twitch.tv/${stream.user_name}`} target="_blank" rel="noopener noreferrer">{stream.user_name}</a>{stream.game && ` : ${stream.game.name}`}</span>
+                                <span className="stream__title">{stream.title.length < 90 ? stream.title : `${stream.title.substr(0, 87)}...`}</span>
+                                <span>commencé {dayjs().to(stream.started_at)}</span>
+                            </div>
+
                         </ListGroupItem>)
                     })}
                 </ListGroup>
