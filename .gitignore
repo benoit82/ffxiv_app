@@ -33,3 +33,5 @@ firebase.json
 .vscode
 yarn.lock
 .vscode/settings.json
+
+./firebaseBatchBISPatchUpdate.js
