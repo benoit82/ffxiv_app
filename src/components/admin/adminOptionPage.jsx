@@ -14,12 +14,14 @@ const AdminOptionPage = () => {
     return (
         <Container fluid>
             <Row>
-                <Col lg={3}>
-                    <Row><Link to="/admin/users" className="btn btn-primary mb-2">Gestion des utilisateurs</Link></Row>
-                    <Row><Link to="/admin/roster" className="btn btn-info mb-2">Gestion des rosters</Link></Row>
+                <Col lg={2} className="d-flex flex-column mr-3">
+                    <Link to="/admin/users" className="btn btn-primary mb-2">Gestion des utilisateurs</Link>
+                    <Link to="/admin/roster" className="btn btn-info mb-2">Gestion des rosters</Link>
                 </Col>
-                <Col>
-                    <Row><h1>Administration du site</h1></Row>
+                <Col className="d-flex flex-column justify-content-center align-items-center">
+                    <div className="custom__container form__container mb-3" style={{ textAlign: "center" }}>
+                        <h1>Administration du site</h1>
+                    </div>
                     <Row>
                         <Switch>
                             <Route exact path="/admin/users" component={UsersAdmin} />

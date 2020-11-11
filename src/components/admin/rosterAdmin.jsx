@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FirebaseContext } from "../firebase";
-import Msg from "../../utils/msg";
 import { Roster } from "../../models";
 import { RostersTable, RosterEdit, RosterView } from "../roster";
 import { Switch, Route } from "react-router-dom";
+import { showInfoMessage } from "../../utils/globalFunctions";
 
 
 const RosterAdmin = () => {
     const firebase = useContext(FirebaseContext);
     const [rosters, setRosters] = useState([]);
-    const [infoMsg, setInfoMsg] = useState(null);
 
     useEffect(() => {
         // load the roster
@@ -22,7 +21,7 @@ const RosterAdmin = () => {
                     setRosters(rostersList);
                 },
                 (error) => {
-                    throw setInfoMsg(<Msg error={error.message} />);
+                    showInfoMessage("error", "Erreur de chargement des rosters")
                 }
             );
 
@@ -30,8 +29,7 @@ const RosterAdmin = () => {
     }, [firebase]);
 
     return (
-        <section style={{ display: "flex", flexDirection: "column" }}>
-            {infoMsg}
+        <section className="custom__container" style={{ display: "flex", flexDirection: "column" }}>
             <h2>Liste des rosters existants</h2>
             {rosters.length > 0 ? (
                 <RostersTable rosters={rosters} />
