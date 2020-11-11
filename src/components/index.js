@@ -17,7 +17,6 @@ import { RosterEdit, RosterView } from "./roster";
 import { UserOptionPage } from "./user";
 import { ForgottenPasswordPage } from "./forgottenpassword";
 import LogPatch from "./log/logPatch";
-import { Footer } from "./footer";
 
 export {
   ItemDetail,
@@ -39,5 +38,4 @@ export {
   UserOptionPage,
   BISForm,
   LogPatch,
-  Footer,
 };

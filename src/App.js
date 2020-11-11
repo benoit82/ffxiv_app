@@ -4,7 +4,7 @@ import { FirebaseContext } from "./components/firebase";
 import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "./routes";
 import Container from "react-bootstrap/Container";
-import { Menu, Footer } from "./components";
+import { Menu } from "./components";
 import XIVAPI from "xivapi-js";
 import checkStorage from "./utils/checkStorage";
 import { showInfoMessage } from "./utils/globalFunctions";
@@ -51,7 +51,6 @@ function App() {
           </XIVApi.Provider>
         </UserApi.Provider>
       </Router>
-      <Footer />
     </Container>
   );
 }
