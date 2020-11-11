@@ -51,9 +51,9 @@ const RosterAdmin = () => {
             {rosters.length > 0 ? (
                 <>
                     <Form>
-                        <Form.Group controlId="roster_id">
+                        <Form.Group controlId="roster">
                             <Select
-                                name="roster_id"
+                                name="roster"
                                 options={[{ label: ALL, value: ALL }, ...rosters]}
                                 isClearable={true}
                                 value={formik.values.roster}
