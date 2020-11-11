@@ -40,12 +40,3 @@ export const JOB_PRIORITY_ERR = "job priority undefined";
 export const FFXIV_ARR_RELEASE_DATE = new Date("2013/08/27");
 
 export const ALL = "Tout";
-
-// Twitch const
-export const TWITCH_API_BASE_URI = "https://api.twitch.tv/helix/";
-export const TWITCH_AXIOS_CONFIG = {
-  headers: {
-    Authorization: `Bearer ${process.env.REACT_APP_TWITCH_API_KEY}`,
-    "Client-ID": process.env.REACT_APP_TWITCH_API_CLIENT_ID,
-  },
-};
