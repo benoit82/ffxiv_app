@@ -96,15 +96,22 @@ const Welcome = () => {
         }
             <div className="custom__container form__container auto_margin d-flex flex-column" style={{ alignItems: "center", justifyContent: "center" }} >
                 <h1>\o Lali-ho {user.isLoggedIn && `${user.pseudo}`} ! o/</h1>
-                <p>Bienvenue sur l&apos;application pour gerer les récompenses de raid.</p>
+                <p style={{ textAlign: "center" }}>Bienvenue sur l&apos;application pour gerer les récompenses et les équipements des personnages de FFXIV.</p>
                 {
                     !user.isLoggedIn && (
-                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
-                            <Link to="/login" className="btn btn-primary fas fa-sign-in-alt mr-2"> login</Link>
-                            <Link to="/signup" className="btn btn-success fas fa-user-plus"> s&apos;inscrire</Link>
-                        </div>
+                        <>
+                            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px", flexWrap: "wrap" }}>
+                                <Link to="/login" className="btn btn-primary mr-2"><i className="fas fa-sign-in-alt"></i>login</Link>
+                                <Link to="/signup" className="btn btn-success mr-2"><i className="fas fa-user-plus"></i>s&apos;inscrire</Link>
+                            </div>
+
+                        </>
                     )
                 }
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px", flexWrap: "wrap" }}>
+                    <Link className="btn btn-info mr-2" to="/about"><i className="fas fa-newspaper"></i>A propos, mentions légales</Link>
+                    <Link className="btn btn-secondary" to="/log"><i className="fas fa-newspaper"></i>Info version</Link>
+                </div>
                 {process.env.NODE_ENV === "development" && <p>Application en mode  : {process.env.NODE_ENV}</p>}
             </div>
 

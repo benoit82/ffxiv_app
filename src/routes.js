@@ -19,6 +19,7 @@ import ProtectedRoute from "./utils/protectedRoute";
 import checkStorage from "./utils/checkStorage";
 import { FirebaseContext } from "./components/firebase";
 import { RosterCreate } from "./components/roster";
+import About from "./components/about/about";
 
 const Routes = () => {
   const User = useContext(UserApi);
@@ -36,6 +37,7 @@ const Routes = () => {
       <Route path="/login" component={LoginPage} />
       <Route path="/resetpassword" component={ForgottenPasswordPage} />
       <Route path="/item" component={ItemSearch} />
+      <Route exact path="/about" component={About} />
       <ProtectedRoute
         path="/admin"
         allowedUser={user.isAdmin}
