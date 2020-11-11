@@ -50,10 +50,10 @@ const EditCharacter = () => {
     );
 
     const getFFXIVLastPatchVersion = async () => {
-        let version;
+        let version = {};
         const response = await Axios.get("https://xivapi.com/patchlist");
         if (response.status === 200) {
-            version = Array.from(response.data).pop().Version
+            version = Array.from(response.data).pop()
         }
         setLastFFXIVversion(version);
     }
@@ -87,8 +87,8 @@ const EditCharacter = () => {
 
     const updateBis = (val, job) => {
         const bis = { ...character.bis, [job]: val }
-        if (!character.BISPatch && lastFFXIVversion) {
-            firebase.updateCharacter(character._id, { BISPatch: lastFFXIVversion })
+        if (!character.BISPatch && lastFFXIVversion.Version) {
+            firebase.updateCharacter(character._id, { BISPatch: lastFFXIVversion.Version })
         }
         firebase.updateCharacter(character._id, { bis })
         setMsgUpdate(<Alert variant="info">BIS pour {job} mis à jour !</Alert>)
@@ -171,12 +171,12 @@ const EditCharacter = () => {
                     if (chr.thirdJob) setJob3(chr.thirdJob)
                     if (chr.BISPatch
                         && lastFFXIVversion
-                        // && dayjs().isSameOrAfter(lastFFXIVversion.ReleaseDate)
-                        && chr.BISPatch !== lastFFXIVversion
+                        && dayjs().isSameOrAfter(lastFFXIVversion.ReleaseDate)
+                        && chr.BISPatch !== lastFFXIVversion.Version
                     ) {
                         Swal.fire({
                             icon: "question",
-                            title: `Nouveau patch : ${lastFFXIVversion}`,
+                            title: `Nouveau patch : ${lastFFXIVversion.Version}`,
                             html: `FFXIV a déployé un nouveau patch ! <br/>
                             Les BIS de ce personnage datent du patch ${chr.BISPatch}.<br/>
                             Veux-tu reset les BIS de ce personnage (dernière mise à jour ) ? <br/>
@@ -189,7 +189,7 @@ const EditCharacter = () => {
                                 infoResetBis()
                             }
                             // in all cases, we set the new patch version on character
-                            firebase.updateCharacter(chr._id, { BISPatch: lastFFXIVversion })
+                            firebase.updateCharacter(chr._id, { BISPatch: lastFFXIVversion.Version })
                         }).catch(error => showInfoMessage("error", error.message))
                     }
                 },
