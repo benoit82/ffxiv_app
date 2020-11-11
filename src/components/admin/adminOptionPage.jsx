@@ -5,7 +5,6 @@ import Col from 'react-bootstrap/Col'
 import { Switch, Route, Link } from 'react-router-dom'
 import { UserOptionPage } from '..'
 import UsersAdmin from './usersAdmin'
-import AdminWelcomePage from './adminWelcomePage'
 import RosterAdmin from './rosterAdmin'
 
 /**
@@ -23,7 +22,6 @@ const AdminOptionPage = () => {
                     <Row><h1>Administration du site</h1></Row>
                     <Row>
                         <Switch>
-                            <Route exact path="/admin" component={AdminWelcomePage} />
                             <Route exact path="/admin/users" component={UsersAdmin} />
                             <Route path="/admin/users/:user_id" component={UserOptionPage} />
                             <Route exact path="/admin/roster" component={RosterAdmin} />
