@@ -81,7 +81,9 @@ const RosterView = () => {
         loading ? <Loading />
             : <>
                 <Col lg={3} style={{ height: "100vh" }}>
-                    <FFlogsView roster={roster} />
+                    <div className="custom__container">
+                        <FFlogsView roster={roster} />
+                    </div>
                 </Col>
                 <Col lg={8} style={{ height: "100vh" }}>
                     <div className="custom__container mt-1">
