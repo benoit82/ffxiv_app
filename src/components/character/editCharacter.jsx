@@ -199,7 +199,9 @@ const EditCharacter = () => {
             );
 
         return () => unsubcribe();
-    }, [chr_id, firebase.db, history, user.uid, lastFFXIVversion]);
+    },
+        // eslint-disable-next-line 
+        [chr_id, firebase.db, history, user.uid, lastFFXIVversion]);
 
     return (
         <Container fluid>
