@@ -19,16 +19,16 @@ const AdminOptionPage = () => {
                     <Link to="/admin/roster" className="btn btn-info mb-2">Gestion des rosters</Link>
                 </Col>
                 <Col className="d-flex flex-column justify-content-center align-items-center">
-                    <div className="custom__container form__container mb-3" style={{ textAlign: "center" }}>
+                    <div className="custom__container mb-3" style={{ textAlign: "center" }}>
                         <h1>Administration du site</h1>
                     </div>
-                    <Row>
+                    <div className="custom__container mb-3">
                         <Switch>
                             <Route exact path="/admin/users" component={UsersAdmin} />
                             <Route path="/admin/users/:user_id" component={UserOptionPage} />
                             <Route exact path="/admin/roster" component={RosterAdmin} />
                         </Switch>
-                    </Row>
+                    </div>
                 </Col>
             </Row>
         </Container>

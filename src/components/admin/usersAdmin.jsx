@@ -1,12 +1,12 @@
 import React, { useEffect, useContext, useState } from 'react'
 import { FirebaseContext } from '../firebase';
 import { User } from '../../models';
-import Msg from '../../utils/msg';
 import Row from 'react-bootstrap/Row';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import UserForm from './userForm';
 import { CloseBtn } from '../formElements'
+import { showInfoMessage } from '../../utils/globalFunctions';
 
 /**
  * @routes /admin/users
@@ -15,7 +15,6 @@ const UsersAdmin = () => {
 
     const firebase = useContext(FirebaseContext)
     const [users, setUsers] = useState([])
-    const [msgInfo, setMsgInfo] = useState("")
     const [userForm, setUserForm] = useState("")
 
     useEffect(() => {
@@ -28,7 +27,7 @@ const UsersAdmin = () => {
                     setUsers(uList);
                 },
                 (error) => {
-                    throw setMsgInfo(<Msg error={error.message} />);
+                    showInfoMessage("error", "erreur dans le chargement des utiliteurs")
                 }
             );
         return () => unsubcribe()
@@ -50,7 +49,6 @@ const UsersAdmin = () => {
 
     return (
         <>
-            {msgInfo}
             <h2>Liste des utilisateurs</h2>
             <Table responsive striped bordered hover variant="dark" style={{ maxWidth: "930px" }}>
                 <thead>

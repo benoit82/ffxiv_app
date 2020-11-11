@@ -29,7 +29,7 @@ const RosterAdmin = () => {
     }, [firebase]);
 
     return (
-        <section className="custom__container" style={{ display: "flex", flexDirection: "column" }}>
+        <section style={{ display: "flex", flexDirection: "column" }}>
             <h2>Liste des rosters existants</h2>
             {rosters.length > 0 ? (
                 <RostersTable rosters={rosters} />
