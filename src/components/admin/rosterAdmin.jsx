@@ -20,13 +20,14 @@ const RosterAdmin = () => {
     const handleSelectChange = (selected) => {
         const value = (selected) ? { label: selected.label, value: selected.value } : formik.initialValues.roster
         formik.setFieldValue("roster", value)
-
     }
+
     const filteredRosters = (roster) => {
         let copyRosters = rosters;
         if (roster.value !== ALL) copyRosters = copyRosters.filter(r => r.value === roster.value)
         return copyRosters;
     }
+
     useEffect(() => {
         // load the roster
         const unsubcribe = firebase.db

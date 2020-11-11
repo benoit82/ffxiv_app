@@ -14,7 +14,9 @@ class User {
       twitchAccount,
     } = docRef.data();
     this.uid = uid;
+    this.value = uid;
     this.pseudo = pseudo;
+    this.label = pseudo;
     this.email = email;
     this.isAdmin = isAdmin;
     this.isCrafter = isCrafter;
