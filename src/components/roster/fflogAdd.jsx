@@ -44,7 +44,7 @@ function FFLogAdd({ roster, patchList, onFormSubmit }) {
             try {
                 await firebase.addFFLog(values, roster)
             } catch (error) {
-                console.log(error.message)
+                showInfoMessage("error", "problème de communication avec la base de donnée, réessayes plus tard.")
             }
             // enable sending btn again
             formik.setSubmitting(false)

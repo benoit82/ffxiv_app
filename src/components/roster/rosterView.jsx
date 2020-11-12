@@ -63,9 +63,7 @@ const RosterView = () => {
                     setMembers(membersBuilder)
                 }
                 try {
-                    getRosterData(snap.data()).then(
-                        res => console.log(res)
-                    )
+                    getRosterData(snap.data())
                 } catch (error) {
                     showInfoMessage("error", "problème de chargement du roster")
                 } finally {

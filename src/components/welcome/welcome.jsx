@@ -57,10 +57,9 @@ const Welcome = () => {
             .onSnapshot(
                 async (snapshot) => {
                     const streamersList = snapshot.docs.map(streamerRefDoc => (new User(streamerRefDoc).twitchAccount));
-                    getLives(streamersList)
-                },
-                (error) => {
-                    showInfoMessage("error", `problème de chargement de la liste des streamers. ${error.message}`)
+                    if (streamersList.shift()) {
+                        getLives(streamersList)
+                    }
                 }
             );
 
