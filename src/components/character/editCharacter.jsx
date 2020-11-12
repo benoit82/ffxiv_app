@@ -13,7 +13,7 @@ import { styleRole } from '../../utils/styleRole'
 import Col from 'react-bootstrap/Col'
 import JobListDisplay from '../../utils/jobListDisplay'
 import BISForm from './bisForm'
-import { showInfoMessage } from '../../utils/globalFunctions'
+import { showInfoMessage, toast } from '../../utils/globalFunctions'
 import { Character } from '../../models'
 import Swal from 'sweetalert2'
 import Axios from 'axios'
@@ -32,7 +32,6 @@ const EditCharacter = () => {
     const firebase = useContext(FirebaseContext)
     const User = useContext(UserApi)
     const [character, setCharacter] = useState({})
-    const [msgUpdate, setMsgUpdate] = useState("")
     const [lastFFXIVversion, setLastFFXIVversion] = useState(null)
 
     // select state
@@ -91,10 +90,7 @@ const EditCharacter = () => {
             firebase.updateCharacter(character._id, { BISPatch: lastFFXIVversion.Version })
         }
         firebase.updateCharacter(character._id, { bis })
-        setMsgUpdate(<Alert variant="info">BIS pour {job} mis à jour !</Alert>)
-        setTimeout(() => {
-            setMsgUpdate("")
-        }, 1500)
+        toast("info", `BIS pour ${job} mis à jour !`)
     }
 
     const resetBis = async (job) => {
@@ -283,7 +279,6 @@ const EditCharacter = () => {
                     </div>
                 </Col>
                 <Col>
-                    {msgUpdate}
                     {jobForBis}
                 </Col>
             </Row>
