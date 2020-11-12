@@ -9,9 +9,13 @@ const About = () => {
                 <h1>A propos de FFXIV-Roster Helper</h1>
                 <p>Site créé et développé en React JS version 16.13.1</p>
                 <p>Auteur : <a href={"https://benoit-dubus.web.app/"}>&copy;Benoît Dubus</a></p>
-                <p>Illustrations : &copy;Alexia Shan Ching Seong</p>
+                <p>Illustrations : <a href={"https://www.instagram.com/shinyy_snail/"}>&copy;shinyy_snail</a></p>
                 <p>Images & icones : FINAL FANTASY XIV © 2010 - 2020 SQUARE ENIX CO., Ltd. FINAL FANTASY est une marque déposée de Square Enix Holdings Co., Ltd. Tous les matériels sont utilisés sous licence.</p>
             </div>
+
+
+
+
             <div className="custom__container about__container">
                 <h1>Mentions légales</h1>
                 <p><span>Editeur du Site : </span></p>
