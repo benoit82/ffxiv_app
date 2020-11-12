@@ -97,7 +97,7 @@ const CharacterTRRoster = ({ character, job, rl }) => {
                     .map(gearElement => {
                         let { type, lowMemoPurchased, order, obtained, upgrade } = gearElement[1]
                         // condition for v1.0.0 users
-                        if (type === gearType[0] && (lowMemoPurchased === null || lowMemoPurchased === undefined)) {
+                        if (type === gearType[0] && !lowMemoPurchased) {
                             lowMemoPurchased = false
                             upgrade.needed = false
                         }
@@ -120,6 +120,6 @@ const CharacterTRRoster = ({ character, job, rl }) => {
 CharacterTRRoster.propTypes = {
     character: PropTypes.instanceOf(Character).isRequired,
     job: PropTypes.string.isRequired,
-    rl: PropTypes.instanceOf(Character).isRequired,
+    rl: PropTypes.instanceOf(Character).isRequired
 }
 export default CharacterTRRoster

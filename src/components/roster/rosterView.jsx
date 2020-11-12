@@ -27,6 +27,7 @@ const RosterView = () => {
     const [raidLeader, setRaidLeader] = useState(null)
     const [loading, setLoading] = useState(true)
 
+
     useEffect(() => {
         let unsubscribe = firebase.db
             .collection("rosters")
@@ -53,20 +54,20 @@ const RosterView = () => {
                                         const cat_b = getCategory(chr_b.mainJob)
                                         return cat_a > cat_b ? 1 : -1
                                     })
-                                    setMembers(membersBuilder)
                                 }
                             }
                             // manage each members
                             getMemberData()
                         })
-                    } else {
-                        setMembers(membersBuilder)
                     }
+                    setMembers(membersBuilder)
                 }
                 try {
-                    getRosterData(snap.data())
+                    getRosterData(snap.data()).then(
+                        res => console.log(res)
+                    )
                 } catch (error) {
-                    showInfoMessage("error", error.message)
+                    showInfoMessage("error", "problème de chargement du roster")
                 } finally {
                     setLoading(false)
                 }
@@ -80,12 +81,13 @@ const RosterView = () => {
     return (
         loading ? <Loading />
             : <>
-                <Col lg={3} style={{ height: "100vh" }}>
+                {roster && <p>ok</p>}
+                <Col lg={3}>
                     <div className="custom__container">
                         <FFlogsView roster={roster} />
                     </div>
                 </Col>
-                <Col lg={8} style={{ height: "100vh" }}>
+                <Col lg={8}>
                     <div className="custom__container mt-1">
                         <h3>Table des loots</h3>
                         <Table striped bordered hover variant="dark" className="table_roster">
@@ -102,7 +104,7 @@ const RosterView = () => {
                             </thead>
                             <tbody>
                                 {
-                                    members && members.length > 0 &&
+                                    members.length > 0 &&
                                     members.map(member => {
                                         let job = null
                                         switch (jobPriority) {
@@ -124,8 +126,8 @@ const RosterView = () => {
                                 }
                             </tbody>
                         </Table>
+                        <RosterCheckUpgradeGear members={members} priorityJob={jobPriority} />
                         {members.length > 0 && <>
-                            <RosterCheckUpgradeGear members={members} priorityJob={jobPriority} />
                             <Button variant="danger" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/1`)}>Main Job</Button>
                             <Button variant="dark" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/2`)}>Job 2</Button>
                             <Button variant="warning" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/3`)}>Job 3</Button>
