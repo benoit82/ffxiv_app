@@ -1,6 +1,8 @@
 import React from 'react'
 import Table from 'react-bootstrap/Table'
 import RosterTableRow from './rosterTableRow'
+import { PropTypes } from 'prop-types'
+import { Roster } from '../../models'
 
 const RostersTable = ({ rosters }) => {
     return (
@@ -18,5 +20,7 @@ const RostersTable = ({ rosters }) => {
         </Table>
     )
 }
-
+RostersTable.propTypes = {
+    rosters: PropTypes.arrayOf(PropTypes.instanceOf(Roster)).isRequired,
+}
 export default RostersTable

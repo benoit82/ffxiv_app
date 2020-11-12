@@ -1,8 +1,10 @@
-import React from "react";
+import React from "react"
 import { NavLink, Link } from "react-router-dom"
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from "react-bootstrap/Nav"
 import { Disconnect } from "./index"
+import { User } from "../models"
+import { PropTypes } from 'prop-types'
 
 
 const Menu = ({ user }) => {
@@ -40,5 +42,7 @@ const Menu = ({ user }) => {
     </Navbar>
   );
 };
-
+Menu.propTypes = {
+  user: PropTypes.instanceOf(User).isRequired,
+}
 export default Menu;

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import RosterInfoBadget from './rosterInfoBadget'
 import { gearType } from '../../utils/jobs'
-
+import { PropTypes } from 'prop-types'
+import { Character } from '../../models'
 
 const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
 
@@ -29,7 +30,6 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
 
         members.forEach((member) => {
             let bisJob = null
-
             switch (priorityJob) {
                 case 1:
                     bisJob = member.bis[member.mainJob]
@@ -107,6 +107,10 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
             <RosterInfoBadget color={"info"} info={"Agent solidifiant (accessoire)"} count={upgradeAccessory} countNext={waitersAcc} tooltipContent={tooltipBuilderAcc} />
         </p>
     )
+}
+RosterCheckUpgradeGear.propTypes = {
+    members: PropTypes.arrayOf(PropTypes.instanceOf(Character)).isRequired,
+    priorityJob: PropTypes.number.isRequired,
 }
 
 export default RosterCheckUpgradeGear

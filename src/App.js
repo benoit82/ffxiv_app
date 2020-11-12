@@ -18,6 +18,7 @@ function App() {
     isLoggedIn: false,
   });
   const xivapi = new XIVAPI({
+    // eslint-disable-next-line no-undef
     private_key: process.env.REACT_APP_XIV_API_KEY,
     language: "fr",
     snake_case: true,

@@ -3,7 +3,7 @@ import ReactLoading from "react-loading";
 
 import "./loading.css";
 
-const Loading = (props) => {
+const Loading = () => {
   return (
     <>
       <ReactLoading

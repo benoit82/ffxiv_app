@@ -6,11 +6,13 @@ import { SendBtn } from '../formElements'
 import Calendar from 'react-calendar'
 import { useFormik } from 'formik'
 import * as Yup from "yup"
-import 'react-calendar/dist/Calendar.css';
 import { FFXIV_ARR_RELEASE_DATE } from '../../utils/consts'
 import { showInfoMessage } from '../../utils/globalFunctions'
 import Axios from 'axios'
+import { PropTypes } from 'prop-types'
+import { Roster } from '../../models'
 
+import 'react-calendar/dist/Calendar.css';
 import "./fflogAdd.scss"
 
 function FFLogAdd({ roster, patchList, onFormSubmit }) {
@@ -52,7 +54,6 @@ function FFLogAdd({ roster, patchList, onFormSubmit }) {
     })
 
     const handleCalendarClick = () => setShowCalendar(!showCalendar)
-
 
     const fetchPatch = (date) => {
         formik.setFieldValue("dateRaid", date)
@@ -145,5 +146,9 @@ function FFLogAdd({ roster, patchList, onFormSubmit }) {
         </Form>
     </>)
 }
-
+FFLogAdd.propTypes = {
+    roster: PropTypes.instanceOf(Roster).isRequired,
+    patchList: PropTypes.array.isRequired,
+    onFormSubmit: PropTypes.func.isRequired,
+}
 export default FFLogAdd

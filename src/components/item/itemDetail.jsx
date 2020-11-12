@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
+import { PropTypes } from 'prop-types'
 import "./itemDetail.css";
+import { Item } from "../../models";
 
 const ItemDetail = ({ item }) => {
   const lang = "fr";
@@ -16,5 +18,8 @@ const ItemDetail = ({ item }) => {
     </div>
   );
 };
+ItemDetail.propTypes = {
+  item: PropTypes.instanceOf(Item).isRequired,
+}
 
 export default ItemDetail;

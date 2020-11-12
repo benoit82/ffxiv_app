@@ -6,6 +6,8 @@ import { UpdateBtn } from '../formElements'
 import { FirebaseContext } from '../firebase'
 import { FIELD_REQUIRED, PSEUDO_MIN, PSEUDO_MAX, PSEUDO_ERR_MSG } from '../../utils/consts'
 import FormCheck from 'react-bootstrap/FormCheck'
+import { PropTypes } from 'prop-types'
+import { User } from '../../models'
 
 const UserForm = ({ user }) => {
     const firebase = useContext(FirebaseContext)
@@ -83,5 +85,7 @@ const UserForm = ({ user }) => {
         </Form>
     )
 }
-
+UserForm.propTypes = {
+    user: PropTypes.instanceOf(User).isRequired,
+}
 export default UserForm

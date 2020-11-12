@@ -8,29 +8,19 @@ import { OBTAINED } from '../../utils/consts'
 import ShowGearInfo from '../gear/showGearInfo'
 import classNames from 'classnames'
 import Swal from 'sweetalert2'
+import { PropTypes } from 'prop-types'
 
 import styles from './characterTRRoster.scss'
 
 let cx = classNames.bind(styles)
 
 const CharacterTRRoster = ({ character, job, rl }) => {
-
     const firebase = useContext(FirebaseContext)
     const { user } = useContext(UserApi)
     const { _id } = character
     const [chrDB, setChrDB] = useState(character)
     const { bis } = chrDB
     const style = styleRole(job)
-
-    useEffect(() => {
-        let unsubscribe = firebase.db
-            .collection("characters")
-            .doc(_id)
-            .onSnapshot(snap => setChrDB(new Character(snap)))
-        return () => {
-            unsubscribe()
-        }
-    }, [_id, firebase.db])
 
     const obtainedGear = async (gearNameElement) => {
         // check if the user is admin or rl or user's character owner
@@ -88,6 +78,16 @@ const CharacterTRRoster = ({ character, job, rl }) => {
         }
     }
 
+    useEffect(() => {
+        let unsubscribe = firebase.db
+            .collection("characters")
+            .doc(_id)
+            .onSnapshot(snap => setChrDB(new Character(snap)))
+        return () => {
+            unsubscribe()
+        }
+    }, [_id, firebase.db])
+
     return (
         <tr>
             <td className="chr_table_detail" style={style}><span>{chrDB.name}</span><div className="avatar_job"><img src={chrDB.avatar} alt={"img"} />{job ? getJobIcon(job) : "job à déterminer"}</div></td>
@@ -117,5 +117,9 @@ const CharacterTRRoster = ({ character, job, rl }) => {
         </tr>
     )
 }
-
+CharacterTRRoster.propTypes = {
+    character: PropTypes.instanceOf(Character).isRequired,
+    job: PropTypes.string.isRequired,
+    rl: PropTypes.instanceOf(Character).isRequired,
+}
 export default CharacterTRRoster

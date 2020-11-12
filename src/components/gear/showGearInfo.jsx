@@ -7,6 +7,7 @@ import Check from '../../img/check.png'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
 import Tooltip from 'react-bootstrap/Tooltip'
 import { OBTAINED } from '../../utils/consts'
+import { PropTypes } from 'prop-types'
 
 const ShowGearInfo = ({ type, lowMemoPurchased, tooltipInfo }) => {
     const style = { height: "40px", width: "40px", margin: "0 auto" }
@@ -55,6 +56,11 @@ const ShowGearInfo = ({ type, lowMemoPurchased, tooltipInfo }) => {
                 </OverlayTrigger>}
         </>
     )
+}
+ShowGearInfo.propTypes = {
+    type: PropTypes.string.isRequired,
+    lowMemoPurchased: PropTypes.bool.isRequired,
+    tooltipInfo: PropTypes.string.isRequired,
 }
 
 export default ShowGearInfo

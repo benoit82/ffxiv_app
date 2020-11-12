@@ -9,6 +9,8 @@ import pluralize from 'pluralize'
 import { XIVApi } from '../../utils/appContext'
 import { CHARACTER_NAME_MIN, FIELD_REQUIRED, CHARACTER_NAME_ERR_MSG } from '../../utils/consts'
 import Container from 'react-bootstrap/Container'
+import { PropTypes } from 'prop-types'
+import { Character } from '../../models'
 
 import "./characterSearch.css"
 
@@ -146,5 +148,8 @@ const CharacterSearch = ({ handleAdd, userCharacters }) => {
     </Container>
   );
 };
-
+CharacterSearch.propTypes = {
+  handleAdd: PropTypes.func.isRequired,
+  userCharacters: PropTypes.arrayOf(PropTypes.instanceOf(Character)).isRequired,
+}
 export default CharacterSearch;

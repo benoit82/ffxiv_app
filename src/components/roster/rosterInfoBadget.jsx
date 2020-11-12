@@ -1,9 +1,9 @@
 import React from 'react'
 import Tooltip from 'react-bootstrap/Tooltip'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger'
+import { PropTypes } from 'prop-types'
 
 const RosterInfoBadget = ({ color, info, count, countNext, tooltipContent }) => {
-
     function renderTooltip(props) {
         return (
             <Tooltip {...props}>
@@ -15,8 +15,6 @@ const RosterInfoBadget = ({ color, info, count, countNext, tooltipContent }) => 
                 }
             </Tooltip>
         );
-
-
     }
 
     return (
@@ -28,6 +26,13 @@ const RosterInfoBadget = ({ color, info, count, countNext, tooltipContent }) => 
             <span className={`badge badge-${color} mr-1`}>{info} <span className="badge badge-pill badge-light">{count} ( + {countNext})</span></span>
         </OverlayTrigger>
     )
+}
+RosterInfoBadget.propTypes = {
+    color: PropTypes.string.isRequired,
+    info: PropTypes.array.isRequired,
+    count: PropTypes.number.isRequired,
+    countNext: PropTypes.number.isRequired,
+    tooltipContent: PropTypes.array.isRequired,
 }
 
 export default RosterInfoBadget

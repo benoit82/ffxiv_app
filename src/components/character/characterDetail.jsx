@@ -1,5 +1,8 @@
 import React from "react";
 import Button from 'react-bootstrap/Button'
+import { Character } from "../../models";
+import { PropTypes } from 'prop-types'
+
 import "./characterDetail.css";
 
 const CharacterDetail = ({ chr, handleDelete }) => {
@@ -23,5 +26,8 @@ const CharacterDetail = ({ chr, handleDelete }) => {
     </div>
   );
 };
-
+CharacterDetail.propTypes = {
+  chr: PropTypes.instanceOf(Character).isRequired,
+  handleDelete: PropTypes.func.isRequired,
+}
 export default CharacterDetail;

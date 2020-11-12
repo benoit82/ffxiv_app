@@ -4,18 +4,15 @@ import { FirebaseContext } from '../firebase';
 import { Link } from 'react-router-dom';
 import { DeleteBtn } from '../formElements';
 import Swal from 'sweetalert2';
+import { PropTypes } from 'prop-types'
+import { Roster } from '../../models';
+
+
 
 const RosterTableRow = ({ roster }) => {
     const { refRaidLeader } = roster
     const firebase = useContext(FirebaseContext)
     const [raidLeader, setRaidLeader] = useState()
-
-    useEffect(() => {
-        if (refRaidLeader) {
-            const setRL = async () => firebase.getDocByRef(refRaidLeader, setRaidLeader)
-            setRL()
-        }
-    }, [firebase, refRaidLeader])
 
     const handleDelete = async (roster) => {
         const confirmation = await Swal.fire({
@@ -41,7 +38,12 @@ const RosterTableRow = ({ roster }) => {
         }
     };
 
-
+    useEffect(() => {
+        if (refRaidLeader) {
+            const setRL = async () => firebase.getDocByRef(refRaidLeader, setRaidLeader)
+            setRL()
+        }
+    }, [firebase, refRaidLeader])
 
     return (
         <tr>
@@ -59,5 +61,7 @@ const RosterTableRow = ({ roster }) => {
         </tr>
     )
 }
-
+RosterTableRow.propTypes = {
+    roster: PropTypes.instanceOf(Roster).isRequired,
+}
 export default RosterTableRow

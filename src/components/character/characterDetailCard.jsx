@@ -3,12 +3,13 @@ import Card from 'react-bootstrap/Card'
 import { Link, useHistory } from 'react-router-dom'
 import { DeleteBtn } from '../formElements'
 import { FirebaseContext } from '../firebase'
+import JobListDisplay from '../../utils/jobListDisplay'
+import { styleRole } from '../../utils/styleRole'
+import { Roster, Character } from '../../models'
+import { PropTypes } from 'prop-types'
 import Swal from 'sweetalert2'
 
 import './characterDetailCard.scss'
-import JobListDisplay from '../../utils/jobListDisplay'
-import { styleRole } from '../../utils/styleRole'
-import { Roster } from '../../models'
 
 const CharacterDetailCard = ({ character }) => {
 
@@ -95,5 +96,7 @@ const CharacterDetailCard = ({ character }) => {
         </Card>
     )
 }
-
+CharacterDetailCard.propTypes = {
+    character: PropTypes.instanceOf(Character).isRequired,
+}
 export default CharacterDetailCard

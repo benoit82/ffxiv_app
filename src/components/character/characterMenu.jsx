@@ -3,10 +3,11 @@ import { Link, useHistory } from 'react-router-dom'
 import { DeleteBtn } from '../formElements'
 import { FirebaseContext } from '../firebase'
 import JobListDisplay from '../../utils/jobListDisplay'
-import { Roster } from '../../models'
+import { Character, Roster } from '../../models'
 import classNames from 'classnames'
 import Alert from 'react-bootstrap/Alert'
 import Swal from 'sweetalert2'
+import { PropTypes } from 'prop-types'
 
 import styles from './characterMenu.scss'
 const cx = classNames.bind(styles)
@@ -108,5 +109,7 @@ const CharacterMenu = ({ character }) => {
         </div>
     )
 }
-
+CharacterMenu.propTypes = {
+    character: PropTypes.instanceOf(Character).isRequired,
+}
 export default CharacterMenu

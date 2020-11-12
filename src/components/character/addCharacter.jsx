@@ -2,7 +2,8 @@ import React, { useContext } from 'react'
 import { UserApi } from '../../utils/appContext'
 import { FirebaseContext } from '../firebase'
 import CharacterSearch from './characterSearch'
-
+import { PropTypes } from 'prop-types'
+import { Character } from '../../models'
 
 const AddCharacter = ({ characters, unmount }) => {
 
@@ -24,4 +25,8 @@ const AddCharacter = ({ characters, unmount }) => {
     )
 }
 
+AddCharacter.propTypes = {
+    characters: PropTypes.arrayOf(PropTypes.instanceOf(Character)).isRequired,
+    unmount: PropTypes.func.isRequired,
+}
 export default AddCharacter
