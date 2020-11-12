@@ -3,7 +3,7 @@ import { UserApi } from '../../utils/appContext'
 import { Link } from 'react-router-dom'
 import { ListGroup, ListGroupItem } from 'react-bootstrap'
 import { FirebaseContext } from '../firebase'
-import { showInfoMessage, toast } from '../../utils/globalFunctions'
+import { toast } from '../../utils/globalFunctions'
 import { User } from '../../models'
 import Axios from 'axios'
 import dayjs from 'dayjs'
@@ -57,7 +57,7 @@ const Welcome = () => {
             .onSnapshot(
                 async (snapshot) => {
                     const streamersList = snapshot.docs.map(streamerRefDoc => (new User(streamerRefDoc).twitchAccount));
-                    if (streamersList.shift()) {
+                    if (streamersList.shift() !== undefined) {
                         getLives(streamersList)
                     }
                 }

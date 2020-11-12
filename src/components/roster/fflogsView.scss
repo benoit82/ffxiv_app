@@ -7,7 +7,7 @@ $prim_color: #0275d8;
 }
 
 .pagination {
-  display: inline-block;
+  display: flex;
   list-style: none;
   & > * {
     border: 1px solid #292b2c3b;
