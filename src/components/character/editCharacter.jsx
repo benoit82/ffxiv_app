@@ -106,7 +106,7 @@ const EditCharacter = () => {
         if (confirmation.value) {
             const bis = { ...character.bis, [job]: null }
             firebase.updateCharacter(character._id, { bis })
-            editBis(job)
+            setJobForBis(null)
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top",
@@ -130,7 +130,7 @@ const EditCharacter = () => {
         })
         if (confirmation.value) {
             firebase.updateCharacter(character._id, { bis: {} })
-            setJobForBis("")
+            setJobForBis(null)
             infoResetBis()
         }
     }
