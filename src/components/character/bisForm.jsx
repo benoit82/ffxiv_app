@@ -37,7 +37,7 @@ const BISForm = ({ job, character, updateBis, resetBis }) => {
                             })
                     }
                 </div>
-                <pre>{JSON.stringify(formik.values, null, 2)}</pre>
+                {/* <pre>{JSON.stringify(formik.values, null, 2)}</pre> */}
             </Form>
         </div>
     )
