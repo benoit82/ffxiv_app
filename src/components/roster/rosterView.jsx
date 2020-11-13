@@ -54,6 +54,7 @@ const RosterView = () => {
                                         const cat_b = getCategory(chr_b.mainJob)
                                         return cat_a > cat_b ? 1 : -1
                                     })
+                                    setMembers(membersBuilder)
                                 }
                             }
                             // manage each members
@@ -79,9 +80,8 @@ const RosterView = () => {
     return (
         loading ? <Loading />
             : <>
-                {roster && <p>ok</p>}
                 <Col lg={3}>
-                    <div className="custom__container">
+                    <div className="custom__container" style={{ position: "sticky" }}>
                         <FFlogsView roster={roster} />
                     </div>
                 </Col>
@@ -124,7 +124,7 @@ const RosterView = () => {
                                 }
                             </tbody>
                         </Table>
-                        <RosterCheckUpgradeGear members={members} priorityJob={jobPriority} />
+                        {members && <RosterCheckUpgradeGear members={members} priorityJob={jobPriority} />}
                         {members.length > 0 && <>
                             <Button variant="danger" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/1`)}>Main Job</Button>
                             <Button variant="dark" className="mr-1" onClick={() => history.push(`/roster/view/${roster_id}/2`)}>Job 2</Button>

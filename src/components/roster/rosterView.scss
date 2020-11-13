@@ -1,10 +1,5 @@
 .table_roster {
-  .rotate {
-    white-space: nowrap;
-    & > div {
-      // transform: rotate(45deg);
-    }
-  }
+  font-size: 0.9rem;
   & th {
     width: 117px;
     text-align: center;
