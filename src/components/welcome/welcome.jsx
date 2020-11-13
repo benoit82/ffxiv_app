@@ -23,7 +23,6 @@ const Welcome = () => {
     const getLives = async (streamersList) => {
         let urlBuilder = `${TWITCH_API_BASE_URI}streams?`
         streamersList.forEach(streamer => urlBuilder += `user_login=${streamer}&`)
-        console.log(urlBuilder)
         urlBuilder = urlBuilder.substr(0, urlBuilder.length - 1)
         if (urlBuilder.length > (`${TWITCH_API_BASE_URI}streams?user_login=`.length + 1)) {
             try {
@@ -60,7 +59,6 @@ const Welcome = () => {
             .onSnapshot(
                 async (snapshot) => {
                     const streamersList = snapshot.docs.map(streamerRefDoc => (new User(streamerRefDoc).twitchAccount));
-                    console.log(streamersList)
                     getLives(streamersList)
                 }
             );
