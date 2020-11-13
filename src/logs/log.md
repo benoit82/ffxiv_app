@@ -1,3 +1,24 @@
+# Version 2.0.0
+
+Date de déploiement : 12/11/2020
+
+## Nouveautés :
+
+- Journal de FF-Log pour les rosters
+- Proposition de reset de BIS sur date de sortie de patch FFXIV
+- Rework graphique (fond d'écran, bulles d'encapsulation des éléments, fiches personnages et de l'éditeur des BIS)
+- Rework de la page d'acceuil : live twitch, boutons de redirection
+- Ajout de la page "A propos" (où sont noté les copyright) - "mention légale"
+- tree shaking du code, ajout de prop-types
+
+## Projet de développement :
+
+- lié officiellement son compte twitch à son compte FFXIV-Roster Helper
+
+---
+
+---
+
 # Version 1.1.0
 
 Date de déploiement : 18/06/2020
@@ -27,12 +48,3 @@ Il est possible d'y inclure 8 personnages enregistrés sur le site, d
 ## Ajout du journal de patch de l'application
 
 Elle se trouve via le chemin d'accès /log ou en cliquant sur la navbar au numéro de la version de l'application.
-
----
-
-## Développement futur
-
-- Meilleur gestion de roster (roster permanent) : éditer une soirée et attacher un lien FFLog
-- Un journal des loots obtenu
-- parti admin : reset général sur tous les persos des BIS lors d'un nouveau patch sur FFXIV, nouveau stuff haut niveau
-- Gestion des ressources communs : potions, nourritures...
