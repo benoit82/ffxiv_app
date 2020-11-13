@@ -23,15 +23,18 @@ const Welcome = () => {
     const getLives = async (streamersList) => {
         let urlBuilder = `${TWITCH_API_BASE_URI}streams?`
         streamersList.forEach(streamer => urlBuilder += `user_login=${streamer}&`)
+        console.log(urlBuilder)
         urlBuilder = urlBuilder.substr(0, urlBuilder.length - 1)
-        try {
-            const response = await Axios.get(urlBuilder, TWITCH_AXIOS_CONFIG)
-            response.data.data.forEach(async (streamer, index) => {
-                streamer.game = await getGame(streamer.game_id)
-                if (index === response.data.data.length - 1) setStreamers(Array.from(response.data.data));
-            })
-        } catch (error) {
-            toast("error", "problème de communication avec twitch.")
+        if (urlBuilder.length > (`${TWITCH_API_BASE_URI}streams?user_login=`.length + 1)) {
+            try {
+                const response = await Axios.get(urlBuilder, TWITCH_AXIOS_CONFIG)
+                response.data.data.forEach(async (streamer, index) => {
+                    streamer.game = await getGame(streamer.game_id)
+                    if (index === response.data.data.length - 1) setStreamers(Array.from(response.data.data));
+                })
+            } catch (error) {
+                toast("error", "problème de communication avec twitch.")
+            }
         }
     }
 
@@ -57,9 +60,8 @@ const Welcome = () => {
             .onSnapshot(
                 async (snapshot) => {
                     const streamersList = snapshot.docs.map(streamerRefDoc => (new User(streamerRefDoc).twitchAccount));
-                    if (streamersList.shift() !== undefined) {
-                        getLives(streamersList)
-                    }
+                    console.log(streamersList)
+                    getLives(streamersList)
                 }
             );
 
@@ -74,7 +76,7 @@ const Welcome = () => {
     return (
         <>{
             streamers.length > 0 &&
-            <div className="custom__container" style={{ position: "absolute", top: "0", left: "0", borderRadius: "0px" }}>
+            <div className="custom__container lives__container">
                 <h4>En live sur Twitch</h4>
                 <ListGroup>
                     {streamers.map(stream => {

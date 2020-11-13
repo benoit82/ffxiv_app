@@ -9,7 +9,7 @@ import XIVAPI from "xivapi-js";
 import checkStorage from "./utils/checkStorage";
 import { showInfoMessage } from "./utils/globalFunctions";
 
-import "./App.css";
+import "./App.scss";
 
 function App() {
   const firebase = useContext(FirebaseContext);
