@@ -94,7 +94,7 @@ const CharacterTRRoster = ({ character, job, rl }) => {
                 <span>{chrDB.name}</span>
                 <div className="avatar_job">
                     <img src={chrDB.avatar} alt={"img"} />
-                    {job ? getJobIcon(job) : "?"}
+                    {job ? getJobIcon(job) : "Job inconnu"}
                 </div>
             </td>
             {bis && bis[job] && <>
