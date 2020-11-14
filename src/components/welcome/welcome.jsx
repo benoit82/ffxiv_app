@@ -78,7 +78,7 @@ const Welcome = () => {
                 <h4>En live sur Twitch</h4>
                 <ListGroup>
                     {streamers.map(stream => {
-                        return (<ListGroupItem key={stream.id} className="d-flex">
+                        return (<ListGroupItem key={stream.id} className="d-flex custom__list">
                             {stream.game && <div className="gameImgContainer mr-1">
                                 <img src={stream.game.box_art_url.replace("{width}", "75").replace("{height}", "100")} alt="" />
                             </div>}

@@ -27,7 +27,6 @@ const RosterView = () => {
     const [raidLeader, setRaidLeader] = useState(null)
     const [loading, setLoading] = useState(true)
 
-
     useEffect(() => {
         let unsubscribe = firebase.db
             .collection("rosters")

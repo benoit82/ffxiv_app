@@ -1,6 +1,7 @@
 .table_roster {
-  font-size: 0.9rem;
+  font-size: 1rem;
   & th {
+    font-size: 0.9rem;
     width: 117px;
     text-align: center;
   }
@@ -8,8 +9,8 @@
     width: 225px;
   }
   & tr td:not(:first-child) {
-    line-height: 85px;
     text-align: center;
+    padding-top: 1rem !important;
   }
   & td,
   & th {

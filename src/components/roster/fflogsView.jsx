@@ -25,6 +25,7 @@ function FFlogsView({ roster }) {
     const [patchList, setPatchList] = useState([])
     const [ffLogs, setFfLogs] = useState([])
     const [offset, setOffset] = useState(0)
+
     const formik = useFormik({
         initialValues: {
             patch: ALL,
@@ -179,7 +180,7 @@ function FFlogsView({ roster }) {
                                 .slice(offset, offset + MAX_LOGS_PER_PAGE)
                                 .map((log) => {
                                     return (
-                                        <ListGroup.Item key={log._id} className="list__log">
+                                        <ListGroup.Item key={log._id} className="custom__list">
                                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                                 <span>
                                                     <a href={log.fflogurl} target="_blank" rel="noopener noreferrer">{log.title} {log.showDate()}</a><br />

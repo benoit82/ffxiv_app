@@ -10,7 +10,7 @@ import { OBTAINED } from '../../utils/consts'
 import { PropTypes } from 'prop-types'
 
 const ShowGearInfo = ({ type, lowMemoPurchased, tooltipInfo }) => {
-    const style = { height: "40px", width: "40px", margin: "0 auto" }
+    const style = { height: "40px", width: "40px" }
 
     function renderTooltip(props) {
         return (

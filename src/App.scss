@@ -1,3 +1,4 @@
+$prim_color: #0275d8;
 .fas,
 .far {
   margin-right: 0.3rem;
@@ -22,4 +23,34 @@
 }
 .form__container {
   max-width: 30rem;
+}
+
+.custom__list {
+  animation: list__pop 0.9s ease-in none;
+  transition: all 0.5s;
+  &:hover {
+    background-color: lighten($prim_color, 40%);
+    scale: 1.1;
+    z-index: 200;
+  }
+}
+
+@keyframes list__pop {
+  from {
+    opacity: 0;
+    transform: translateX(-2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.icon_label {
+  min-width: 55px;
+  max-width: 100px;
+  margin: 0.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.57);
+  border-radius: 7%;
+  padding: 0.5rem;
 }
