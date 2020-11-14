@@ -87,7 +87,7 @@ const RosterView = () => {
                 <Col lg={8}>
                     <div className="custom__container mt-1">
                         <h3>Table des loots</h3>
-                        <Table striped bordered hover variant="dark" className="table_roster">
+                        <Table bordered hover variant="dark" className="table_roster">
                             <thead>
                                 <tr>
                                     <th>{roster && roster.name}</th>

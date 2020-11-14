@@ -1,5 +1,10 @@
 .table_roster {
+  position: relative;
   font-size: 1rem;
+  & tr td:first-child {
+    position: sticky;
+    left: -1rem;
+  }
   & th {
     font-size: 0.9rem;
     width: 117px;
