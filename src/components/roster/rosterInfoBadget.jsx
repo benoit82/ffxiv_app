@@ -18,18 +18,26 @@ const RosterInfoBadget = ({ color, info, count, countNext, tooltipContent }) => 
     }
 
     return (
+        (count > 0 || countNext > 0) &&
         <OverlayTrigger
             placement="top"
             delay={{ show: 150, hide: 250 }}
             overlay={renderTooltip}
         >
-            <span className={`badge badge-${color} mr-1`}>{info} <span className="badge badge-pill badge-light">{count} ( + {countNext})</span></span>
+            <span className={`badge badge-${color} mr-1`}>
+                {info}
+                <span className="badge badge-pill badge-light">
+                    {count} ( + {countNext})
+                </span>
+            </span>
         </OverlayTrigger>
+
+
     )
 }
 RosterInfoBadget.propTypes = {
     color: PropTypes.string.isRequired,
-    info: PropTypes.array.isRequired,
+    info: PropTypes.string.isRequired,
     count: PropTypes.number.isRequired,
     countNext: PropTypes.number.isRequired,
     tooltipContent: PropTypes.array.isRequired,
