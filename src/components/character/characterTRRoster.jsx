@@ -125,7 +125,7 @@ const CharacterTRRoster = ({ character, job, rl }) => {
 }
 CharacterTRRoster.propTypes = {
     character: PropTypes.instanceOf(Character).isRequired,
-    job: PropTypes.string.isRequired,
+    job: PropTypes.string,
     rl: PropTypes.instanceOf(Character).isRequired
 }
 export default CharacterTRRoster

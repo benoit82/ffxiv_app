@@ -59,7 +59,7 @@ const ShowGearInfo = ({ type, lowMemoPurchased, tooltipInfo }) => {
 }
 ShowGearInfo.propTypes = {
     type: PropTypes.string.isRequired,
-    lowMemoPurchased: PropTypes.bool.isRequired,
+    lowMemoPurchased: PropTypes.bool,
     tooltipInfo: PropTypes.string.isRequired,
 }
 
