@@ -52,7 +52,7 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
                                 tabMbNeedType.push(member.name)
                                 // else if gear is not obtained and memo not purchased yet
                             }
-                            if (gearElement[1].type === gearType[0]
+                            if (gearElement[1].type === gearType.memo
                                 && !gearElement[1].obtained
                                 && !gearElement[1].lowMemoPurchased) {
                                 tabMbFuturNeed.push(member.name)

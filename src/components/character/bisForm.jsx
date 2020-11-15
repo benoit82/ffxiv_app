@@ -60,7 +60,7 @@ const GearPiece = function ({ armorElement, job, gearType, formik }) {
 
     const onRadioBtnClick = (event) => {
         formik.setFieldValue(`${gearPiece}.type`, event.target.value)
-        formik.setFieldValue(`${gearPiece}.upgrade.needed`, (event.target.value === gearType[0] && formik.values[gearPiece].lowMemoPurchased))
+        formik.setFieldValue(`${gearPiece}.upgrade.needed`, (event.target.value === gearType.memo && formik.values[gearPiece].lowMemoPurchased))
     }
 
 
@@ -75,7 +75,7 @@ const GearPiece = function ({ armorElement, job, gearType, formik }) {
     const handleLowMemoPruchasedStatus = useCallback(
         () => {
             if (formik.values[gearPiece].obtained
-                && formik.values[gearPiece].type === gearType[0]
+                && formik.values[gearPiece].type === gearType.memo
                 && !formik.values[gearPiece].lowMemoPurchased) {
                 formik.setFieldValue(`${gearPiece}.lowMemoPurchased`, true)
                 formik.setFieldValue(`${gearPiece}.upgrade.needed`, false)
@@ -92,7 +92,7 @@ const GearPiece = function ({ armorElement, job, gearType, formik }) {
         if (formik.values[gearPiece].upgrade && formik.values[gearPiece].upgrade.needed) {
             formik.setFieldValue(`${gearPiece}.upgrade.needed`, false)
         }
-        if (event.target.checked === false && formik.values[gearPiece].type === gearType[0] && formik.values[gearPiece].lowMemoPurchased) {
+        if (event.target.checked === false && formik.values[gearPiece].type === gearType.memo && formik.values[gearPiece].lowMemoPurchased) {
             // case when user declare not obtained a memo stuff while the low memo is purchased, if he still need the the upgrade
             Swal.fire({
                 icon: "question",
@@ -132,30 +132,30 @@ const GearPiece = function ({ armorElement, job, gearType, formik }) {
                 <>
                     <Form.Check
                         type="radio"
-                        label={gearType[1]}
-                        value={gearType[1]}
+                        label={gearType.loot}
+                        value={gearType.loot}
                         id={`${job}_${gearPiece}_loot`}
                         name={`${gearPiece}_type`}
                         onClick={onRadioBtnClick}
-                        checked={formik.values[gearPiece].type === gearType[1]}
+                        checked={formik.values[gearPiece].type === gearType.loot}
                         inline
                         custom
                     />
 
                     <Form.Check
                         type="radio"
-                        label={gearType[0]}
-                        value={gearType[0]}
+                        label={gearType.memo}
+                        value={gearType.memo}
                         id={`${job}_${gearPiece}_memo`}
                         name={`${gearPiece}_type`}
                         onClick={onRadioBtnClick}
-                        checked={formik.values[gearPiece].type === gearType[0]}
+                        checked={formik.values[gearPiece].type === gearType.memo}
                         inline
                         custom
                     />
                 </>
             }
-            {formik.values[gearPiece].type !== gearType[1] &&
+            {formik.values[gearPiece].type !== gearType.loot &&
                 <Form.Check
                     type="checkbox"
                     label={"Mémo acheté"}

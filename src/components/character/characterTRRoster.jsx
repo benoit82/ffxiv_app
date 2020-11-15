@@ -29,12 +29,12 @@ const CharacterTRRoster = ({ character, job, rl }) => {
             const [element, propElement] = gearNameElement
             //if the character's owner click, and confirm, on non-buy memo => set memo purchased and stop
             if (chrDB.userRef.id === user.uid
-                && propElement.type === gearType[0]
+                && propElement.type === gearType.memo
                 && !propElement.lowMemoPurchased
             ) {
                 const confirmation = await Swal.fire({
                     title: "confirmation d'achat",
-                    html: `Confirmation de l'achat en ${gearType[0].toLowerCase()} : ${propElement.name}`,
+                    html: `Confirmation de l'achat en ${gearType.memo.toLowerCase()} : ${propElement.name}`,
                     cancelButtonText: "annuler",
                     showCancelButton: true,
                     confirmButtonText: "oui",
@@ -61,13 +61,13 @@ const CharacterTRRoster = ({ character, job, rl }) => {
                 return
             }
             switch (propElement.type) {
-                case gearType[0]:
+                case gearType.memo:
                     if (propElement.upgrade && propElement.lowMemoPurchased) {
                         propElement.upgrade.needed = !propElement.upgrade.needed
                     }
                     propElement.obtained = !propElement.lowMemoPurchased ? false : !propElement.obtained
                     break;
-                case gearType[1]:
+                case gearType.loot:
                     propElement.obtained = !propElement.obtained
                     break;
                 default:
@@ -94,7 +94,7 @@ const CharacterTRRoster = ({ character, job, rl }) => {
                 <span>{chrDB.name}</span>
                 <div className="avatar_job">
                     <img src={chrDB.avatar} alt={"img"} />
-                    {job ? getJobIcon(job) : "Job inconnu"}
+                    {getJobIcon(job)}
                 </div>
             </td>
             {bis && bis[job] && <>
@@ -103,11 +103,11 @@ const CharacterTRRoster = ({ character, job, rl }) => {
                     .map(gearElement => {
                         let { type, lowMemoPurchased, order, obtained, upgrade } = gearElement[1]
                         // condition for v1.0.0 users
-                        if (type === gearType[0] && !lowMemoPurchased) {
+                        if (type === gearType.memo && !lowMemoPurchased) {
                             lowMemoPurchased = false
                             upgrade.needed = false
                         }
-                        const toolTipInfo = (type === gearType[0] && !lowMemoPurchased) ? `${chrDB.name} - ${gearElement[1].name} - non acheté` : `${chrDB.name} - ${gearElement[1].name}`
+                        const toolTipInfo = (type === gearType.memo && !lowMemoPurchased) ? `${chrDB.name} - ${gearElement[1].name} - non acheté` : `${chrDB.name} - ${gearElement[1].name}`
                         return <td
                             key={order}
                             onClick={() => obtainedGear(gearElement)}

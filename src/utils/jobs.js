@@ -111,20 +111,22 @@ export const getCategory = (job) => {
 };
 /**
  *
- * @param {String} job
+ * @param {String | null} job
  * @return {Number} category (0 = unknow, 1 = tank, 2 = healer, 3 = dps)
  */
 export const getJobIcon = (job) => {
-  let icon = null;
+  if (!job) {
+    return "job inconnu";
+  }
   const allJobs = [...jobsDPS, ...jobsHealer, ...jobsTank];
-  icon = allJobs.find((jobObject) => jobObject.value === job);
-  return icon.label;
+  const icon = allJobs.find((jobObject) => jobObject.value === job);
+  return icon ? icon.label : new Error("job non reconnu");
 };
 
 /**
  * element choice : Memo (0) or Loot (1)
  */
-export const gearType = ["Memo", "Loot"];
+export const gearType = { memo: "Memo", loot: "Loot" };
 
 /**
  * GearSet :  // (upgrade : only for "Memo" type) - order is for Form builder
@@ -133,11 +135,16 @@ export const gearType = ["Memo", "Loot"];
  * }
  */
 export const resetGearSet = {
-  weapon1: { order: 1, name: "Arme Loot", type: gearType[1], obtained: false },
+  weapon1: {
+    order: 1,
+    name: "Arme Loot",
+    type: gearType.loot,
+    obtained: false,
+  },
   weapon2: {
     order: 2,
     name: "Arme Memo",
-    type: gearType[0],
+    type: gearType.memo,
     obtained: false,
     lowMemoPurchased: false,
     upgrade: { type: "Weapon", needed: false },
@@ -145,7 +152,7 @@ export const resetGearSet = {
   head: {
     order: 3,
     name: "Tête",
-    type: gearType[0],
+    type: gearType.memo,
     obtained: false,
     lowMemoPurchased: false,
     upgrade: { type: "Armor", needed: false },
@@ -153,7 +160,7 @@ export const resetGearSet = {
   body: {
     order: 4,
     name: "Torse",
-    type: gearType[0],
+    type: gearType.memo,
     obtained: false,
     lowMemoPurchased: false,
     upgrade: { type: "Armor", needed: false },
@@ -161,7 +168,7 @@ export const resetGearSet = {
   hands: {
     order: 5,
     name: "Mains",
-    type: gearType[0],
+    type: gearType.memo,
     obtained: false,
     lowMemoPurchased: false,
     upgrade: { type: "Armor", needed: false },
@@ -169,7 +176,7 @@ export const resetGearSet = {
   belt: {
     order: 6,
     name: "Ceinture",
-    type: gearType[0],
+    type: gearType.memo,
     obtained: false,
     lowMemoPurchased: false,
     upgrade: { type: "Accessory", needed: false },
@@ -177,7 +184,7 @@ export const resetGearSet = {
   leg: {
     order: 7,
     name: "Jambière",
-    type: gearType[0],
+    type: gearType.memo,
     obtained: false,
     lowMemoPurchased: false,
     upgrade: { type: "Armor", needed: false },
@@ -185,7 +192,7 @@ export const resetGearSet = {
   boots: {
     order: 8,
     name: "Bottes",
-    type: gearType[0],
+    type: gearType.memo,
     obtained: false,
     lowMemoPurchased: false,
     upgrade: { type: "Armor", needed: false },
@@ -193,7 +200,7 @@ export const resetGearSet = {
   earring: {
     order: 9,
     name: "Oreilles",
-    type: gearType[0],
+    type: gearType.memo,
     obtained: false,
     lowMemoPurchased: false,
     upgrade: { type: "Accessory", needed: false },
@@ -201,7 +208,7 @@ export const resetGearSet = {
   neck: {
     order: 10,
     name: "Ras de cou",
-    type: gearType[0],
+    type: gearType.memo,
     obtained: false,
     lowMemoPurchased: false,
     upgrade: { type: "Accessory", needed: false },
@@ -209,7 +216,7 @@ export const resetGearSet = {
   wrist: {
     order: 11,
     name: "Poignet",
-    type: gearType[0],
+    type: gearType.memo,
     obtained: false,
     lowMemoPurchased: false,
     upgrade: { type: "Accessory", needed: false },
@@ -217,10 +224,15 @@ export const resetGearSet = {
   ring1: {
     order: 12,
     name: "Bague Memo",
-    type: gearType[0],
+    type: gearType.memo,
     obtained: false,
     lowMemoPurchased: false,
     upgrade: { type: "Accessory", needed: false },
   },
-  ring2: { order: 13, name: "Bague Loot", type: gearType[1], obtained: false },
+  ring2: {
+    order: 13,
+    name: "Bague Loot",
+    type: gearType.loot,
+    obtained: false,
+  },
 };

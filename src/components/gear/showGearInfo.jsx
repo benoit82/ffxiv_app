@@ -22,29 +22,29 @@ const ShowGearInfo = ({ type, lowMemoPurchased, tooltipInfo }) => {
 
     return (
         <>
-            { /* Memo & not purchased */ type === gearType[0] && !lowMemoPurchased &&
+            { /* Memo & not purchased */ type === gearType.memo && !lowMemoPurchased &&
                 <OverlayTrigger
                     placement="top"
                     delay={{ show: 150, hide: 250 }}
                     overlay={renderTooltip}
                 >
-                    <img src={Memo} style={style} alt={`${gearType[0]} not OK`} />
+                    <img src={Memo} style={style} alt={`${gearType.memo} not OK`} />
                 </OverlayTrigger>}
-            { /* Memo & purchased */ type === gearType[0] && lowMemoPurchased &&
+            { /* Memo & purchased */ type === gearType.memo && lowMemoPurchased &&
                 <OverlayTrigger
                     placement="top"
                     delay={{ show: 150, hide: 250 }}
                     overlay={renderTooltip}
                 >
-                    <img src={memoPurchased} style={style} alt={`${gearType[0]} OK`} />
+                    <img src={memoPurchased} style={style} alt={`${gearType.memo} OK`} />
                 </OverlayTrigger>}
-            { /* loot */ type === gearType[1] &&
+            { /* loot */ type === gearType.loot &&
                 <OverlayTrigger
                     placement="top"
                     delay={{ show: 150, hide: 250 }}
                     overlay={renderTooltip}
                 >
-                    <img src={Defi} style={style} alt={gearType[1]} />
+                    <img src={Defi} style={style} alt={gearType.loot} />
                 </OverlayTrigger>}
             { /* obtained */ type === OBTAINED &&
                 <OverlayTrigger
