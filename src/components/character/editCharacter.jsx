@@ -226,7 +226,7 @@ const EditCharacter = () => {
             <Row className="mt-3">
                 {/* cadre menu job */}
                 <Col xs={2} className="mr-2 mb-2">
-                    <div className="custom__container">
+                    <div className="custom__container jobSelect__container">
                         <h3>Jobs</h3>
                         <form onSubmit={handleSubmit}>
                             <ListGroup variant="flush">
