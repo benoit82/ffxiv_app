@@ -85,8 +85,8 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
         next[name] = 1 + (next[name] || 0)
       })
 
-      Object.entries(need).forEach(element => finalObject[element[0]] = { ...finalObject[element[0]], need: element[1] })
-      Object.entries(next).forEach(element => finalObject[element[0]] = { ...finalObject[element[0]], next: element[1] })
+      Object.entries(need).forEach(element => { finalObject[element[0]] = { ...finalObject[element[0]], need: element[1] } })
+      Object.entries(next).forEach(element => { finalObject[element[0]] = { ...finalObject[element[0]], next: element[1] } })
 
       setterNamesPerType(Object.entries(finalObject))
     }

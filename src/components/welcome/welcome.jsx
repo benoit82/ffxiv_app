@@ -21,7 +21,7 @@ const Welcome = () => {
 
   const getLives = async (streamersList) => {
     let urlBuilder = `${TWITCH_API_BASE_URI}streams?`
-    streamersList.forEach(streamer => urlBuilder += `user_login=${streamer}&`)
+    streamersList.forEach(streamer => { urlBuilder += `user_login=${streamer}&` })
     urlBuilder = urlBuilder.substr(0, urlBuilder.length - 1)
     if (urlBuilder.length > (`${TWITCH_API_BASE_URI}streams?user_login=`.length + 1)) {
       try {
@@ -71,26 +71,26 @@ const Welcome = () => {
   return (
     <>{
       streamers.length > 0 &&
-      <div className='custom__container lives__container'>
-        <h4>En live sur Twitch</h4>
-        <ListGroup>
-          {streamers.map(stream => {
-            return (
-              <ListGroupItem key={stream.id} className='d-flex custom__list'>
-                {stream.game &&
-                  <div className='gameImgContainer mr-1'>
-                    <img src={stream.game.box_art_url.replace('{width}', '75').replace('{height}', '100')} alt='' />
-                  </div>}
-                <div className='streamerInfo d-flex flex-column'>
-                  <span><a href={`https://www.twitch.tv/${stream.user_name}`} target='_blank' rel='noopener noreferrer'>{stream.user_name}</a>{stream.game && ` : ${stream.game.name}`}</span>
-                  <span className='stream__title'>{stream.title.length < 90 ? stream.title : `${stream.title.substr(0, 87)}...`}</span>
-                  <span>commencé {dayjs().to(stream.started_at)}</span>
-                </div>
-              </ListGroupItem>
-            )
-          })}
-        </ListGroup>
-      </div>
+        <div className='custom__container lives__container'>
+          <h4>En live sur Twitch</h4>
+          <ListGroup>
+            {streamers.map(stream => {
+              return (
+                <ListGroupItem key={stream.id} className='d-flex custom__list'>
+                  {stream.game &&
+                    <div className='gameImgContainer mr-1'>
+                      <img src={stream.game.box_art_url.replace('{width}', '75').replace('{height}', '100')} alt='' />
+                    </div>}
+                  <div className='streamerInfo d-flex flex-column'>
+                    <span><a href={`https://www.twitch.tv/${stream.user_name}`} target='_blank' rel='noopener noreferrer'>{stream.user_name}</a>{stream.game && ` : ${stream.game.name}`}</span>
+                    <span className='stream__title'>{stream.title.length < 90 ? stream.title : `${stream.title.substr(0, 87)}...`}</span>
+                    <span>commencé {dayjs().to(stream.started_at)}</span>
+                  </div>
+                </ListGroupItem>
+              )
+            })}
+          </ListGroup>
+        </div>
     }
       <div className='custom__container form__container auto_margin d-flex flex-column' style={{ alignItems: 'center', justifyContent: 'center' }}>
         <h1>\o Lali-ho {user.isLoggedIn && `${user.pseudo}`} ! o/</h1>
