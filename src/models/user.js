@@ -1,5 +1,5 @@
 class User {
-  constructor(docRef) {
+  constructor (docRef) {
     const {
       uid,
       pseudo,
@@ -11,25 +11,25 @@ class User {
       createdAt,
       characters,
       fflogsAccount,
-      twitchAccount,
-    } = docRef.data();
+      twitchAccount
+    } = docRef.data()
 
-    this.uid = uid;
-    this.value = uid;
-    this.pseudo = pseudo;
-    this.label = pseudo;
-    this.email = email;
-    this.isAdmin = isAdmin;
-    this.isCrafter = isCrafter;
-    this.isGatherer = isGatherer;
-    this.refRosterRaidLeader = refRosterRaidLeader || null;
+    this.uid = uid
+    this.value = uid
+    this.pseudo = pseudo
+    this.label = pseudo
+    this.email = email
+    this.isAdmin = isAdmin
+    this.isCrafter = isCrafter
+    this.isGatherer = isGatherer
+    this.refRosterRaidLeader = refRosterRaidLeader || null
     this.createdAt =
-      createdAt !== undefined ? createdAt.toDate().toLocaleDateString() : null;
-    this.characters = characters || [];
-    this.isLoggedIn = true;
-    this.fflogsAccount = fflogsAccount || {};
-    this.twitchAccount = twitchAccount || undefined;
+      createdAt !== undefined ? createdAt.toDate().toLocaleDateString() : null
+    this.characters = characters || []
+    this.isLoggedIn = true
+    this.fflogsAccount = fflogsAccount || {}
+    this.twitchAccount = twitchAccount || undefined
   }
 }
 
-export default User;
+export default User

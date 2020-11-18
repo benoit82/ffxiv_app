@@ -1,6 +1,6 @@
-import { useState, useContext, useEffect } from "react";
-import { FirebaseContext } from "../components/firebase";
-import { toast } from "../utils/globalFunctions";
+import { useState, useContext, useEffect } from 'react'
+import { FirebaseContext } from '../components/firebase'
+import { toast } from '../utils/globalFunctions'
 
 /**
  *
@@ -8,23 +8,23 @@ import { toast } from "../utils/globalFunctions";
  * @param {Class} c Class for instance
  * @return {instanceType<Class>} instance of class C
  */
-const useGetFirebaseDocument = (path, c) => {
-  const [roster, setRoster] = useState(null);
-  const firebase = useContext(FirebaseContext);
+const useGetFirebaseDocument = (path, C) => {
+  const [roster, setRoster] = useState(null)
+  const firebase = useContext(FirebaseContext)
 
   useEffect(() => {
-    let unsubscribe = firebase.db.doc(path).onSnapshot(
-      (snap) => setRoster(new c(snap)),
+    const unsubscribe = firebase.db.doc(path).onSnapshot(
+      (snap) => setRoster(new C(snap)),
       (error) =>
         toast(
-          "error",
+          'error',
           `erreur d'écoute de la base de donnée : ${error.message}`
         )
-    );
-    return () => unsubscribe();
-  }, [firebase, path, c]);
+    )
+    return () => unsubscribe()
+  }, [firebase, path, C])
 
-  return roster;
-};
+  return roster
+}
 
-export default useGetFirebaseDocument;
+export default useGetFirebaseDocument

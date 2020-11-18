@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import Loading from "../loading"
+import Loading from '../loading'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import { SearchBtn, AddBtn } from '../formElements'
@@ -12,20 +12,20 @@ import Container from 'react-bootstrap/Container'
 import { PropTypes } from 'prop-types'
 import { Character } from '../../models'
 
-import "./characterSearch.css"
+import './characterSearch.css'
 
 const CharacterSearch = ({ handleAdd, userCharacters }) => {
   const [loading, setLoading] = useState(false)
   const [serverList, setServerList] = useState([])
   const [characters, setCharacters] = useState([])
   const [characterSelected, setCharacterSelected] = useState(null)
-  const xiv = useContext(XIVApi);
+  const xiv = useContext(XIVApi)
 
   useEffect(() => {
     // retrieve server list and add "all server" option for global search
     (async () => {
       const datacenters = await xiv.data.datacenters()
-      setServerList([["Choisir un serveur", ["Tous"]], ...Object.entries(datacenters)])
+      setServerList([['Choisir un serveur', ['Tous']], ...Object.entries(datacenters)])
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -47,7 +47,7 @@ const CharacterSearch = ({ handleAdd, userCharacters }) => {
       resetForm({})
     }
     setLoading(false)
-  };
+  }
 
   const servers = serverList.map((datacenter, index) => {
     return (
@@ -66,17 +66,15 @@ const CharacterSearch = ({ handleAdd, userCharacters }) => {
   const ChrSearchSchema = Yup.object().shape({
     characterName: Yup.string()
       .min(CHARACTER_NAME_MIN, CHARACTER_NAME_ERR_MSG)
-      .required(FIELD_REQUIRED)
-    ,
-    selectServer: Yup.string(),
-  });
+      .required(FIELD_REQUIRED),
+    selectServer: Yup.string()
+  })
 
   const handleAddChr = () => {
     handleAdd(characterSelected)
     setCharacters(null)
     setCharacterSelected(null)
   }
-
 
   return (
     <Container>
@@ -85,71 +83,72 @@ const CharacterSearch = ({ handleAdd, userCharacters }) => {
         onSubmit={fetchCharacters}
         initialValues={{
           characterName: '',
-          selectServer: '',
+          selectServer: ''
         }}
       >
         {
-          ({ handleSubmit,
+          ({
+            handleSubmit,
             handleChange,
             values,
             touched,
-            errors, }) => (
-              <Row>
-                <Form onSubmit={handleSubmit}>
-                  <Form.Group controlId="characterName">
-                    <Form.Label>Nom du personnage :</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Nom du personnage"
-                      value={values.characterName}
-                      onChange={handleChange}
-                      isValid={touched.characterName && !errors.characterName}
-                      isInvalid={!!errors.characterName}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {errors.characterName}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                  <Form.Group controlId="selectServer">
-                    <Form.Label>Serveur :</Form.Label>
-                    <Form.Control
-                      as="select"
-                      custom
-                      onChange={handleChange}
-                      value={values.selectServer}
-                    >
-                      {servers}
-                    </Form.Control>
-                  </Form.Group>
-                  <SearchBtn />
-                </Form>
-              </Row>
-            )
+            errors
+          }) => (
+            <Row>
+              <Form onSubmit={handleSubmit}>
+                <Form.Group controlId='characterName'>
+                  <Form.Label>Nom du personnage :</Form.Label>
+                  <Form.Control
+                    type='text'
+                    placeholder='Nom du personnage'
+                    value={values.characterName}
+                    onChange={handleChange}
+                    isValid={touched.characterName && !errors.characterName}
+                    isInvalid={!!errors.characterName}
+                  />
+                  <Form.Control.Feedback type='invalid'>
+                    {errors.characterName}
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group controlId='selectServer'>
+                  <Form.Label>Serveur :</Form.Label>
+                  <Form.Control
+                    as='select'
+                    custom
+                    onChange={handleChange}
+                    value={values.selectServer}
+                  >
+                    {servers}
+                  </Form.Control>
+                </Form.Group>
+                <SearchBtn />
+              </Form>
+            </Row>
+          )
         }
       </Formik>
       {loading && <Row><Loading /></Row>}
       {characterSelected &&
         <Row>
-          <Form.Group controlId="selectChr">
-            <Form.Label>Résultat : {pluralize("personnage", characters.length, true)}</Form.Label>
+          <Form.Group controlId='selectChr'>
+            <Form.Label>Résultat : {pluralize('personnage', characters.length, true)}</Form.Label>
             <Form.Control
-              as="select"
+              as='select'
               custom
               onChange={characterDetailDisplay}
             >
               {characters.map((character) => {
-                return <option value={character.id} key={character.id} >{character.name} - {character.server}</option>
+                return <option value={character.id} key={character.id}>{character.name} - {character.server}</option>
               })}
             </Form.Control>
           </Form.Group>
-          <AddBtn label="ajouter ce personnage" handleClick={handleAddChr} />
-        </Row>
-      }
+          <AddBtn label='ajouter ce personnage' handleClick={handleAddChr} />
+        </Row>}
     </Container>
-  );
-};
+  )
+}
 CharacterSearch.propTypes = {
   handleAdd: PropTypes.func.isRequired,
-  userCharacters: PropTypes.arrayOf(PropTypes.instanceOf(Character)).isRequired,
+  userCharacters: PropTypes.arrayOf(PropTypes.instanceOf(Character)).isRequired
 }
-export default CharacterSearch;
+export default CharacterSearch

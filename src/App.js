@@ -1,49 +1,49 @@
-import React, { useState, useEffect, useContext } from "react";
-import { UserApi, XIVApi } from "./utils/appContext";
-import { FirebaseContext } from "./components/firebase";
-import { BrowserRouter as Router } from "react-router-dom";
-import Routes from "./routes";
-import Container from "react-bootstrap/Container";
-import { Menu } from "./components";
-import XIVAPI from "xivapi-js";
-import checkStorage from "./utils/checkStorage";
-import { showInfoMessage } from "./utils/globalFunctions";
+import React, { useState, useEffect, useContext } from 'react'
+import { UserApi, XIVApi } from './utils/appContext'
+import { FirebaseContext } from './components/firebase'
+import { BrowserRouter as Router } from 'react-router-dom'
+import Routes from './routes'
+import Container from 'react-bootstrap/Container'
+import { Menu } from './components'
+import XIVAPI from 'xivapi-js'
+import checkStorage from './utils/checkStorage'
+import { showInfoMessage } from './utils/globalFunctions'
 
-import "./App.scss";
+import './App.scss'
 
-function App() {
-  const firebase = useContext(FirebaseContext);
+function App () {
+  const firebase = useContext(FirebaseContext)
   const [user, setUser] = useState({
-    uid: "",
-    isLoggedIn: false,
-  });
+    uid: '',
+    isLoggedIn: false
+  })
   const xivapi = new XIVAPI({
     // eslint-disable-next-line no-undef
     private_key: process.env.REACT_APP_XIV_API_KEY,
-    language: "fr",
-    snake_case: true,
-  });
+    language: 'fr',
+    snake_case: true
+  })
 
   useEffect(() => {
     try {
-      checkStorage(firebase, setUser);
+      checkStorage(firebase, setUser)
     } catch (error) {
-      showInfoMessage("error", error.message);
+      showInfoMessage('error', error.message)
     }
-  }, [firebase]);
+  }, [firebase])
 
   return (
-    <Container fluid className="App">
+    <Container fluid className='App'>
       <Router>
         <UserApi.Provider value={{ user, setUser }}>
           <XIVApi.Provider value={xivapi}>
             <Menu user={user} />
             <Container fluid>
               <div
-                className="row p-3 d-flex"
+                className='row p-3 d-flex'
                 style={{
-                  minHeight: "90vh",
-                  position: "relative",
+                  minHeight: '90vh',
+                  position: 'relative'
                 }}
               >
                 <Routes />
@@ -53,7 +53,7 @@ function App() {
         </UserApi.Provider>
       </Router>
     </Container>
-  );
+  )
 }
 
-export default App;
+export default App

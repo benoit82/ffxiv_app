@@ -1,4 +1,4 @@
-import LoginForm from "./loginForm";
-import LoginPage from "./loginPage";
+import LoginForm from './loginForm'
+import LoginPage from './loginPage'
 
-export { LoginForm, LoginPage };
+export { LoginForm, LoginPage }

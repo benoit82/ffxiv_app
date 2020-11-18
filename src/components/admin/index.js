@@ -1,4 +1,4 @@
-import AdminOptionPage from "./adminOptionPage";
-import UsersAdmin from "./usersAdmin";
+import AdminOptionPage from './adminOptionPage'
+import UsersAdmin from './usersAdmin'
 
-export { AdminOptionPage, UsersAdmin };
+export { AdminOptionPage, UsersAdmin }

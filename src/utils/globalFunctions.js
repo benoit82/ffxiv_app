@@ -1,4 +1,4 @@
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2'
 
 /**
  *
@@ -8,9 +8,9 @@ import Swal from "sweetalert2";
 export const showInfoMessage = (type, message) => {
   Swal.fire({
     icon: type,
-    text: message,
-  });
-};
+    text: message
+  })
+}
 
 /**
  *
@@ -21,11 +21,11 @@ export const showInfoMessage = (type, message) => {
 export const toast = (type, message, timer = 2000) => {
   Swal.mixin({
     toast: true,
-    position: "bottom",
+    position: 'bottom',
     showConfirmButton: false,
-    timer,
+    timer
   }).fire({
     icon: type,
-    text: message,
-  });
-};
+    text: message
+  })
+}

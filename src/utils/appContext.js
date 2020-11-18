@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
-export const UserApi = React.createContext();
-export const XIVApi = React.createContext();
+export const UserApi = React.createContext()
+export const XIVApi = React.createContext()
