@@ -27,7 +27,6 @@ const CharacterSearch = ({ handleAdd, userCharacters }) => {
       const datacenters = await xiv.data.datacenters()
       setServerList([['Choisir un serveur', ['Tous']], ...Object.entries(datacenters)])
     })()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const fetchCharacters = async (values, { resetForm }) => {
@@ -94,37 +93,37 @@ const CharacterSearch = ({ handleAdd, userCharacters }) => {
             touched,
             errors
           }) => (
-            <Row>
-              <Form onSubmit={handleSubmit}>
-                <Form.Group controlId='characterName'>
-                  <Form.Label>Nom du personnage :</Form.Label>
-                  <Form.Control
-                    type='text'
-                    placeholder='Nom du personnage'
-                    value={values.characterName}
-                    onChange={handleChange}
-                    isValid={touched.characterName && !errors.characterName}
-                    isInvalid={!!errors.characterName}
-                  />
-                  <Form.Control.Feedback type='invalid'>
-                    {errors.characterName}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group controlId='selectServer'>
-                  <Form.Label>Serveur :</Form.Label>
-                  <Form.Control
-                    as='select'
-                    custom
-                    onChange={handleChange}
-                    value={values.selectServer}
-                  >
-                    {servers}
-                  </Form.Control>
-                </Form.Group>
-                <SearchBtn />
-              </Form>
-            </Row>
-          )
+              <Row>
+                <Form onSubmit={handleSubmit}>
+                  <Form.Group controlId='characterName'>
+                    <Form.Label>Nom du personnage :</Form.Label>
+                    <Form.Control
+                      type='text'
+                      placeholder='Nom du personnage'
+                      value={values.characterName}
+                      onChange={handleChange}
+                      isValid={touched.characterName && !errors.characterName}
+                      isInvalid={!!errors.characterName}
+                    />
+                    <Form.Control.Feedback type='invalid'>
+                      {errors.characterName}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group controlId='selectServer'>
+                    <Form.Label>Serveur :</Form.Label>
+                    <Form.Control
+                      as='select'
+                      custom
+                      onChange={handleChange}
+                      value={values.selectServer}
+                    >
+                      {servers}
+                    </Form.Control>
+                  </Form.Group>
+                  <SearchBtn />
+                </Form>
+              </Row>
+            )
         }
       </Formik>
       {loading && <Row><Loading /></Row>}

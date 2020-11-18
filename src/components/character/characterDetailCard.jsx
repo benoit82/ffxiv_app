@@ -50,12 +50,13 @@ const CharacterDetailCard = ({ character }) => {
   }
 
   const mainJobCheck = () => {
-    return mainJob ? <div className='d-flex justify-content-around'>
-      <JobListDisplay job={mainJob} />{secondJob && <JobListDisplay job={secondJob} />}{thirdJob && <JobListDisplay job={thirdJob} />}
-                     </div>
+    return mainJob
+      ? <div className='d-flex justify-content-around'>
+        <JobListDisplay job={mainJob} />{secondJob && <JobListDisplay job={secondJob} />}{thirdJob && <JobListDisplay job={thirdJob} />}
+      </div>
       : <Card.Text className='d-flex justify-content-around'>
         <span>Jobs à définir (cliques sur son portrait !)</span>
-        </Card.Text>
+      </Card.Text>
   }
 
   return (
@@ -71,21 +72,23 @@ const CharacterDetailCard = ({ character }) => {
 
       <Card.Body>
         {!rosterRL && !rosterMember && <Link to={`/roster/create/${character._id}`} className='btn btn-primary'><i className='fas fa-edit' />créer un roster</Link>}
-        {rosterRL && <>
-          <Link to={`/roster/view/${rosterRL._id}/1`} className='btn btn-success mb-1'><i className='fas fa-eye' />roster</Link>
-          <Link to={`/roster/edit/${rosterRL._id}`} className='btn btn-primary'><i className='fas fa-edit' />administer son roster</Link>
-        </>}
+        {rosterRL &&
+          <>
+            <Link to={`/roster/view/${rosterRL._id}/1`} className='btn btn-success mb-1'><i className='fas fa-eye' />roster</Link>
+            <Link to={`/roster/edit/${rosterRL._id}`} className='btn btn-primary'><i className='fas fa-edit' />administer son roster</Link>
+          </>}
         {rosterMember &&
           <Link to={`/roster/view/${rosterMember._id}/1`} className='btn btn-success'><i className='fas fa-eye' />roster</Link>}
       </Card.Body>
 
       <Card.Footer className='d-flex justify-content-around'>
-        <Card.Text><a
-          className='btn btn-info'
-          href={`https://fr.finalfantasyxiv.com/lodestone/character/${id}`}
-          target='_blanck'
-                   >lodestone
-        </a>
+        <Card.Text>
+          <a
+            className='btn btn-info'
+            href={`https://fr.finalfantasyxiv.com/lodestone/character/${id}`}
+            target='_blanck'
+          >lodestone
+          </a>
         </Card.Text>
         <DeleteBtn handleClick={() => { handleDelete(character) }} label='supprimer le personnage' />
       </Card.Footer>

@@ -56,9 +56,7 @@ const UsersAdmin = () => {
           const uList = snapshot.docs.map(userRefDoc => new User(userRefDoc))
           setUsers(uList)
         },
-        (error) => {
-          showInfoMessage('error', 'erreur dans le chargement des utiliteurs')
-        }
+        (error) => showInfoMessage('error', 'erreur dans le chargement des utiliteurs ' + error.message)
       )
     return () => unsubcribe()
   }, [firebase])

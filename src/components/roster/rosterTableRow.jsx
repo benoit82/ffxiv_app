@@ -47,9 +47,11 @@ const RosterTableRow = ({ roster }) => {
     <tr>
       <td>{roster.name}</td>
       <td>
-        {raidLeader ? <CharacterDetailInline
-          character={raidLeader}
-                      /> : <p>Roster temporaire</p>}
+        {raidLeader
+          ? <CharacterDetailInline
+              character={raidLeader}
+            />
+          : <p>Roster temporaire</p>}
       </td>
       <td>
         <Link to={`/roster/edit/${roster._id}`} className='btn btn-success'><i className='fas fa-edit' />Editer</Link>
