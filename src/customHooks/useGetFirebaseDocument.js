@@ -5,17 +5,17 @@ import { toast } from '../utils/globalFunctions'
 /**
  *
  * @param {string} path "collection/docId", "collection/docId/subCollection/subDocId"
- * @param {Class} c Class for instance
+ * @param {Class} C Class for instance
  * @return {instanceType<Class>} instance of class C
  */
 const useGetFirebaseDocument = (path, C) => {
-  const [roster, setRoster] = useState(null)
+  const [cInstance, setCInstance] = useState(null)
   const firebase = useContext(FirebaseContext)
 
   useEffect(() => {
     const unsubscribe = firebase.db.doc(path).onSnapshot(
-      (snap) => setRoster(new C(snap)),
-      (error) =>
+      snap => setCInstance(new C(snap)),
+      error =>
         toast(
           'error',
           `erreur d'écoute de la base de donnée : ${error.message}`
@@ -24,7 +24,7 @@ const useGetFirebaseDocument = (path, C) => {
     return () => unsubscribe()
   }, [firebase, path, C])
 
-  return roster
+  return [cInstance, setCInstance]
 }
 
 export default useGetFirebaseDocument

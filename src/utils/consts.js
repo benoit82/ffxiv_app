@@ -18,7 +18,7 @@ export const EMAIL_UPDATE_ERR_MSG =
 
 // FF Logs API Key RESTRICTION
 export const API_KEY_REGEX = /^([0-9a-f]){32}$/gi
-export const API_KEY_ERR_REGEX = 'Ce n\'est pas le bon format d\'une clé API'
+export const API_KEY_ERR_REGEX = "Ce n'est pas le bon format d'une clé API"
 
 // CHARACTER
 // name
@@ -42,7 +42,10 @@ export const FFXIV_ARR_RELEASE_DATE = new Date('2013/08/27')
 export const ALL = 'Tout'
 
 // Twitch const
-export const TWITCH_API_BASE_URI = 'https://api.twitch.tv/helix/'
+export const TWITCH = {
+  oauthURI: 'https://id.twitch.tv/oauth2/token',
+  apiURI: 'https://api.twitch.tv/helix/'
+}
 export const TWITCH_AXIOS_CONFIG = {
   headers: {
     Authorization: `Bearer ${process.env.REACT_APP_TWITCH_API_KEY}`,

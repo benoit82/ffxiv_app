@@ -3,13 +3,14 @@ import { UserApi } from '../../utils/appContext'
 import { Link } from 'react-router-dom'
 import { ListGroup, ListGroupItem } from 'react-bootstrap'
 import { FirebaseContext } from '../firebase'
-import { toast } from '../../utils/globalFunctions'
+import { GetNewTwitchToken, toast } from '../../utils/globalFunctions'
 import { User } from '../../models'
 import Axios from 'axios'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import fr from 'dayjs/locale/fr'
-import { TWITCH_API_BASE_URI, TWITCH_AXIOS_CONFIG } from '../../utils/consts'
+import { TWITCH } from '../../utils/consts'
+import useTwitchApi from '../../customHooks/useTwitchApi'
 
 import './welcome.scss'
 
@@ -18,20 +19,26 @@ const Welcome = () => {
   const { user } = useContext(UserApi)
   const firebase = useContext(FirebaseContext)
   const [streamers, setStreamers] = useState([])
+  const twitchHeaders = useTwitchApi()
 
   const getLives = async (streamersList) => {
-    let urlBuilder = `${TWITCH_API_BASE_URI}streams?`
+    let urlBuilder = `${TWITCH.apiURI}streams?`
     streamersList.forEach(streamer => { urlBuilder += `user_login=${streamer}&` })
     urlBuilder = urlBuilder.substr(0, urlBuilder.length - 1)
-    if (urlBuilder.length > (`${TWITCH_API_BASE_URI}streams?user_login=`.length + 1)) {
+    if (twitchHeaders && urlBuilder.length > (`${TWITCH.apiURI}streams?user_login=`.length + 1)) {
       try {
-        const response = await Axios.get(urlBuilder, TWITCH_AXIOS_CONFIG)
+        const response = await Axios.get(urlBuilder, { headers: twitchHeaders })
         response.data.data.forEach(async (streamer, index) => {
           streamer.game = await getGame(streamer.game_id)
           if (index === response.data.data.length - 1) setStreamers(Array.from(response.data.data))
         })
       } catch (error) {
         toast('error', 'problème de communication avec twitch.')
+        GetNewTwitchToken().then((response) => {
+          if (response.data.access_token) {
+            firebase.setTwitchToken({ twitchApiKey: response.data.access_token })
+          }
+        })
       }
     }
   }
@@ -39,7 +46,7 @@ const Welcome = () => {
   const getGame = async (gameID) => {
     let game = {}
     try {
-      const res = await Axios.get(`${TWITCH_API_BASE_URI}games?id=${gameID}`, TWITCH_AXIOS_CONFIG)
+      const res = await Axios.get(`${TWITCH.apiURI}games?id=${gameID}`, { headers: twitchHeaders })
       game = res.data.data.shift()
     } catch (error) {
       toast('error', 'problème de communication avec twitch.')
@@ -66,31 +73,32 @@ const Welcome = () => {
       clearInterval(intervalLives)
       unsubcribe()
     }
-  }, [firebase.db])
+    // eslint-disable-next-line
+  }, [firebase, twitchHeaders])
 
   return (
     <>{
       streamers.length > 0 &&
         <div className='custom__container lives__container'>
-          <h4>En live sur Twitch</h4>
-          <ListGroup>
-            {streamers.map(stream => {
-              return (
-                <ListGroupItem key={stream.id} className='d-flex custom__list'>
-                  {stream.game &&
-                    <div className='gameImgContainer mr-1'>
-                      <img src={stream.game.box_art_url.replace('{width}', '75').replace('{height}', '100')} alt='' />
-                    </div>}
-                  <div className='streamerInfo d-flex flex-column'>
-                    <span><a href={`https://www.twitch.tv/${stream.user_name}`} target='_blank' rel='noopener noreferrer'>{stream.user_name}</a>{stream.game && ` : ${stream.game.name}`}</span>
-                    <span className='stream__title'>{stream.title.length < 90 ? stream.title : `${stream.title.substr(0, 87)}...`}</span>
-                    <span>commencé {dayjs().to(stream.started_at)}</span>
-                  </div>
-                </ListGroupItem>
-              )
-            })}
-          </ListGroup>
-        </div>
+        <h4>En live sur Twitch</h4>
+        <ListGroup>
+          {streamers.map(stream => {
+            return (
+              <ListGroupItem key={stream.id} className='d-flex custom__list'>
+                {stream.game &&
+                  <div className='gameImgContainer mr-1'>
+                    <img src={stream.game.box_art_url.replace('{width}', '75').replace('{height}', '100')} alt='' />
+                  </div>}
+                <div className='streamerInfo d-flex flex-column'>
+                  <span><a href={`https://www.twitch.tv/${stream.user_name}`} target='_blank' rel='noopener noreferrer'>{stream.user_name}</a>{stream.game && ` : ${stream.game.name}`}</span>
+                  <span className='stream__title'>{stream.title.length < 90 ? stream.title : `${stream.title.substr(0, 87)}...`}</span>
+                  <span>commencé {dayjs().to(stream.started_at)}</span>
+                </div>
+              </ListGroupItem>
+            )
+          })}
+        </ListGroup>
+      </div>
     }
       <div className='custom__container form__container auto_margin d-flex flex-column' style={{ alignItems: 'center', justifyContent: 'center' }}>
         <h1>\o Lali-ho {user.isLoggedIn && `${user.pseudo}`} ! o/</h1>

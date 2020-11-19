@@ -1,4 +1,6 @@
+import Axios from 'axios'
 import Swal from 'sweetalert2'
+import { TWITCH } from './consts'
 
 /**
  *
@@ -28,4 +30,10 @@ export const toast = (type, message, timer = 2000) => {
     icon: type,
     text: message
   })
+}
+
+export const GetNewTwitchToken = async () => {
+  return await Axios.post(
+    `${TWITCH.oauthURI}?grant_type=client_credentials&client_id=${process.env.REACT_APP_TWITCH_API_CLIENT_ID}&client_secret=${process.env.REACT_APP_TWITCH_API_SECRET}`
+  )
 }
