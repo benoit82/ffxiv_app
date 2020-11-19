@@ -31,6 +31,7 @@ const RosterEdit = () => {
     } else {
       firebase.getAllCharacters(setCharacters, { filter: 'rosterRaidLeader' })
     }
+    // eslint-disable-next-line
   }, [roster, firebase])
 
   useEffect(() => {
@@ -68,6 +69,7 @@ const RosterEdit = () => {
       )
 
     return () => unsubcribe()
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {

@@ -197,6 +197,7 @@ const EditCharacter = () => {
       )
 
     return () => unsubcribe()
+    // eslint-disable-next-line
   }, [chrID, firebase.db, history, user.uid, lastFFXIVversion])
 
   return (

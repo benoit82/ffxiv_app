@@ -73,6 +73,7 @@ const UserOptionPage = () => {
         }
       )
     return () => unsubcribe()
+    // eslint-disable-next-line
   }, [])
 
   return (

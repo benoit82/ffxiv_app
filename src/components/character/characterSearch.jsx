@@ -27,6 +27,7 @@ const CharacterSearch = ({ handleAdd, userCharacters }) => {
       const datacenters = await xiv.data.datacenters()
       setServerList([['Choisir un serveur', ['Tous']], ...Object.entries(datacenters)])
     })()
+    // eslint-disable-next-line
   }, [])
 
   const fetchCharacters = async (values, { resetForm }) => {
@@ -93,7 +94,7 @@ const CharacterSearch = ({ handleAdd, userCharacters }) => {
             touched,
             errors
           }) => (
-              <Row>
+            <Row>
                 <Form onSubmit={handleSubmit}>
                   <Form.Group controlId='characterName'>
                     <Form.Label>Nom du personnage :</Form.Label>
@@ -123,7 +124,7 @@ const CharacterSearch = ({ handleAdd, userCharacters }) => {
                   <SearchBtn />
                 </Form>
               </Row>
-            )
+          )
         }
       </Formik>
       {loading && <Row><Loading /></Row>}
