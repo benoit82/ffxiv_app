@@ -44,17 +44,17 @@ const Routes = () => {
         component={AdminOptionPage}
       />
       <ProtectedRoute
-        path='/roster/create/:character_id'
+        path='/roster/create/:characterID'
         allowedUser={user.isLoggedIn}
         component={RosterCreate}
       />
       <ProtectedRoute
-        path='/roster/edit/:roster_id'
+        path='/roster/edit/:rosterID'
         allowedUser={user.isLoggedIn}
         component={RosterEdit}
       />
       <ProtectedRoute
-        path='/roster/view/:roster_id/:jPriority'
+        path='/roster/view/:rosterID/:jPriority'
         allowedUser={user.isLoggedIn}
         component={RosterView}
       />

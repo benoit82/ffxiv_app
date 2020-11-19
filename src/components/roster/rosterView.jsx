@@ -18,7 +18,7 @@ import { showInfoMessage } from '../../utils/globalFunctions'
  * @route /param /roster/view/:rosterId/:jPriority
  */
 const RosterView = () => {
-  const { rosterId, jPriority } = useParams()
+  const { rosterID, jPriority } = useParams()
   const history = useHistory()
   const jobPriority = parseInt(jPriority)
   const firebase = useContext(FirebaseContext)
@@ -30,7 +30,7 @@ const RosterView = () => {
   useEffect(() => {
     const unsubscribe = firebase.db
       .collection('rosters')
-      .doc(rosterId)
+      .doc(rosterID)
       .onSnapshot(snap => {
         setRoster(new Roster(snap))
         const getRosterData = async (rosterData) => {
@@ -74,7 +74,7 @@ const RosterView = () => {
     return () => {
       unsubscribe()
     }
-  }, [firebase.db, rosterId])
+  }, [firebase.db, rosterID])
 
   return (
     loading
@@ -127,9 +127,9 @@ const RosterView = () => {
             {members && <RosterCheckUpgradeGear members={members} priorityJob={jobPriority} />}
             {members.length > 0 &&
               <>
-                <Button variant='danger' className='mr-1' onClick={() => history.push(`/roster/view/${rosterId}/1`)}>Main Job</Button>
-                <Button variant='dark' className='mr-1' onClick={() => history.push(`/roster/view/${rosterId}/2`)}>Job 2</Button>
-                <Button variant='warning' className='mr-1' onClick={() => history.push(`/roster/view/${rosterId}/3`)}>Job 3</Button>
+                <Button variant='danger' className='mr-1' onClick={() => history.push(`/roster/view/${rosterID}/1`)}>Main Job</Button>
+                <Button variant='dark' className='mr-1' onClick={() => history.push(`/roster/view/${rosterID}/2`)}>Job 2</Button>
+                <Button variant='warning' className='mr-1' onClick={() => history.push(`/roster/view/${rosterID}/3`)}>Job 3</Button>
               </>}
           </div>
         </Col>
