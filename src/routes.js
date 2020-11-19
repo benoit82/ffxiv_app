@@ -71,7 +71,7 @@ const Routes = () => {
         component={ChrOptionPage}
       />
       <ProtectedRoute
-        path='/chr/:chr_id'
+        path='/chr/:chrID'
         allowedUser={user.isLoggedIn}
         component={EditCharacter}
       />
