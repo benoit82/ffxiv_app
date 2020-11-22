@@ -81,7 +81,7 @@ function FFlogsView ({ roster }) {
 
   const getAuthorsList = () => {
     let authors = []
-    ffLogs.forEach(log => authors = [...authors, log.pseudo])
+    ffLogs.forEach(log => { authors = [...authors, log.pseudo] })
     return Array.from(new Set(authors))
   }
 
@@ -136,9 +136,9 @@ function FFlogsView ({ roster }) {
                   >
                     <option value={ALL}>{`${ALL} : patchs confondus`}</option>
                     {/* eslint-disable-next-line */}
-                                        {patchList.map(patch => {
-                                          if (ffLogs.some(log => log.patch === patch.name)) return <option key={patch.releaseDate}>{patch.name}</option>
-                                        })}
+                    {patchList.map(patch => {
+                      if (ffLogs.some(log => log.patch === patch.name)) return <option key={patch.releaseDate}>{patch.name}</option>
+                    })}
                   </Form.Control>
                 </Form.Group>
                 <Form.Group controlId='author'>
@@ -156,23 +156,25 @@ function FFlogsView ({ roster }) {
                 </Form.Group>
                 {/* <pre>{JSON.stringify(formik.values, null, 2)}</pre> */}
               </>}
-            {getFilteredLogs().length > 0 ? <ReactPaginate
-              containerClassName='pagination'
-              pageCount={Math.ceil(getFilteredLogs().length / MAX_LOGS_PER_PAGE)}
-              initialPage={0}
-              pageRangeDisplayed={2}
-              marginPagesDisplayed={2}
-              breakLabel='...'
-              pageLinkClassName='linkpage'
-              onPageChange={handlePaginationChange}
-              pageSize={MAX_LOGS_PER_PAGE}
-              activeClassName='active'
-              previousLabel='<'
-              previousClassName='prevBtn'
-              nextLabel='>'
-              nextClassName='nextBtn'
-              disabledClassName='disBtn'
-                                            /> : <Alert variant='warning'>Aucun log trouvé avec les paramètres de filtre</Alert>}
+            {getFilteredLogs().length > 0
+              ? <ReactPaginate
+                  containerClassName='pagination'
+                  pageCount={Math.ceil(getFilteredLogs().length / MAX_LOGS_PER_PAGE)}
+                  initialPage={0}
+                  pageRangeDisplayed={2}
+                  marginPagesDisplayed={2}
+                  breakLabel='...'
+                  pageLinkClassName='linkpage'
+                  onPageChange={handlePaginationChange}
+                  pageSize={MAX_LOGS_PER_PAGE}
+                  activeClassName='active'
+                  previousLabel='<'
+                  previousClassName='prevBtn'
+                  nextLabel='>'
+                  nextClassName='nextBtn'
+                  disabledClassName='disBtn'
+                />
+              : <Alert variant='warning'>Aucun log trouvé avec les paramètres de filtre</Alert>}
             <ListGroup>
               {getFilteredLogs()
                 .slice(offset, offset + MAX_LOGS_PER_PAGE)
@@ -182,7 +184,7 @@ function FFlogsView ({ roster }) {
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <span>
                           <a href={log.fflogurl} target='_blank' rel='noopener noreferrer'>{log.title} {log.showDate()}</a><br />
-                          {log.patch && <span style={{ fontStyle: 'italic' }}> Patch : {log.patch},</span>}<span style={{ fontStyle: 'italic' }}> envoyé par {log.pseudo}</span>
+                          {log.patch && <span style={{ fontStyle: 'italic' }}>{log.patch}</span>} - <span style={{ fontStyle: 'italic' }}>{log.pseudo}</span>
                         </span>
                         <div className='d-flex flex-row'>
                           <CopyToClipboard text={log.fflogurl}>
