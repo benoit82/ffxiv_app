@@ -15,7 +15,7 @@ import { Roster } from '../../models'
 import 'react-calendar/dist/Calendar.css'
 import './fflogAdd.scss'
 
-function FFLogAdd ({ roster, patchList, onFormSubmit }) {
+function FFLogAdd({ roster, patchList, onFormSubmit }) {
   const [showCalendar, setShowCalendar] = useState(false)
   const [loading, setLoading] = useState(false)
   const firebase = useContext(FirebaseContext)
@@ -25,7 +25,7 @@ function FFLogAdd ({ roster, patchList, onFormSubmit }) {
     title: '',
     fflogurl: '',
     dateRaid: new Date(),
-    patch: patchList[0].name
+    patch: patchList.shift().name
   }
   const fflogValidationSchema = Yup.object().shape({
     title: Yup.string().trim().max(60, 'Titre trop long (max. 60 caractères)').notRequired(),
@@ -71,7 +71,7 @@ function FFLogAdd ({ roster, patchList, onFormSubmit }) {
     try {
       const lastUserLog = await (await Axios.get(`https://www.fflogs.com/v1/reports/user/${user.fflogsAccount.name}?api_key=${user.fflogsAccount.apiKey}`)).data.shift()
       formik.setFieldValue('title', lastUserLog.title)
-      formik.setFieldValue('fflogurl', `https://www.fflogs.com/reports/${lastUserLog.id}`)
+      formik.setFieldValue('fflogurl', `https://fr.fflogs.com/reports/${lastUserLog.id}`)
       fetchPatch(new Date(lastUserLog.start))
     } catch (error) {
       showInfoMessage('error', error.message)
@@ -107,13 +107,14 @@ function FFLogAdd ({ roster, patchList, onFormSubmit }) {
               isInvalid={formik.touched.fflogurl && formik.errors.fflogurl}
               required
             />
-            {formik.values.fflogurl.match(/^https:\/\/([a-z]{2}|www)\.fflogs\.com\/reports\/([a-zA-Z0-9]{16,})$/gi) && <InputGroup.Append>
-              <InputGroup.Text>
-                <a href={formik.values.fflogurl} target='_blank' rel='noopener noreferrer'>
-                  <i className='fas fa-external-link-alt' />vérifier
-                </a>
-              </InputGroup.Text>
-            </InputGroup.Append>}
+            {formik.values.fflogurl.match(/^https:\/\/([a-z]{2}|www)\.fflogs\.com\/reports\/([a-zA-Z0-9]{16,})$/gi) &&
+              <InputGroup.Append>
+                <InputGroup.Text>
+                  <a href={formik.values.fflogurl} target='_blank' rel='noopener noreferrer'>
+                    <i className='fas fa-external-link-alt' />vérifier
+                  </a>
+                </InputGroup.Text>
+              </InputGroup.Append>}
           </InputGroup>
           <Form.Control.Feedback type='invalid'>{formik.errors.fflogurl}</Form.Control.Feedback>
         </Form.Group>
