@@ -47,9 +47,11 @@ function FFlogsView ({ roster }) {
         })
         setPatchList(tabPatchList.sort((p1, p2) => p2.name > p1.name ? 1 : -1))
       } else {
+        setPatchList([{ extension: '???', name: '???', releaseDate: '???' }])
         showInfoMessage('warning', "Le serveur API n'a pas pu fournir la liste des patchs.")
       }
     } catch (error) {
+      setPatchList([{ extension: '???', name: '???', releaseDate: '???' }])
       showInfoMessage('error', error.message)
     }
   },
