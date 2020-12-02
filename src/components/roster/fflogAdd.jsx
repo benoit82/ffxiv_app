@@ -25,7 +25,7 @@ function FFLogAdd({ roster, patchList, onFormSubmit }) {
     title: '',
     fflogurl: '',
     dateRaid: new Date(),
-    patch: patchList.shift().name
+    patch: patchList[0].name
   }
   const fflogValidationSchema = Yup.object().shape({
     title: Yup.string().trim().max(60, 'Titre trop long (max. 60 caractères)').notRequired(),

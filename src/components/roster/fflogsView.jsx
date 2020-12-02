@@ -41,7 +41,9 @@ function FFlogsView ({ roster }) {
       if (response.status === 200) {
         let tabPatchList = []
         Array.from(response.data).forEach(patch => {
-          tabPatchList = [...tabPatchList, { extension: patch.ExName, name: patch.Name, releaseDate: patch.ReleaseDate }]
+          if (!tabPatchList.some(p => p.releaseDate === patch.ReleaseDate)) {
+            tabPatchList = [...tabPatchList, { extension: patch.ExName, name: patch.Name, releaseDate: patch.ReleaseDate }]
+          }
         })
         setPatchList(tabPatchList.sort((p1, p2) => p2.name > p1.name ? 1 : -1))
       } else {
