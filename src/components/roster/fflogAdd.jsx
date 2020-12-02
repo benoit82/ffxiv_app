@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { Button, Form, InputGroup } from 'react-bootstrap'
 import { UserApi } from '../../utils/appContext'
 import { FirebaseContext } from '../firebase'
-import { SendBtn } from '../formElements'
+import { ResetBtn, SendBtn } from '../formElements'
 import Calendar from 'react-calendar'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -140,8 +140,10 @@ function FFLogAdd({ roster, patchList, onFormSubmit }) {
               onChange={(value) => fetchPatch(value)}
             />}
         </Form.Group>
-
-        <SendBtn isDisabled={formik.isSubmitting} label='Envoyer le lien' />
+        <div className='btn_container'>
+          <SendBtn isDisabled={formik.isSubmitting} label='Envoyer le lien' />
+          <ResetBtn isDisabled={formik.isSubmitting} handleReset={() => formik.handleReset()} />
+        </div>
         {/* <pre>{JSON.stringify(formik.values, null, 2)}</pre> */}
       </Form>
     </>
