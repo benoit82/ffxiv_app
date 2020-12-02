@@ -133,7 +133,7 @@ const RosterEdit = () => {
 
   return (
     <>
-      <Form className='custom__container form__container auto_margin d-flex flex-column' onSubmit={handleSubmit}>
+      <Form className='custom__container form__container auto_margin' onSubmit={handleSubmit}>
         <Form.Group controlId='name'>
           <Form.Label>Nom du roster</Form.Label>
           <br />
