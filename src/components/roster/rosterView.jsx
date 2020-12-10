@@ -48,7 +48,7 @@ const RosterView = () => {
                 membersBuilder.push(chr)
                 const nbMembers = rosterData.refRaidLeader ? rosterData.rosterMembers.length + 1 : rosterData.rosterMembers.length
                 if (membersBuilder.length === nbMembers) {
-                  membersBuilder.sort((chrA, chrB) => {
+                  membersBuilder.sort((chrA, chrB) => chrA.name < chrB.name ? 1 : -1).sort((chrA, chrB) => {
                     const catA = getCategory(chrA.mainJob)
                     const catB = getCategory(chrB.mainJob)
                     return catA > catB ? 1 : -1
@@ -124,7 +124,7 @@ const RosterView = () => {
                 }
               </tbody>
             </Table>
-            {members && <RosterCheckUpgradeGear members={members} priorityJob={jobPriority} />}
+            {members.length > 1 && <RosterCheckUpgradeGear members={members} priorityJob={jobPriority} />}
             {members.length > 0 &&
               <>
                 <Button variant='danger' className='mr-1' onClick={() => history.push(`/roster/view/${rosterID}/1`)}>Main Job</Button>
@@ -133,7 +133,7 @@ const RosterView = () => {
               </>}
           </div>
         </Col>
-      </>
+        </>
   )
 }
 
