@@ -141,6 +141,31 @@ const EditCharacter = () => {
   }, [getFFXIVLastPatchVersion])
 
   useEffect(() => {
+    if (character.BISPatch &&
+      lastFFXIVversion &&
+      character.BISPatch !== lastFFXIVversion
+    ) {
+      Swal.fire({
+        icon: 'question',
+        title: `Nouveau patch : ${lastFFXIVversion}`,
+        html: `FFXIV a déployé un nouveau patch ! <br/>
+                      Les BIS de ce personnage datent du patch ${character.BISPatch}.<br/>
+                      Veux-tu reset les BIS de ce personnage (dernière mise à jour ) ? <br/>
+                      En répondant "Non" ou annulant l'action, tes BIS actuels seront marqué par le nouveau patch.`,
+        cancelButtonText: 'Non',
+        showCancelButton: true
+      }).then(response => {
+        if (response.isConfirmed) {
+          firebase.updateCharacter(character._id, { bis: {} })
+          infoResetBis()
+        }
+        // in all cases, we set the new patch version on character
+        firebase.updateCharacter(character._id, { BISPatch: lastFFXIVversion })
+      }).catch(error => showInfoMessage('error', error.message))
+    }
+  }, [firebase, character, lastFFXIVversion])
+
+  useEffect(() => {
     // load the characters
     const unsubcribe = firebase.db
       .collection('characters')
@@ -162,28 +187,6 @@ const EditCharacter = () => {
           if (chr.mainJob) setJob1(chr.mainJob)
           if (chr.secondJob) setJob2(chr.secondJob)
           if (chr.thirdJob) setJob3(chr.thirdJob)
-          if (chr.BISPatch &&
-            lastFFXIVversion &&
-            chr.BISPatch !== lastFFXIVversion
-          ) {
-            Swal.fire({
-              icon: 'question',
-              title: `Nouveau patch : ${lastFFXIVversion}`,
-              html: `FFXIV a déployé un nouveau patch ! <br/>
-                            Les BIS de ce personnage datent du patch ${chr.BISPatch}.<br/>
-                            Veux-tu reset les BIS de ce personnage (dernière mise à jour ) ? <br/>
-                            En répondant "Non" ou annulant l'action, tes BIS actuels seront marqué par le nouveau patch.`,
-              cancelButtonText: 'Non',
-              showCancelButton: true
-            }).then(response => {
-              if (response.isConfirmed) {
-                firebase.updateCharacter(chr._id, { bis: {} })
-                infoResetBis()
-              }
-              // in all cases, we set the new patch version on character
-              firebase.updateCharacter(chr._id, { BISPatch: lastFFXIVversion })
-            }).catch(error => showInfoMessage('error', error.message))
-          }
         },
         (error) => {
           showInfoMessage('error', error.message)
