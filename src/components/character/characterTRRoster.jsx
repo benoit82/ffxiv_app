@@ -97,30 +97,31 @@ const CharacterTRRoster = ({ character, job, rl, currentPatch }) => {
           {getJobIcon(job)}
         </div>
       </td>
-      {bis && bis[job] && <>
-        {Object.entries(bis[job])
-          .sort((gearElementA, gearElementB) => gearElementA[1].order > gearElementB[1].order ? 1 : -1)
-          .map(gearElement => {
-            let { type, lowMemoPurchased, order, obtained, upgrade } = gearElement[1]
-            // condition for v1.0.0 users
-            if (type === gearType.memo && !lowMemoPurchased) {
-              lowMemoPurchased = false
-              upgrade.needed = false
-            }
-            const toolTipInfo = (type === gearType.memo && !lowMemoPurchased) ? `${chrDB.name} - ${gearElement[1].name} - non acheté` : `${chrDB.name} - ${gearElement[1].name}`
-            return (
-              <td
-                key={order}
-                onClick={() => obtainedGear(gearElement)}
-                className={cx({ bg_obtained: obtained })}
-              >
-                {obtained
-                  ? <ShowGearInfo type={OBTAINED} tooltipInfo={toolTipInfo} />
-                  : <ShowGearInfo type={type} lowMemoPurchased={lowMemoPurchased} tooltipInfo={toolTipInfo} />}
-              </td>
-            )
-          })}
-                          </>}
+      {bis && bis[job] &&
+        <>
+          {Object.entries(bis[job])
+            .sort((gearElementA, gearElementB) => gearElementA[1].order > gearElementB[1].order ? 1 : -1)
+            .map(gearElement => {
+              let { type, lowMemoPurchased, order, obtained, upgrade } = gearElement[1]
+              // condition for v1.0.0 users
+              if (type === gearType.memo && !lowMemoPurchased) {
+                lowMemoPurchased = false
+                upgrade.needed = false
+              }
+              const toolTipInfo = (type === gearType.memo && !lowMemoPurchased) ? `${chrDB.name} - ${gearElement[1].name} - non acheté` : `${chrDB.name} - ${gearElement[1].name}`
+              return (
+                <td
+                  key={order}
+                  onClick={() => obtainedGear(gearElement)}
+                  className={cx({ bg_obtained: obtained })}
+                >
+                  {obtained
+                    ? <ShowGearInfo type={OBTAINED} tooltipInfo={toolTipInfo} />
+                    : <ShowGearInfo type={type} lowMemoPurchased={lowMemoPurchased} tooltipInfo={toolTipInfo} />}
+                </td>
+              )
+            })}
+        </>}
     </tr>
   )
 }
