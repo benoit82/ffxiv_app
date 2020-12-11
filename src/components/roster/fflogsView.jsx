@@ -15,7 +15,7 @@ import { ALL } from '../../utils/consts'
 import { PropTypes } from 'prop-types'
 import { Roster } from '../../models'
 
-function FFlogsView ({ roster }) {
+function FFlogsView({ roster }) {
   const garlandtools = require('garlandtools-api')
   const firebase = useContext(FirebaseContext)
   const { user } = useContext(UserApi)
@@ -44,7 +44,7 @@ function FFlogsView ({ roster }) {
       showInfoMessage('error', error.message)
     }
   },
-  [])
+    [garlandtools])
 
   const handlePaginationChange = ({ selected }) => {
     setOffset(Math.ceil(selected * MAX_LOGS_PER_PAGE))
@@ -151,22 +151,22 @@ function FFlogsView ({ roster }) {
               </>}
             {getFilteredLogs().length > 0
               ? <ReactPaginate
-                  containerClassName='pagination'
-                  pageCount={Math.ceil(getFilteredLogs().length / MAX_LOGS_PER_PAGE)}
-                  initialPage={0}
-                  pageRangeDisplayed={2}
-                  marginPagesDisplayed={2}
-                  breakLabel='...'
-                  pageLinkClassName='linkpage'
-                  onPageChange={handlePaginationChange}
-                  pageSize={MAX_LOGS_PER_PAGE}
-                  activeClassName='active'
-                  previousLabel='<'
-                  previousClassName='prevBtn'
-                  nextLabel='>'
-                  nextClassName='nextBtn'
-                  disabledClassName='disBtn'
-                />
+                containerClassName='pagination'
+                pageCount={Math.ceil(getFilteredLogs().length / MAX_LOGS_PER_PAGE)}
+                initialPage={0}
+                pageRangeDisplayed={2}
+                marginPagesDisplayed={2}
+                breakLabel='...'
+                pageLinkClassName='linkpage'
+                onPageChange={handlePaginationChange}
+                pageSize={MAX_LOGS_PER_PAGE}
+                activeClassName='active'
+                previousLabel='<'
+                previousClassName='prevBtn'
+                nextLabel='>'
+                nextClassName='nextBtn'
+                disabledClassName='disBtn'
+              />
               : <Alert variant='warning'>Aucun log trouvé avec les paramètres de filtre</Alert>}
             <ListGroup>
               {getFilteredLogs()

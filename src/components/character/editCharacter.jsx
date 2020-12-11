@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Container from 'react-bootstrap/Container'
@@ -15,7 +15,6 @@ import BISForm from './bisForm'
 import { showInfoMessage, toast } from '../../utils/globalFunctions'
 import { Character } from '../../models'
 import Swal from 'sweetalert2'
-import Axios from 'axios'
 import dayjs from 'dayjs'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 
@@ -26,6 +25,7 @@ import './editCharacter.scss'
  */
 const EditCharacter = () => {
   dayjs.extend(isSameOrAfter)
+  const garlandtools = require('garlandtools-api')
   const history = useHistory()
   const { chrID } = useParams()
   const firebase = useContext(FirebaseContext)
@@ -47,14 +47,10 @@ const EditCharacter = () => {
     </div>
   )
 
-  const getFFXIVLastPatchVersion = async () => {
-    let version = {}
-    const response = await Axios.get('https://xivapi.com/patchlist')
-    if (response.status === 200) {
-      version = Array.from(response.data).pop()
-    }
-    setLastFFXIVversion(version)
-  }
+  const getFFXIVLastPatchVersion = useCallback(async () => {
+    const garlandData = await garlandtools.data()
+    setLastFFXIVversion(garlandData.patch.current)
+  }, [garlandtools])
 
   const infoResetBis = () => {
     const Toast = Swal.mixin({
@@ -88,8 +84,8 @@ const EditCharacter = () => {
 
   const updateBis = (val, job) => {
     const bis = { ...character.bis, [job]: val }
-    if (!character.BISPatch && lastFFXIVversion.Version) {
-      firebase.updateCharacter(character._id, { BISPatch: lastFFXIVversion.Version })
+    if (!character.BISPatch && lastFFXIVversion) {
+      firebase.updateCharacter(character._id, { BISPatch: lastFFXIVversion })
     }
     firebase.updateCharacter(character._id, { bis })
     toast('info', `BIS pour ${job} mis à jour !`)
@@ -140,12 +136,11 @@ const EditCharacter = () => {
   const styleR = styleRole(character.mainJob)
 
   useEffect(() => {
+    // getting FFXIV last version and set it in lastFFXIVversion
     getFFXIVLastPatchVersion()
-  }, [])
+  }, [getFFXIVLastPatchVersion])
 
   useEffect(() => {
-    // getting FFXIV last version and set it in lastFFXIVversion
-
     // load the characters
     const unsubcribe = firebase.db
       .collection('characters')
@@ -169,12 +164,11 @@ const EditCharacter = () => {
           if (chr.thirdJob) setJob3(chr.thirdJob)
           if (chr.BISPatch &&
             lastFFXIVversion &&
-            dayjs().isSameOrAfter(lastFFXIVversion.ReleaseDate) &&
-            chr.BISPatch !== lastFFXIVversion.Version
+            chr.BISPatch !== lastFFXIVversion
           ) {
             Swal.fire({
               icon: 'question',
-              title: `Nouveau patch : ${lastFFXIVversion.Version}`,
+              title: `Nouveau patch : ${lastFFXIVversion}`,
               html: `FFXIV a déployé un nouveau patch ! <br/>
                             Les BIS de ce personnage datent du patch ${chr.BISPatch}.<br/>
                             Veux-tu reset les BIS de ce personnage (dernière mise à jour ) ? <br/>
@@ -187,7 +181,7 @@ const EditCharacter = () => {
                 infoResetBis()
               }
               // in all cases, we set the new patch version on character
-              firebase.updateCharacter(chr._id, { BISPatch: lastFFXIVversion.Version })
+              firebase.updateCharacter(chr._id, { BISPatch: lastFFXIVversion })
             }).catch(error => showInfoMessage('error', error.message))
           }
         },
