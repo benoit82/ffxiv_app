@@ -131,8 +131,6 @@ const EditCharacter = () => {
     }
   }
 
-  const { avatar, name, id, mainJob, secondJob, thirdJob } = character
-
   const styleR = styleRole(character.mainJob)
 
   useEffect(() => {
@@ -197,6 +195,8 @@ const EditCharacter = () => {
     // eslint-disable-next-line
   }, [chrID, firebase.db, history, user.uid, lastFFXIVversion])
 
+  const { avatar, name, id, mainJob, secondJob, thirdJob, BISPatch } = character
+
   return (
     <Container fluid>
       <Row className='d-flex justify-content-center'>
@@ -207,7 +207,13 @@ const EditCharacter = () => {
         >
           <img src={avatar} alt={`avatar de ${name}`} className='rounded rounded-circle' />
           <div className='d-flex flex-column'>
-            <h3 className='title_name'>{name}</h3>
+            <h3
+              className='title_name'
+              style={{
+                backgroundColor: BISPatch === lastFFXIVversion ? 'transparent' : '#660000'
+              }}
+            >{name} - BIS Patch : {BISPatch}
+            </h3>
             <div className='ml-5'>
               <span className='badge badge-pill'>{mainJob && <JobListDisplay job={mainJob} />}</span>
               <span className='badge badge-pill'>{secondJob && <JobListDisplay job={secondJob} />}</span>
