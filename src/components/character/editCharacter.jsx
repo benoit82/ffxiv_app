@@ -172,7 +172,7 @@ const EditCharacter = () => {
               html: `FFXIV a déployé un nouveau patch ! <br/>
                             Les BIS de ce personnage datent du patch ${chr.BISPatch}.<br/>
                             Veux-tu reset les BIS de ce personnage (dernière mise à jour ) ? <br/>
-                            En répondant ou annulant l'action, tes BIS actuels seront marqué par le nouveau patch.`,
+                            En répondant "Non" ou annulant l'action, tes BIS actuels seront marqué par le nouveau patch.`,
               cancelButtonText: 'Non',
               showCancelButton: true
             }).then(response => {

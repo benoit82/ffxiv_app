@@ -91,7 +91,15 @@ const CharacterTRRoster = ({ character, job, rl, currentPatch }) => {
   return (
     <tr>
       <td className='chr_table_detail' style={style}>
-        <span style={{ backgroundColor: chrDB.BISPatch === currentPatch ? 'transparent' : '#660000', paddingLeft: '3px' }}>{chrDB.name} - BIS {chrDB.BISPatch}</span>
+        <span style={{
+          backgroundColor: chrDB.BISPatch === currentPatch ? 'transparent' : '#660000',
+          paddingLeft: '3px',
+          textShadow: '3px 2px 2px #171616',
+          marginBottom: '2px',
+          fontSize: '0.9rem'
+        }}
+        >{chrDB.name} [{chrDB.BISPatch}]
+        </span>
         <div className='avatar_job'>
           <img src={chrDB.avatar} alt='img' />
           {getJobIcon(job)}
