@@ -10,13 +10,13 @@ import { showInfoMessage } from '../../utils/globalFunctions'
 import CopyToClipboard from 'react-copy-to-clipboard'
 
 import './fflogsView.scss'
-import Axios from 'axios'
 import { useFormik } from 'formik'
 import { ALL } from '../../utils/consts'
 import { PropTypes } from 'prop-types'
 import { Roster } from '../../models'
 
 function FFlogsView ({ roster }) {
+  const garlandtools = require('garlandtools-api')
   const firebase = useContext(FirebaseContext)
   const { user } = useContext(UserApi)
   const [showFormAddLog, setShowFormAddLog] = useState(false)
@@ -37,21 +37,10 @@ function FFlogsView ({ roster }) {
 
   const getPatchList = useCallback(async () => {
     try {
-      const response = await Axios.get('https://xivapi.com/patchlist')
-      if (response.status === 200) {
-        let tabPatchList = []
-        Array.from(response.data).forEach(patch => {
-          if (!tabPatchList.some(p => p.releaseDate === patch.ReleaseDate)) {
-            tabPatchList = [...tabPatchList, { extension: patch.ExName, name: patch.Name, releaseDate: patch.ReleaseDate }]
-          }
-        })
-        setPatchList(tabPatchList.sort((p1, p2) => p2.name > p1.name ? 1 : -1))
-      } else {
-        setPatchList([{ extension: '???', name: '???', releaseDate: '???' }])
-        showInfoMessage('warning', "Le serveur API n'a pas pu fournir la liste des patchs.")
-      }
+      const garlandData = await garlandtools.data()
+      garlandData.patch.partialIndex ? setPatchList(Object.keys(garlandData.patch.partialIndex).reverse()) : setPatchList(['???'])
     } catch (error) {
-      setPatchList([{ extension: '???', name: '???', releaseDate: '???' }])
+      setPatchList(['???'])
       showInfoMessage('error', error.message)
     }
   },
@@ -141,7 +130,7 @@ function FFlogsView ({ roster }) {
                     <option value={ALL}>{`${ALL} : patchs confondus`}</option>
                     {/* eslint-disable-next-line */}
                     {patchList.map(patch => {
-                      if (ffLogs.some(log => log.patch === patch.name)) return <option key={patch.releaseDate}>{patch.name}</option>
+                      if (ffLogs.some(log => log.patch === patch)) return <option key={patch}>{patch}</option>
                     })}
                   </Form.Control>
                 </Form.Group>

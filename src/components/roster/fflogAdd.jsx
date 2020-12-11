@@ -15,7 +15,7 @@ import { Roster } from '../../models'
 import 'react-calendar/dist/Calendar.css'
 import './fflogAdd.scss'
 
-function FFLogAdd({ roster, patchList, onFormSubmit }) {
+function FFLogAdd ({ roster, patchList, onFormSubmit }) {
   const [showCalendar, setShowCalendar] = useState(false)
   const [loading, setLoading] = useState(false)
   const firebase = useContext(FirebaseContext)
@@ -25,7 +25,7 @@ function FFLogAdd({ roster, patchList, onFormSubmit }) {
     title: '',
     fflogurl: '',
     dateRaid: new Date(),
-    patch: patchList[0].name
+    patch: patchList[0]
   }
   const fflogValidationSchema = Yup.object().shape({
     title: Yup.string().trim().max(60, 'Titre trop long (max. 60 caractères)').notRequired(),
@@ -55,16 +55,7 @@ function FFLogAdd({ roster, patchList, onFormSubmit }) {
 
   const handleCalendarClick = () => setShowCalendar(!showCalendar)
 
-  const fetchPatch = (date) => {
-    formik.setFieldValue('dateRaid', date)
-    const parsedDate = date.getTime() / 1000
-    const patchObj = patchList
-      .filter(patch => patch.releaseDate < parsedDate)
-      .reduce((prevPatch, currentPatch) => {
-        return (prevPatch.releaseDate > currentPatch.releaseDate ? prevPatch : currentPatch)
-      })
-    formik.setFieldValue('patch', patchObj.name)
-  }
+  const fetchPatch = (date) => formik.setFieldValue('dateRaid', date)
 
   const importFFLogsData = async () => {
     setLoading(true)
@@ -126,7 +117,7 @@ function FFLogAdd({ roster, patchList, onFormSubmit }) {
             onChange={formik.handleChange}
             custom
           >
-            {patchList.map(patch => <option key={patch.releaseDate}>{patch.name}</option>)}
+            {patchList.map(patch => <option key={patch}>{patch}</option>)}
           </Form.Control>
         </Form.Group>
 
