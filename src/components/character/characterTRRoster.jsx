@@ -14,7 +14,7 @@ import styles from './characterTRRoster.scss'
 
 const cx = classNames.bind(styles)
 
-const CharacterTRRoster = ({ character, job, rl }) => {
+const CharacterTRRoster = ({ character, job, rl, currentPatch }) => {
   const firebase = useContext(FirebaseContext)
   const { user } = useContext(UserApi)
   const { _id } = character
@@ -91,7 +91,7 @@ const CharacterTRRoster = ({ character, job, rl }) => {
   return (
     <tr>
       <td className='chr_table_detail' style={style}>
-        <span>{chrDB.name}</span>
+        <span style={{ backgroundColor: chrDB.BISPatch === currentPatch ? 'transparent' : '#660000', paddingLeft: '3px' }}>{chrDB.name} - BIS {chrDB.BISPatch}</span>
         <div className='avatar_job'>
           <img src={chrDB.avatar} alt='img' />
           {getJobIcon(job)}
@@ -120,7 +120,7 @@ const CharacterTRRoster = ({ character, job, rl }) => {
               </td>
             )
           })}
-      </>}
+                          </>}
     </tr>
   )
 }

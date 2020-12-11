@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { FirebaseContext } from '../firebase'
 import Col from 'react-bootstrap/Col'
@@ -26,6 +26,18 @@ const RosterView = () => {
   const [members, setMembers] = useState([])
   const [raidLeader, setRaidLeader] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [lastFFXIVversion, setLastFFXIVversion] = useState(null)
+  const garlandtools = require('garlandtools-api')
+
+  const getFFXIVLastPatchVersion = useCallback(async () => {
+    const garlandData = await garlandtools.data()
+    setLastFFXIVversion(garlandData.patch.current)
+  }, [garlandtools])
+
+  useEffect(() => {
+    // getting FFXIV last version and set it in lastFFXIVversion
+    getFFXIVLastPatchVersion()
+  }, [getFFXIVLastPatchVersion])
 
   useEffect(() => {
     const unsubscribe = firebase.db
@@ -119,7 +131,7 @@ const RosterView = () => {
                         job = member.mainJob
                         break
                     }
-                    return <CharacterTRRoster key={member._id} character={member} job={job} rl={raidLeader} />
+                    return <CharacterTRRoster key={member._id} character={member} job={job} rl={raidLeader} currentPatch={lastFFXIVversion} />
                   })
                 }
               </tbody>
@@ -133,7 +145,7 @@ const RosterView = () => {
               </>}
           </div>
         </Col>
-        </>
+      </>
   )
 }
 
