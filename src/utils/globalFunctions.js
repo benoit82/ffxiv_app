@@ -37,3 +37,11 @@ export const GetNewTwitchToken = async () => {
     `${TWITCH.oauthURI}?grant_type=client_credentials&client_id=${process.env.REACT_APP_TWITCH_API_CLIENT_ID}&client_secret=${process.env.REACT_APP_TWITCH_API_SECRET}`
   )
 }
+
+function importAll (r) {
+  return r.keys().map(r)
+}
+
+export const bgImages = importAll(
+  require.context('../img/backgrounds/', false, /\.(png|jpe?g|svg)$/)
+)
