@@ -7,7 +7,7 @@ import * as pluralize from 'pluralize'
 import { UpdateBtn, DeleteBtn } from '../formElements'
 import { Character, Roster } from '../../models'
 import { MAX_MEMBERS_ALLOWED } from '../../utils/consts'
-import { UserApi } from '../../utils/appContext'
+import { UserApi, XIVApi } from '../../utils/appContext'
 import { showInfoMessage, toast } from '../../utils/globalFunctions'
 
 const RosterEdit = () => {
@@ -16,10 +16,12 @@ const RosterEdit = () => {
   const firebase = useContext(FirebaseContext)
   const User = useContext(UserApi)
   const { user } = User
+  const xiv = useContext(XIVApi)
 
   const [roster, setRoster] = useState(new Roster(null))
   const [characters, setCharacters] = useState([])
   const [raidLeader, setRaidLeader] = useState(null)
+  const [serverList, setServerList] = useState([])
 
   // --- select
   const [name, setName] = useState('')
@@ -29,6 +31,18 @@ const RosterEdit = () => {
   useEffect(() => {
     if (roster.fflog) setFflog(roster.fflog)
   }, [roster])
+
+  useEffect(() => {
+    // retrieve server list and add "all server" option for global search
+    (async () => {
+      const datacenters = await xiv.data.datacenters()
+      setServerList([...Object.entries(datacenters)])
+      if (fflog.guildServer === '') {
+        setFflog({ ...fflog, guildServer: [...Object.values(datacenters)][0][0] })
+      }
+    })()
+    // eslint-disable-next-line
+  }, [fflog])
 
   useEffect(() => {
     if (roster.tmp) {
@@ -94,6 +108,16 @@ const RosterEdit = () => {
     setName(roster.name)
   }, [roster])
 
+  const servers = serverList.map((datacenter, index) => {
+    return (
+      <optgroup key={index} label={datacenter[0].toUpperCase()}>
+        {datacenter[1].map(server => {
+          return <option key={server}>{server}</option>
+        })}
+      </optgroup>
+    )
+  })
+
   const handleSubmit = (event) => {
     event.preventDefault()
     // record characters to refs
@@ -107,7 +131,7 @@ const RosterEdit = () => {
         name,
         rosterMembers: rosterMembersTmp,
         tmp: roster.tmp,
-        fflog: (fflog.guildName !== '' && fflog.guildServer !== '') ? fflog : null
+        fflog: (fflog.guildName !== '') ? fflog : null
       }
       try {
         firebase.updateRoster(rosterPayload)
@@ -140,7 +164,7 @@ const RosterEdit = () => {
   return (
     <>
       <Form className='custom__container form__container auto_margin' onSubmit={handleSubmit}>
-        <Form.Group controlId='name'>
+        <Form.Group>
           <Form.Label>Nom du roster</Form.Label>
           <br />
           <Form.Control
@@ -155,40 +179,40 @@ const RosterEdit = () => {
 
         <h2>Configuration groupe FFlog</h2>
 
-        <Form.Group controlId='fflog.guildName'>
+        <Form.Group>
           <Form.Label>Nom guilde</Form.Label>
           <Form.Control
             custom
             type='text'
             id='fflog.guildName'
-            placeholder='Nom de la guilde sur fflogs.com'
+            placeholder='Nom guilde sur fflogs.com'
             onChange={(e) => setFflog({ ...fflog, guildName: e.target.value })}
             value={fflog.guildName}
           />
         </Form.Group>
 
         <Form.Group controlId='fflog.guildServer'>
-          <Form.Label>Serveur de la guilde</Form.Label>
+          <Form.Label>Serveur :</Form.Label>
           <Form.Control
+            as='select'
             custom
-            type='text'
-            id='fflog.guildServer'
-            placeholder='Ragnarok, Cerberus...'
             onChange={(e) => setFflog({ ...fflog, guildServer: e.target.value })}
             value={fflog.guildServer}
-          />
+          >
+            {servers}
+          </Form.Control>
         </Form.Group>
 
         <Form.Group controlId='fflog.region'>
           <Form.Label>Région</Form.Label>
           <Form.Control
             custom
-            type='text'
-            id='fflog.region'
-            placeholder='EU, US, KR, JP'
+            as='select'
             onChange={(e) => setFflog({ ...fflog, region: e.target.value })}
             value={fflog.region}
-          />
+          >
+            {['US', 'EU', 'KR', 'TW', 'CN'].map(region => <option key={region}>{region}</option>)}
+          </Form.Control>
         </Form.Group>
 
         {raidLeader && <h2>Raid Leader : {raidLeader.name}</h2>}
