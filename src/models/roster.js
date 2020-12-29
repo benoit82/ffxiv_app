@@ -9,6 +9,7 @@ class Roster {
       this.label = data.name
       this.value = this._id
       this.tmp = data.tmp || false
+      this.fflog = data.fflog
     }
   }
 }

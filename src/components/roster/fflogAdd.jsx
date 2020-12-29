@@ -15,7 +15,7 @@ import { Roster } from '../../models'
 import 'react-calendar/dist/Calendar.css'
 import './fflogAdd.scss'
 
-function FFLogAdd ({ roster, patchList, onFormSubmit }) {
+function FFLogAdd({ roster, patchList, onFormSubmit }) {
   const [showCalendar, setShowCalendar] = useState(false)
   const [loading, setLoading] = useState(false)
   const firebase = useContext(FirebaseContext)
@@ -60,7 +60,8 @@ function FFLogAdd ({ roster, patchList, onFormSubmit }) {
   const importFFLogsData = async () => {
     setLoading(true)
     try {
-      const lastUserLog = await (await Axios.get(`https://www.fflogs.com/v1/reports/user/${user.fflogsAccount.name}?api_key=${user.fflogsAccount.apiKey}`)).data.shift()
+      const fflogUrlSearch = (roster.fflog) ? `https://www.fflogs.com/v1/reports/guild/${roster.fflog.guildName}/${roster.fflog.guildServer}/${roster.fflog.region}` : `https://www.fflogs.com/v1/reports/user/${user.fflogsAccount.name}`
+      const lastUserLog = await (await Axios.get(`${fflogUrlSearch}?api_key=${user.fflogsAccount.apiKey}`)).data.shift()
       formik.setFieldValue('title', lastUserLog.title)
       formik.setFieldValue('fflogurl', `https://fr.fflogs.com/reports/${lastUserLog.id}`)
       fetchPatch(new Date(lastUserLog.start))

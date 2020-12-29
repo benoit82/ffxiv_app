@@ -23,7 +23,12 @@ const RosterEdit = () => {
 
   // --- select
   const [name, setName] = useState('')
+  const [fflog, setFflog] = useState({ guildName: '', guildServer: '', region: 'EU' })
   const [rosterMembers, setRosterMembers] = useState([])
+
+  useEffect(() => {
+    if (roster.fflog) setFflog(roster.fflog)
+  }, [roster])
 
   useEffect(() => {
     if (roster.tmp) {
@@ -101,7 +106,8 @@ const RosterEdit = () => {
         _id: roster._id,
         name,
         rosterMembers: rosterMembersTmp,
-        tmp: roster.tmp
+        tmp: roster.tmp,
+        fflog: (fflog.guildName !== '' && fflog.guildServer !== '') ? fflog : null
       }
       try {
         firebase.updateRoster(rosterPayload)
@@ -144,6 +150,44 @@ const RosterEdit = () => {
             placeholder='Nom du roster'
             onChange={(e) => setName(e.target.value)}
             value={name}
+          />
+        </Form.Group>
+
+        <h2>Configuration groupe FFlog</h2>
+
+        <Form.Group controlId='fflog.guildName'>
+          <Form.Label>Nom guilde</Form.Label>
+          <Form.Control
+            custom
+            type='text'
+            id='fflog.guildName'
+            placeholder='Nom de la guilde sur fflogs.com'
+            onChange={(e) => setFflog({ ...fflog, guildName: e.target.value })}
+            value={fflog.guildName}
+          />
+        </Form.Group>
+
+        <Form.Group controlId='fflog.guildServer'>
+          <Form.Label>Serveur de la guilde</Form.Label>
+          <Form.Control
+            custom
+            type='text'
+            id='fflog.guildServer'
+            placeholder='Ragnarok, Cerberus...'
+            onChange={(e) => setFflog({ ...fflog, guildServer: e.target.value })}
+            value={fflog.guildServer}
+          />
+        </Form.Group>
+
+        <Form.Group controlId='fflog.region'>
+          <Form.Label>Région</Form.Label>
+          <Form.Control
+            custom
+            type='text'
+            id='fflog.region'
+            placeholder='EU, US, KR, JP'
+            onChange={(e) => setFflog({ ...fflog, region: e.target.value })}
+            value={fflog.region}
           />
         </Form.Group>
 
