@@ -104,11 +104,11 @@ const RosterView = () => {
               <thead>
                 <tr>
                   <th>{roster && roster.name}</th>
-                  {Object.entries(resetGearSet)
-                    .sort((gearElementA, gearElementB) => gearElementA[1].order > gearElementB[1].order ? 1 : -1)
+                  {Object.values(resetGearSet)
+                    .sort((gearElementA, gearElementB) => gearElementA.order > gearElementB.order ? 1 : -1)
                     .map(gearElement => {
-                      const thGearName = gearElement[1].name.replace('Loot', 'L.').replace('Memo', 'M.').replace('Ras de cou', 'Cou')
-                      return <th key={gearElement[1].order}>{thGearName}</th>
+                      const thGearName = gearElement.name.replace('Loot', 'L.').replace('Memo', 'M.').replace('Ras de cou', 'Cou')
+                      return <th key={gearElement.order}>{thGearName}</th>
                     })}
                 </tr>
               </thead>
@@ -145,7 +145,7 @@ const RosterView = () => {
               </>}
           </div>
         </Col>
-      </>
+        </>
   )
 }
 

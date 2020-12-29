@@ -40,22 +40,31 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
           bisJob = member.bis[member.mainJob]
       }
       if (bisJob) {
-        const bj = Object.entries(bisJob)
+        const bj = Object.values(bisJob)
+        // member.memoGearUpgrades = bj.reduce((res, currentGearElement) => {
+        //   if (currentGearElement.type === gearType.memo && currentGearElement.upgrade.needed) {
+        //     const { type } = currentGearElement.upgrade
+        //     if (currentGearElement.lowMemoPurchased) {
+        //       res[type] = res[type] ? ++res[type] : 1
+        //     }
+        //   }
+        //   return res
+        // }, {})
         bj.forEach(gearElement => {
           const checkForGear = (type, tabMbNeedType, tabMbFuturNeed) => {
-            if (gearElement[1].upgrade.type === type) {
-              if (gearElement[1].upgrade.needed) {
+            if (gearElement.upgrade.type === type) {
+              if (gearElement.upgrade.needed) {
                 tabMbNeedType.push(member.name)
                 // else if gear is not obtained and memo not purchased yet
               }
-              if (gearElement[1].type === gearType.memo &&
-                !gearElement[1].obtained &&
-                !gearElement[1].lowMemoPurchased) {
+              if (gearElement.type === gearType.memo &&
+                !gearElement.obtained &&
+                !gearElement.lowMemoPurchased) {
                 tabMbFuturNeed.push(member.name)
               }
             }
           }
-          if (gearElement[1].upgrade) {
+          if (gearElement.upgrade) {
             checkForGear('Weapon', namesMissingUpWeap, namesWaiterWeap)
             checkForGear('Armor', namesMissingUpArm, namesWaiterArm)
             checkForGear('Accessory', namesMissingUpAcc, namesWaiterAcc)
@@ -63,6 +72,25 @@ const RosterCheckUpgradeGear = ({ members, priorityJob }) => {
         })
       }
     })
+
+    // const upgradeGlobalNeeded = members.reduce((res, currentMember) => {
+    //   const { name } = currentMember
+    //   if (currentMember.memoGearUpgrades) {
+    //     Object.entries(currentMember.memoGearUpgrades).forEach(type => {
+    //       console.log(type)
+    //       if (res[type[0]]) {
+    //         res[type[0]].total = res[type[0]].total + type[1]
+    //         res[type[0]].names = [...res[type[0]].names, name]
+    //       } else {
+    //         res[type[0]] = { total: type[1], names: [name] }
+    //       }
+    //     })
+    //   }
+    //   return res
+    // }, {})
+
+    // console.log('upgradeGlobalNeeded :>> ', upgradeGlobalNeeded)
+
     setUpgradeWeapon(namesMissingUpWeap.length)
     setUpgradeArmor(namesMissingUpArm.length)
     setUpgradeAccessory(namesMissingUpAcc.length)
