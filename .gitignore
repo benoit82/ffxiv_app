@@ -17,6 +17,7 @@
 .env.development.local
 .env.test.local
 .env.production.local
+.env.prod
 .env
 
 npm-debug.log*
@@ -32,3 +33,7 @@ firebase.json
 /.vscode
 .vscode
 yarn.lock
+.vscode/settings.json
+
+./firebaseBatchBISPatchUpdate.js
+debug.log

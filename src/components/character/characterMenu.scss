@@ -1,24 +1,31 @@
 .main_chr_container {
   background-color: #2a344a29;
   width: 500px !important;
-  border-radius: 1rem;
-
-  -webkit-box-shadow: 15px 15px 25px -12px rgba(0, 0, 0, 1);
-  -moz-box-shadow: 15px 15px 25px -12px rgba(0, 0, 0, 1);
-  box-shadow: 15px 15px 25px -12px rgba(0, 0, 0, 1);
+  border-radius: 10px;
+  transition: all 0.3s;
+  -webkit-box-shadow: -5px -5px 25px -12px rgba(0, 0, 0, 1);
+  -moz-box-shadow: -5px -5px 25px -12px rgba(0, 0, 0, 1);
+  box-shadow: -5px -5px 25px -12px rgba(0, 0, 0, 1);
+  &:hover {
+    -webkit-box-shadow: 15px 15px 25px -12px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 15px 15px 25px -12px rgba(0, 0, 0, 1);
+    box-shadow: 15px 15px 25px -12px rgba(0, 0, 0, 1);
+  }
 }
 
 .chr_portrait_container {
   position: relative;
-  width: 18.32rem;
-  height: 25rem;
+  min-width: 18.32rem;
+  max-height: 37rem;
   overflow: hidden;
   border: 1px solid #573c3c;
-  border-radius: 6px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
   cursor: pointer;
   .chr_portrait {
-    height: inherit;
-    transition: transform 1500ms ease-in-out;
+    position: relative;
+    left: -70px;
+    transition: transform 0.7s ease-in-out;
     &:hover {
       transform: scale(1.1);
     }
@@ -38,16 +45,19 @@
 }
 
 .chr_menu_container {
-  width: 41%;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-between;
-  padding: 0.5rem 1rem 0;
+  padding: 0.5rem 1rem 0.5rem;
   & > * {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     justify-content: space-around;
+  }
+  & button {
+    margin: 0;
   }
 }

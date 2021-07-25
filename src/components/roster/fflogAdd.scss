@@ -1,0 +1,11 @@
+.react-calendar {
+  margin: 0 auto;
+}
+
+.btn_container {
+  display: flex;
+  justify-content: space-between;
+  & * {
+    width: -webkit-fill-available;
+  }
+}

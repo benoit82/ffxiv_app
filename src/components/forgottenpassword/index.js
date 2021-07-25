@@ -1,3 +1,3 @@
-import ForgottenPasswordPage from "./forgottenPasswordPage";
+import ForgottenPasswordPage from './forgottenPasswordPage'
 
-export { ForgottenPasswordPage };
+export { ForgottenPasswordPage }

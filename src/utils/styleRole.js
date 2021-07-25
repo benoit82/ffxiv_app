@@ -1,4 +1,4 @@
-import { jobRole } from "./listSelect";
+import { jobRole } from './listSelect'
 
 /**
  *
@@ -6,13 +6,13 @@ import { jobRole } from "./listSelect";
  * @returns {{backgroundColor,background}} styleConfig
  */
 export const styleRole = (job) => {
-  let style = {};
+  let style = {}
   if (job) {
     jobRole.forEach((role) => {
-      if (role[1].includes(job)) style = role[0];
-    });
+      if (role[1].includes(job)) style = role[0]
+    })
   } else {
-    style = { backgroundColor: "#bdc3c7", background: "no-repeat top right" };
+    style = { backgroundColor: '#bdc3c7', background: 'no-repeat top right' }
   }
-  return style;
-};
+  return style
+}

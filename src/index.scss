@@ -1,0 +1,51 @@
+$scroll-border-ratio: 10px;
+$scroll-bg-color: #3b259ecc;
+
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+@mixin scroll-borders($ratio) {
+  -webkit-border-radius: $ratio;
+  border-radius: $ratio;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: "Nunito", sans-serif !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 100vh;
+  background: linear-gradient(
+      297deg,
+      rgb(252, 63, 63) 0%,
+      rgb(248, 249, 66) 33%,
+      rgb(52, 83, 28) 100%
+    );
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+/* custom scroll bar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  @include scroll-borders($scroll-border-ratio);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @include scroll-borders($scroll-border-ratio);
+  background-color: $scroll-bg-color;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+  background-color: lighten($scroll-bg-color, 40%);
+}

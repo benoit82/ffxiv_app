@@ -1,0 +1,19 @@
+.streamerInfo {
+  max-width: 22rem;
+  white-space: break-spaces;
+}
+
+.stream__title {
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.lives__container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  border-radius: 0 0 10px 0 !important;
+  max-height: 94vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

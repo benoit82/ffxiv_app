@@ -1,15 +1,15 @@
 import React from 'react'
 import logMd from '../../logs/log.md'
 import ReactMd from 'react-md-file'
-import Container from 'react-bootstrap/Container'
 
+import './logPatch.scss'
 
 const LogPatch = () => {
-    return (
-        <Container>
-            <ReactMd fileName={logMd} />
-        </Container>
-    )
+  return (
+    <div className='custom__container log__container'>
+      <ReactMd fileName={logMd} />
+    </div>
+  )
 }
 
 export default LogPatch

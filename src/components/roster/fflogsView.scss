@@ -1,0 +1,50 @@
+$prim_color: #0275d8;
+@mixin pagination_all_items {
+  display: block;
+  color: #0000009a;
+  text-decoration: none;
+  padding: 3px;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  & > * {
+    border: 1px solid #292b2c3b;
+    border-radius: 25%;
+    min-width: 2rem;
+    min-height: 2rem;
+    text-align: center;
+    &:hover {
+      background-color: lighten($prim_color, 40%);
+    }
+  }
+  & .linkpage {
+    @include pagination_all_items;
+  }
+  & .active {
+    background-color: $prim_color;
+    & > * {
+      color: white;
+    }
+  }
+}
+
+.nextBtn {
+  @include pagination_all_items;
+  margin-left: auto;
+  & > * {
+    display: block;
+  }
+}
+.prevBtn {
+  @include pagination_all_items;
+  margin-right: auto;
+  & > * {
+    display: block;
+  }
+}
+
+.disBtn {
+  visibility: hidden;
+}

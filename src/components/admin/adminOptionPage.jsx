@@ -5,32 +5,34 @@ import Col from 'react-bootstrap/Col'
 import { Switch, Route, Link } from 'react-router-dom'
 import { UserOptionPage } from '..'
 import UsersAdmin from './usersAdmin'
-import AdminWelcomePage from './adminWelcomePage'
 import RosterAdmin from './rosterAdmin'
 
 /**
  * @route /admin
  */
 const AdminOptionPage = () => {
-    return (
-        <Container>
-            <Row>
-                <Col lg={3}>
-                    <Row><Link to="/admin/users" className="btn btn-primary mb-2">Gestion des utilisateurs</Link></Row>
-                    <Row><Link to="/admin/roster" className="btn btn-info mb-2">Gestion des rosters</Link></Row>
-                </Col>
-                <Col>
-                    <h1>Administration du site</h1>
-                    <Switch>
-                        <Route exact path="/admin" component={AdminWelcomePage} />
-                        <Route exact path="/admin/users" component={UsersAdmin} />
-                        <Route path="/admin/users/:user_id" component={UserOptionPage} />
-                        <Route exact path="/admin/roster" component={RosterAdmin} />
-                    </Switch>
-                </Col>
-            </Row>
-        </Container>
-    )
+  return (
+    <Container fluid>
+      <Row>
+        <Col lg={2} className='d-flex flex-column mr-3'>
+          <Link to='/admin/users' className='btn btn-primary mb-2'>Gestion des utilisateurs</Link>
+          <Link to='/admin/roster' className='btn btn-info mb-2'>Gestion des rosters</Link>
+        </Col>
+        <Col className='d-flex flex-column justify-content-center align-items-center'>
+          <div className='custom__container mb-3' style={{ textAlign: 'center' }}>
+            <h1>Administration du site</h1>
+          </div>
+          <div className='custom__container mb-3'>
+            <Switch>
+              <Route exact path='/admin/users' component={UsersAdmin} />
+              <Route path='/admin/users/:user_id' component={UserOptionPage} />
+              <Route exact path='/admin/roster' component={RosterAdmin} />
+            </Switch>
+          </div>
+        </Col>
+      </Row>
+    </Container>
+  )
 }
 
 export default AdminOptionPage
