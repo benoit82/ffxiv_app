@@ -11,6 +11,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import fr from 'dayjs/locale/fr'
 import { TWITCH } from '../../utils/consts'
 import useTwitchApi from '../../customHooks/useTwitchApi'
+import classNames from 'classnames'
 
 import './welcome.scss'
 
@@ -89,7 +90,7 @@ const Welcome = () => {
                   <div className='gameImgContainer mr-1'>
                     <img src={stream.game.box_art_url.replace('{width}', '75').replace('{height}', '100')} alt='' />
                   </div>}
-                <div className='streamerInfo d-flex flex-column'>
+                <div className={classNames('streamerInfo', 'd-flex', 'flex-column')}>
                   <span><a href={`https://www.twitch.tv/${stream.user_name}`} target='_blank' rel='noopener noreferrer'>{stream.user_name}</a>{stream.game && ` : ${stream.game.name}`}</span>
                   <span className='stream__title'>{stream.title.length < 90 ? stream.title : `${stream.title.substr(0, 87)}...`}</span>
                   <span>commencé {dayjs().to(stream.started_at)}</span>
