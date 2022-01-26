@@ -26,6 +26,10 @@ const jobsHealer = [
     label: <JobListDisplay job='AST' />
   },
   {
+    value: 'SGE',
+    label: <JobListDisplay job='SGE' />
+  },
+  {
     value: 'SCH',
     label: <JobListDisplay job='SCH' />
   },
@@ -73,6 +77,10 @@ const jobsDPS = [
     label: <JobListDisplay job='SAM' />
   },
   {
+    value: 'RPR',
+    label: <JobListDisplay job='RPR' />
+  },
+  {
     value: 'SMN',
     label: <JobListDisplay job='SMN' />
   }
@@ -100,11 +108,11 @@ export const selectJobsGroup = [
  */
 export const getCategory = (job) => {
   let cat = 0
-  cat = jobsTank.some((obj) => obj.value === job)
+  cat = jobsTank.some(({value}) => value === job)
     ? 1
-    : jobsHealer.some((obj) => obj.value === job)
+    : jobsHealer.some(({value}) => value === job)
       ? 2
-      : jobsDPS.some((obj) => obj.value === job)
+      : jobsDPS.some(({value}) => value === job)
         ? 3
         : 0
   return cat
@@ -172,14 +180,6 @@ export const resetGearSet = {
     obtained: false,
     lowMemoPurchased: false,
     upgrade: { type: 'Armor', needed: false }
-  },
-  belt: {
-    order: 6,
-    name: 'Ceinture',
-    type: gearType.memo,
-    obtained: false,
-    lowMemoPurchased: false,
-    upgrade: { type: 'Accessory', needed: false }
   },
   leg: {
     order: 7,

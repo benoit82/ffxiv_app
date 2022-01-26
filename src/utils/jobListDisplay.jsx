@@ -7,6 +7,7 @@ import GunbreakerIcon from '../img/jobicon/tank/Gunbreaker.png'
 import PaladinIcon from '../img/jobicon/tank/Paladin.png'
 import WarriorIcon from '../img/jobicon/tank/Warrior.png'
 import AstrologianIcon from '../img/jobicon/healer/Astrologian.png'
+import SageIcon from '../img/jobicon/healer/Sage.png'
 import ScholarIcon from '../img/jobicon/healer/Scholar.png'
 import WhiteMageIcon from '../img/jobicon/healer/WhiteMage.png'
 import BardIcon from '../img/jobicon/dps/Bard.png'
@@ -18,6 +19,7 @@ import MonkIcon from '../img/jobicon/dps/Monk.png'
 import NinjaIcon from '../img/jobicon/dps/Ninja.png'
 import RedMageIcon from '../img/jobicon/dps/RedMage.png'
 import SamuraiIcon from '../img/jobicon/dps/Samurai.png'
+import ReaperIcon from '../img/jobicon/dps/Reaper.png'
 import SummonerIcon from '../img/jobicon/dps/Summoner.png'
 // --Role Icon
 import TankIcon from '../img/jobicon/role/TankRole.png'
@@ -94,6 +96,12 @@ const JobListDisplay = ({ job }) => {
         break
       case 'SMN':
         setImgSrc(SummonerIcon)
+        break
+      case 'RPR':
+        setImgSrc(ReaperIcon)
+        break
+      case 'SGE':
+        setImgSrc(SageIcon)
         break
       default:
         setImgSrc(TankIcon)
