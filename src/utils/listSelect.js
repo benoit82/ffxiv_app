@@ -17,7 +17,7 @@ export const jobRole = [
       backgroundColor: '#27ae60',
       background: `#27ae60 url(${HealerIcon}) no-repeat top right`
     },
-    ['AST', 'SCH', 'WHM']
+    ['AST', 'SCH', 'WHM', 'SGE']
   ],
   [
     // DPS
@@ -25,6 +25,6 @@ export const jobRole = [
       backgroundColor: '#c0392b',
       background: `#c0392b url(${DPSIcon}) no-repeat top right`
     },
-    ['BRD', 'BLM', 'DNC', 'DRG', 'MCH', 'MNK', 'NIN', 'RDM', 'SAM', 'SMN']
+    ['BRD', 'BLM', 'DNC', 'DRG', 'MCH', 'MNK', 'NIN', 'RDM', 'SAM', 'SMN', 'RPR']
   ]
 ]
