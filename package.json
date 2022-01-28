@@ -39,6 +39,7 @@
     "olp:build": "react-scripts --openssl-legacy-provider build",
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "react-scripts build && firebase deploy --project 66170812132",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
