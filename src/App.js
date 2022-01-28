@@ -39,7 +39,8 @@ function App () {
       fluid
       className='App'
       style={{
-        background: `url(${bgImage}) center fixed`
+        background: `url(${bgImage}) no-repeat center`,
+        backgroundSize: 'cover',
       }}
     >
       <Router>
